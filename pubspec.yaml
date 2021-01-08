@@ -22,6 +22,24 @@ dependencies:
   # PASS LOGIN
   webview_flutter: ^1.0.7
 
+  cached_network_image: ^2.5.0
+
+  location: ^3.1.0
+
+  flutter_icons: ^1.1.0
+
+  faker: ^1.3.0
+  age: ^0.0.1
+
+  audio_wave:
+    path: packages/audio_wave
+
+  text_scroller:
+    path: packages/text_scroller
+
+  icon_animator:
+    path: packages/icon_animator
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

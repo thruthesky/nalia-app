@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:nalia_app/models/v3.controller.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:faker/faker.dart';
+import 'package:nalia_app/tests/test.user.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -22,38 +24,83 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             GetBuilder<V3>(
               builder: (_) {
                 return Text(
-                  'session_id: ${_.user?.sessionId} ',
+                  'session_id: ${_.user?.sessionId}, name: ${_.user?.name}, ${_.user?.gender}, ${_.user?.birthdate}, ${_.user?.age} ',
                 );
               },
             ),
-            RaisedButton(
-              onPressed: () => Get.toNamed(RouteNames.login),
-              child: Text('Login'),
-            ),
-            RaisedButton(
-              onPressed: () => Get.toNamed(RouteNames.profile),
-              child: Text('Profile'),
+            Wrap(
+              children: [
+                RaisedButton(
+                  onPressed: () => Get.toNamed(RouteNames.login),
+                  child: Text('Login'),
+                ),
+                RaisedButton(
+                  onPressed: () => Get.toNamed(RouteNames.profile),
+                  child: Text('Profile'),
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    try {
+                      final int no = Random().nextInt(10000);
+                      final re = await v3.register(
+                        email: 'abc$no@test.com',
+                        pass: 'abc@test.com',
+                        data: {
+                          'name': Faker().person.name(),
+                          'a': 'Apple',
+                        },
+                      );
+                      print(re);
+                    } catch (e) {
+                      app.error(e);
+                    }
+                  },
+                  child: Text('Create an Account'),
+                ),
+              ],
             ),
             RaisedButton(
               onPressed: () async {
                 try {
-                  final int no = Random().nextInt(10000);
-                  final re = await v3.register(
-                    email: 'abc$no@test.com',
-                    pass: 'abc@test.com',
-                    extra: {},
-                  );
-                  print(re);
+                  for (int i = 0; i < 40; i++) {
+                    final temp = TestUser().data(i);
+                    final re = await v3.loginOrRegister(
+                        email: temp['user_email'],
+                        pass: temp['user_pass'],
+                        data: temp);
+                    print('re: $re');
+                  }
                 } catch (e) {
                   app.error(e);
                 }
               },
-              child: Text('Create an Account'),
+              child: Text('Generate 40 Users'),
+            ),
+            Divider(),
+            Text('Login test users'),
+            Wrap(
+              children: [
+                for (int i = 0; i < 40; i++)
+                  RaisedButton(
+                    onPressed: () async {
+                      final tu = TestUser().data(i);
+                      try {
+                        final u = await v3.login(
+                            email: tu['user_email'], pass: tu['user_pass']);
+                        print('Login success: $u');
+                      } catch (e) {
+                        app.error(e);
+                      }
+                    },
+                    child: Text(
+                      "$i" + TestUser().data(i)['gender'],
+                    ),
+                  ),
+              ],
             ),
             RaisedButton(
               onPressed: () async {

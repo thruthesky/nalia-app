@@ -1,3 +1,5 @@
+import 'package:age/age.dart';
+
 class User {
   String nickname;
   String firstName;
@@ -7,6 +9,24 @@ class User {
   String autoStatusCheck;
   String plid;
   String agegroup;
+  String get age {
+    final _yy = int.parse(birthdate.substring(0, 2));
+    final _mm = int.parse(birthdate.substring(2, 4));
+    final _dd = int.parse(birthdate.substring(4, 6));
+
+    DateTime birthday = DateTime(_yy < 20 ? 2000 + _yy : 1900 + _yy, _mm, _dd);
+
+    DateTime today = DateTime.now();
+
+    AgeDuration _age;
+
+    // Find out your age
+    _age = Age.dateDifference(
+        fromDate: birthday, toDate: today, includeToDate: false);
+
+    return _age.years.toString();
+  }
+
   String gender;
   String foreign;
   String telcoCd;
@@ -21,30 +41,48 @@ class User {
   String userRegistered;
   String sessionId;
   String mode;
+  String primaryPhotoUrl;
+  String get fullName => name;
+  String dateMethod;
+  String height;
+  String weight;
+  String city;
+  String hobby;
+  String drinking;
+  String smoking;
 
-  User(
-      {this.nickname,
-      this.firstName,
-      this.lastName,
-      this.locale,
-      this.autoLoginYn,
-      this.autoStatusCheck,
-      this.plid,
-      this.agegroup,
-      this.gender,
-      this.foreign,
-      this.telcoCd,
-      this.ci,
-      this.phoneNo,
-      this.name,
-      this.birthday,
-      this.birthdate,
-      this.iD,
-      this.userLogin,
-      this.userEmail,
-      this.userRegistered,
-      this.sessionId,
-      this.mode});
+  User({
+    this.nickname,
+    this.firstName,
+    this.lastName,
+    this.locale,
+    this.autoLoginYn,
+    this.autoStatusCheck,
+    this.plid,
+    this.agegroup,
+    this.gender,
+    this.foreign,
+    this.telcoCd,
+    this.ci,
+    this.phoneNo,
+    this.name,
+    this.birthday,
+    this.birthdate,
+    this.iD,
+    this.userLogin,
+    this.userEmail,
+    this.userRegistered,
+    this.sessionId,
+    this.mode,
+    this.primaryPhotoUrl,
+    this.dateMethod,
+    this.height,
+    this.weight,
+    this.city,
+    this.hobby,
+    this.drinking,
+    this.smoking,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     nickname = json['nickname'];
@@ -69,6 +107,15 @@ class User {
     userRegistered = json['user_registered'];
     sessionId = json['session_id'];
     mode = json['mode'];
+    primaryPhotoUrl = json['primaryPhotoUrl'];
+
+    dateMethod = json['dateMethod'] ?? '';
+    height = json['height'] ?? '';
+    weight = json['weight'] ?? '';
+    city = json['city'] ?? '';
+    hobby = json['hobby'] ?? '';
+    drinking = json['drinking'] ?? '';
+    smoking = json['smoking'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -95,6 +142,16 @@ class User {
     data['user_registered'] = this.userRegistered;
     data['session_id'] = this.sessionId;
     data['mode'] = this.mode;
+    data['primaryPhotoUrl'] = this.primaryPhotoUrl;
+    data['dateMethod'] = this.dateMethod;
+    data['height'] = this.height;
+    data['weight'] = this.weight;
+
+    data['city'] = this.city;
+    data['hobby'] = this.hobby;
+    data['drinking'] = this.drinking;
+    data['smoking'] = this.smoking;
+
     return data;
   }
 

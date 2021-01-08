@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/models/v3.user.dart';
+import 'package:nalia_app/models/v3.user.model.dart';
 import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -21,9 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
+      appBar: CustomAppBar(route: RouteNames.myJewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
         child: Column(
@@ -74,9 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         JavascriptChannel(
                             name: 'messageHandler',
                             onMessageReceived: (JavascriptMessage jm) async {
-                              User user = User.fromJson(jsonDecode(jm.message));
-                              print("User: $user");
-                              int agegroup = int.parse(user.agegroup);
+                              v3.user = User.fromJson(jsonDecode(jm.message));
+                              print("Pass login v3.user: ${v3.user}");
+                              int agegroup = int.parse(v3.user.agegroup);
                               if (agegroup == 0 || agegroup == 10) {
                                 app.alert('미성년자는 가입 할 수 없습니다.');
                                 return;

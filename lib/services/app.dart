@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart';
 // import 'package:nalia_app/services/global.dart';
 // import 'package:get_storage/get_storage.dart';
 
 class App {
+  Location location = Location();
+  bool locationServiceEnabled = false;
+  RxBool locationServiceChanges = false.obs;
+  RxBool locationAppPermissionChanges = false.obs;
+  PermissionStatus _permissionGranted;
+
+  /// [justGotDailyBonus] is to indiate that the user got bonus.
+  RxBool justGotDailyBonus = false.obs;
+
   App() {
     // initLocalStorage();
   }
@@ -56,4 +66,8 @@ class App {
       confirmTextColor: Colors.white,
     );
   }
+
+  bool get locationReady =>
+      locationServiceChanges.value == true &&
+      locationAppPermissionChanges.value == true;
 }
