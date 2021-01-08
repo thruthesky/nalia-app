@@ -10,4 +10,4 @@ String get v3Url => Config.device == 'device'
     : 'https://local.nalia.kr/v3/index.php';
 
 final passCallbackUrl =
-    "https://id.passlogin.com/oauth2/authorize?client_id=gvC47PHoY7kS3DfpGfff&redirect_uri=https%3A%2F%2Fapi.nalia.kr%2Fv3%2Fpass_login_callback.php&response_type=code&state=apple_banana_cherry&isHybrid=Y";
+    "https://id.passlogin.com/oauth2/authorize?client_id=gvC47PHoY7kS3DfpGfff&redirect_uri=https%3A%2F%2Fapi.nalia.kr%2Fv3%2Fvar%2Fpass%2Fpass_login_callback.php&response_type=code&state=apple_banana_cherry&isHybrid=Y";

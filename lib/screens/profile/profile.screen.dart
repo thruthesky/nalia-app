@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatefulWidget {
+class ProfileScreen extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

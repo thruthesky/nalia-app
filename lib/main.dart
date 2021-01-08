@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/models/v3.controller.dart';
 import 'package:nalia_app/screens/home/home.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
-import 'package:nalia_app/screens/register/register.screen.dart';
+import 'package:nalia_app/screens/profile/profile.screen.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 
@@ -32,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
       getPages: [
         GetPage(name: RouteNames.home, page: () => HomeScreen()),
         GetPage(name: RouteNames.login, page: () => LoginScreen()),
-        GetPage(name: RouteNames.register, page: () => RegisterScreen()),
+        GetPage(name: RouteNames.profile, page: () => ProfileScreen()),
       ],
       // home: HomeScreen(),
     );

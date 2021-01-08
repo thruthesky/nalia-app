@@ -3,7 +3,6 @@ class RouteNames {
   static final String myJewelry = 'myJewelry';
   static final String purchase = 'purchase';
   static final String login = 'login';
-  static final String register = 'register';
   static final String profile = 'profile';
   static final String chatRoom = 'chatRoom';
   static final String chatRoomList = 'chatRoomList';

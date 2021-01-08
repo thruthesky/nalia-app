@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
             GetBuilder<V3>(
               builder: (_) {
                 return Text(
-                  'session_id: ${_.user?.sessinoId} ',
+                  'session_id: ${_.user?.sessionId} ',
                 );
               },
             ),
@@ -36,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('Login'),
             ),
             RaisedButton(
-              onPressed: () => Get.toNamed(RouteNames.register),
-              child: Text('Register'),
+              onPressed: () => Get.toNamed(RouteNames.profile),
+              child: Text('Profile'),
             ),
             RaisedButton(
               onPressed: () async {
