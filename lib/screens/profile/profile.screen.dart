@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/v3.controller.dart';
-import 'package:nalia_app/models/v3.user.model.dart';
+import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/services/debouncer.dart';
 import 'package:nalia_app/services/defines.dart';
@@ -29,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .distinct()
         .listen((v) {
       print('v: $v');
-      v3.updateUser('dateMethod', v);
+      api.updateUser('dateMethod', v);
     });
   }
 
@@ -47,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: CustomAppBar(route: RouteNames.myJewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
-        child: GetBuilder<V3>(builder: (_) {
+        child: GetBuilder<API>(builder: (_) {
           if (_.notLoggedIn) return LoginFirst();
           return HomeContentWrapper(
             child: SingleChildScrollView(
@@ -119,10 +118,10 @@ class Height extends StatelessWidget {
           spaceMd,
           Text('height'.tr, style: hintStyle),
           DropdownButton<String>(
-            value: v3.user.height,
+            value: api.user.height,
             onChanged: (v) async {
               try {
-                await v3.updateUser('height', v);
+                await api.updateUser('height', v);
               } catch (e) {
                 app.error(e);
               }
@@ -163,10 +162,10 @@ class Weight extends StatelessWidget {
           spaceMd,
           Text('weight'.tr, style: hintStyle),
           DropdownButton<String>(
-            value: v3.user.weight,
+            value: api.user.weight,
             onChanged: (v) async {
               try {
-                await v3.updateUser('weight', v);
+                await api.updateUser('weight', v);
               } catch (e) {
                 app.error(e);
               }
@@ -206,10 +205,10 @@ class City extends StatelessWidget {
           spaceMd,
           Text('city'.tr, style: hintStyle),
           DropdownButton<String>(
-            value: v3.user.city ?? '',
+            value: api.user.city ?? '',
             onChanged: (v) async {
               try {
-                await v3.updateUser('city', v);
+                await api.updateUser('city', v);
               } catch (e) {
                 app.error(e);
               }
@@ -249,10 +248,10 @@ class Hobby extends StatelessWidget {
           spaceMd,
           Text('hobby'.tr, style: hintStyle),
           DropdownButton<String>(
-            value: v3.user.hobby,
+            value: api.user.hobby,
             onChanged: (v) async {
               try {
-                await v3.updateUser('hobby', v);
+                await api.updateUser('hobby', v);
               } catch (e) {
                 app.error(e);
               }
@@ -293,10 +292,10 @@ class Drink extends StatelessWidget {
           Text('drink'.tr, style: hintStyle),
           SwitchListTile(
             title: Text('drinking_yn'.tr),
-            value: v3.user.drinking == 'Y' ? true : false,
+            value: api.user.drinking == 'Y' ? true : false,
             onChanged: (bool value) async {
               try {
-                await v3.updateUser('drinking', value ? 'Y' : 'N');
+                await api.updateUser('drinking', value ? 'Y' : 'N');
               } catch (e) {
                 app.error(e);
               }
@@ -320,10 +319,10 @@ class Smoke extends StatelessWidget {
           Text('smoke'.tr, style: hintStyle),
           SwitchListTile(
             title: Text('smoking_yn'.tr),
-            value: v3.user.smoking == 'Y' ? true : false,
+            value: api.user.smoking == 'Y' ? true : false,
             onChanged: (bool value) async {
               try {
-                await v3.updateUser('smoking', value ? 'Y' : 'N');
+                await api.updateUser('smoking', value ? 'Y' : 'N');
               } catch (e) {
                 app.error(e);
               }

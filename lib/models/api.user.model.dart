@@ -1,6 +1,6 @@
 import 'package:age/age.dart';
 
-class User {
+class ApiUser {
   String nickname;
   String firstName;
   String lastName;
@@ -20,7 +20,7 @@ class User {
 
     AgeDuration _age;
 
-    // Find out your age
+    // Set the age of the user
     _age = Age.dateDifference(
         fromDate: birthday, toDate: today, includeToDate: false);
 
@@ -51,7 +51,7 @@ class User {
   String drinking;
   String smoking;
 
-  User({
+  ApiUser({
     this.nickname,
     this.firstName,
     this.lastName,
@@ -84,7 +84,7 @@ class User {
     this.smoking,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
+  ApiUser.fromJson(Map<String, dynamic> json) {
     nickname = json['nickname'];
     firstName = json['first_name'];
     lastName = json['last_name'];

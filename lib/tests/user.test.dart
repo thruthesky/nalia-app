@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:faker/faker.dart';
 
-class TestUser {
+class UserTest {
   data(int i) {
     String gender = i % 2 == 0 ? 'M' : 'F';
 

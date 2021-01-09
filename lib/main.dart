@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/models/v3.controller.dart';
+import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/screens/forum/forum.list.screen.dart';
 import 'package:nalia_app/screens/home/home.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
@@ -17,7 +20,17 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final V3 c = Get.put(v3);
+  final API c = Get.put(api);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(milliseconds: 600), () async {
+      Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -31,6 +44,7 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.home, page: () => HomeScreen()),
         GetPage(name: RouteNames.login, page: () => LoginScreen()),
         GetPage(name: RouteNames.profile, page: () => ProfileScreen()),
+        GetPage(name: RouteNames.forumList, page: () => ForumListScreen()),
       ],
       // home: HomeScreen(),
     );

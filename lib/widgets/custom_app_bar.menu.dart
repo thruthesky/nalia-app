@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:icon_animator/icon_animator.dart';
-import 'package:nalia_app/models/v3.controller.dart';
+import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
@@ -65,7 +65,7 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
                 splashRadius: 28.4,
               ),
 
-              GetBuilder<V3>(
+              GetBuilder<API>(
                 builder: (_) {
                   return UserAvatar(
                     _.primaryPhotoUrl,
@@ -76,7 +76,7 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
               ),
 
               // StreamBuilder(
-              //   stream: v3.userChanges,
+              //   stream: api.userChanges,
               //   builder: (_, snapshot) {
               //     return UserAvatar(
               //       ff.userPublicData[PRIMARY_PHOTO],
@@ -171,7 +171,7 @@ class _EtcIndicatorState extends State<EtcIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<V3>(
+    return GetBuilder<API>(
       builder: (_) {
         return _.profileComplete ? GreenIndicator() : WarningIndicator();
       },

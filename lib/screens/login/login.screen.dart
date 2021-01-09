@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/models/v3.user.model.dart';
+import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
@@ -73,9 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         JavascriptChannel(
                             name: 'messageHandler',
                             onMessageReceived: (JavascriptMessage jm) async {
-                              v3.user = User.fromJson(jsonDecode(jm.message));
-                              print("Pass login v3.user: ${v3.user}");
-                              int agegroup = int.parse(v3.user.agegroup);
+                              api.user =
+                                  ApiUser.fromJson(jsonDecode(jm.message));
+                              print("Pass login api.user: ${api.user}");
+                              int agegroup = int.parse(api.user.agegroup);
                               if (agegroup == 0 || agegroup == 10) {
                                 app.alert('미성년자는 가입 할 수 없습니다.');
                                 return;

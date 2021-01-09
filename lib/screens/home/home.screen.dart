@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/models/v3.controller.dart';
+import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:faker/faker.dart';
-import 'package:nalia_app/tests/test.user.dart';
+import 'package:nalia_app/tests/post.test.dart';
+import 'package:nalia_app/tests/user.test.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Column(
           children: <Widget>[
-            GetBuilder<V3>(
+            GetBuilder<API>(
               builder: (_) {
                 return Text(
                   'session_id: ${_.user?.sessionId}, name: ${_.user?.name}, ${_.user?.gender}, ${_.user?.birthdate}, ${_.user?.age} ',
@@ -46,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () async {
                     try {
                       final int no = Random().nextInt(10000);
-                      final re = await v3.register(
+                      final re = await api.register(
                         email: 'abc$no@test.com',
                         pass: 'abc@test.com',
                         data: {
@@ -61,14 +63,45 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Text('Create an Account'),
                 ),
+                RaisedButton(
+                  child: Text('Reminder'),
+                  onPressed: () =>
+                      Get.toNamed(RouteNames.forumList, arguments: {
+                    'category': 'reminder',
+                  }),
+                ),
+                RaisedButton(
+                  child: Text('QnA'),
+                  onPressed: () =>
+                      Get.toNamed(RouteNames.forumList, arguments: {
+                    'category': 'qna',
+                  }),
+                ),
+                RaisedButton(
+                  child: Text('Post creation test'),
+                  onPressed: () async {
+                    try {
+                      final post = await PostTest().run();
+                      print(
+                          'post created: id: ${post.id}, no of images: ${post.files.length}');
+                      print(post.files[0].url);
+                    } catch (e) {
+                      app.error(e);
+                      if (e == ERROR_IMAGE_NOT_SELECTED) {
+                      } else {
+                        print('e: $e');
+                      }
+                    }
+                  },
+                ),
               ],
             ),
             RaisedButton(
               onPressed: () async {
                 try {
                   for (int i = 0; i < 40; i++) {
-                    final temp = TestUser().data(i);
-                    final re = await v3.loginOrRegister(
+                    final temp = UserTest().data(i);
+                    final re = await api.loginOrRegister(
                         email: temp['user_email'],
                         pass: temp['user_pass'],
                         data: temp);
@@ -87,9 +120,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 for (int i = 0; i < 40; i++)
                   RaisedButton(
                     onPressed: () async {
-                      final tu = TestUser().data(i);
+                      final tu = UserTest().data(i);
                       try {
-                        final u = await v3.login(
+                        final u = await api.login(
                             email: tu['user_email'], pass: tu['user_pass']);
                         print('Login success: $u');
                       } catch (e) {
@@ -97,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                     child: Text(
-                      "$i" + TestUser().data(i)['gender'],
+                      "$i" + UserTest().data(i)['gender'],
                     ),
                   ),
               ],
@@ -106,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () async {
                 try {
                   final int no = Random().nextInt(10000);
-                  final re = await v3.updateToken('token:$no');
+                  final re = await api.updateToken('token:$no');
                   print(re);
                 } catch (e) {
                   app.error(e);

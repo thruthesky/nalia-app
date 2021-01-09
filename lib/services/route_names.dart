@@ -9,6 +9,6 @@ class RouteNames {
   static final String userSearch = 'userSearch';
   static final String gallery = 'gallery';
   static final String menu = 'menu';
-  static final String postList = 'postList';
-  static final String postEdit = 'postEdit';
+  static final String forumList = 'forumList';
+  static final String forumEdit = 'forumEdit';
 }
