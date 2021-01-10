@@ -1,4 +1,4 @@
-package com.example.nalia_app
+package kr.nalia.app
 
 import io.flutter.embedding.android.FlutterActivity
 

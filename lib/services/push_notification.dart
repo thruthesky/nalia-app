@@ -6,8 +6,11 @@ import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 
 /// Note that this method is on an isolated space.
+///
+/// It works only on Android. it is not designed for iOS.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("_firebaseMessagingBackgroundHandler(): ${message.messageId}");
+  print(
+      "_firebaseMessagingBackgroundHandler(): ${message.messageId}, ${message.notification.title}, ${message.notification.body}");
 }
 
 class PushNotification {
@@ -51,7 +54,8 @@ class PushNotification {
 
     // Handler, when app is terminated or on background.
     // Note that this is an isolated handler that cannot communicate with main isolate.
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // For Android only.
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     // Check if app is opened from terminated state and get message data.
     RemoteMessage initialMessage =
@@ -74,19 +78,26 @@ class PushNotification {
   }
 
   /// Save the token to database.
-  saveTokenToDatabase(String token) {
+  saveTokenToDatabase(String token) async {
     this.token = token;
     print('saveTokenToDatabase: $token');
+    try {
+      await api.updateToken(token);
+    } catch (e) {
+      app.error(e);
+    }
   }
 
   /// Forground Message
   ///
   /// [message.data] would something like `{a: apple}`
   ///
-  /// Test on iOS. not on Android.
+  /// Test on both Android device, Emulator, and iOS device. Simulator is not working.
   onForegroundMessage(RemoteMessage message) {
     print('onForegroundMessage()');
     print('Message data: ${message.data}');
+
+    app.toast(message.notification.title, message.notification.body);
 
     if (message.notification != null) {
       print(
@@ -96,7 +107,7 @@ class PushNotification {
 
   /// This will be invoked when the app is opened from terminated state.
   ///
-  /// Test on iOS. not on Android.
+  /// Test on both Android device, Emulator, and iOS device. Simulator is not working.
   onMessageOpenedFromTermiated(RemoteMessage initialMessage) {
     String str = "onMessageOpenedFromTermiated."
         " Message: ${initialMessage.notification.title}, ${initialMessage.notification.body}"
@@ -111,7 +122,7 @@ class PushNotification {
 
   /// This will be invoked when the app is opened from backgroun state.
   ///
-  /// Test on iOS. not on Android.
+  /// Test on both Android device, Emulator, and iOS device. Simulator is not working.
   onMessageOpenedFromBackground(RemoteMessage message) {
     print("onMessageOpenedFromBackground."
         " Message: ${message.notification.title}, ${message.notification.body}. data: ${message.data}");

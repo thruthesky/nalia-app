@@ -171,4 +171,49 @@ class App {
       ),
     );
   }
+
+  ///
+  /// ```dart
+  /// toast('보석 보너스', '축하합니다. 오늘의 보석 보너스를 받으셨습니다.', duration: 20);
+  /// ```
+  toast(String title, String message,
+      {Function onTap, Widget icon, int duration = 10}) {
+    iconSnackbar(title, message, onTap: onTap, icon: icon, duration: duration);
+  }
+
+  /// Opens a warning snackbar
+  iconSnackbar(String title, String message,
+      {Function onTap, Widget icon, int duration = 10}) {
+    Get.snackbar(
+      '',
+      null,
+      titleText: Text(
+        title,
+        style: TextStyle(
+          fontSize: sm,
+          color: Colors.black,
+        ),
+      ),
+      messageText: Text(
+        message,
+        style: TextStyle(color: Colors.red),
+      ),
+      colorText: Colors.red,
+      duration: Duration(seconds: duration),
+      icon: icon ?? Icon(Icons.alarm),
+      padding: EdgeInsets.fromLTRB(md, sm, sm, sm),
+      mainButton: FlatButton(
+        child: Text('확인'),
+        onPressed: () {
+          if (onTap != null) onTap();
+          Get.back();
+        },
+      ),
+      onTap: (snack) {
+        if (onTap != null) onTap();
+        Get.back();
+      },
+      animationDuration: Duration(milliseconds: 500),
+    );
+  }
 }

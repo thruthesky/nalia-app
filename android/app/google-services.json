@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "973770265003",
+    "project_id": "nalia-app",
+    "storage_bucket": "nalia-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973770265003:android:0da3fda1a8ecba27d8c2ee",
+        "android_client_info": {
+          "package_name": "kr.nalia.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973770265003-9v24kgvjgs5kf4f0q66vni917o3c0fib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.nalia.app",
+            "certificate_hash": "05a604d8625e55b6bb23868419dbf5ef0bf06c96"
+          }
+        },
+        {
+          "client_id": "973770265003-0kksg1l9ojpv7sf3p9v4qqa6o2bgtpif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAybOgWuib4hi8J0oR4wKi76v5mh83tQWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973770265003-0kksg1l9ojpv7sf3p9v4qqa6o2bgtpif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "973770265003-ascrvghapqnd46ba52pr764inu0aqq5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.nalia.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
