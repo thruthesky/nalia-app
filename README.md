@@ -1,5 +1,9 @@
 # nalia_app
 
+# References
+
+- [flutter-v3 branch](https://github.com/thruthesky/nalia_app/tree/flutter-v3) works with the [v3 `0.1` branch](https://github.com/thruthesky/v3/tree/0.1) works with. These two would be a good example.
+
 # Coding Guideline
 
 ## File upload
