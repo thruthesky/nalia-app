@@ -81,7 +81,9 @@ class _PostEditFormState extends State<PostEditForm> {
                       child: Text('Submit'),
                       onPressed: () async {
                         try {
+                          /// TODO move it into forum model
                           final editedPost = await api.editPost(
+                            id: post.id,
                             category: forum.category,
                             title: title.text,
                             content: content.text,

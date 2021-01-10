@@ -78,6 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
                 ),
                 RaisedButton(
+                  child: Text('Discussion'),
+                  onPressed: () =>
+                      Get.toNamed(RouteNames.forumList, arguments: {
+                    'category': 'discussion',
+                  }),
+                ),
+                RaisedButton(
                   child: Text('Post creation test'),
                   onPressed: () async {
                     try {

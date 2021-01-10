@@ -10,19 +10,31 @@ import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/services/config.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nalia_app/services/helper.functions.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+/// [Forum] is a data model for a forum category.
+///
+/// Note that forum data model must not connect to backend directly by using API controller. Instead, the API controller
+/// will use the instance of this forum model.
+///
+/// [Forum] only manages the data of a category.
 class Forum {
   String category;
   List<ApiPost> posts = [];
   bool loading = false;
   bool noMorePosts = false;
-  int pageNo = 0;
+  int pageNo = 1;
+  int limit = 10;
   bool get canLoad => loading == false && noMorePosts == false;
-  ScrollController listController = ScrollController();
+  bool get canList => postInEdit == null && posts.length > 0;
+  final ItemScrollController listController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
+
   Function render;
 
   ApiPost postInEdit;
-  Forum({@required this.category, @required this.render});
+  Forum({@required this.category, this.limit = 10, @required this.render});
 
   /// Edit post or comment
   ///
@@ -48,15 +60,18 @@ class Forum {
   /// Inserts a new post on top or updates an existing post.
   insertOrUpdate(post) {
     postInEdit = null;
-    posts.insert(0, post);
+    int i = posts.indexWhere((p) => p.id == post.id);
+    int jumpTo = 0;
+    if (i == -1) {
+      posts.insert(0, post);
+    } else {
+      posts[i] = post;
+      jumpTo = i;
+    }
     render();
     WidgetsBinding.instance.addPostFrameCallback((x) {
-      listController.jumpTo(1);
+      listController.jumpTo(index: jumpTo);
     });
-    // Timer(Duration(milliseconds: 100), () {
-    //   listController.animateTo(1,
-    //       duration: Duration(milliseconds: 100), curve: Curves.easeIn);
-    // });
   }
 }
 
@@ -85,6 +100,7 @@ class API extends GetxController {
   GetStorage localStorage;
 
   ApiUser user;
+  String get id => user?.iD;
   String get sessionId => user?.sessionId;
   String get primaryPhotoUrl => user?.primaryPhotoUrl;
   String get fullName => user?.fullName;
@@ -208,6 +224,7 @@ class API extends GetxController {
   }
 
   Future<ApiPost> editPost({
+    int id,
     String category,
     String title,
     String content,
@@ -215,6 +232,7 @@ class API extends GetxController {
     Map<String, dynamic> data,
   }) async {
     if (data == null) data = {};
+    if (id != null) data['ID'] = id;
     data['route'] = 'forum.editPost';
     data['category'] = category;
     data['post_title'] = title;
@@ -232,10 +250,29 @@ class API extends GetxController {
     return ApiPost.fromJson(json);
   }
 
-  Future<List<ApiPost>> searchPost({String category}) async {
+  /// Deletes a post.
+  ///
+  /// [post] is the post to be deleted.
+  /// After the post has been deleted, it will be removed from [forum]
+  ///
+  /// It returns deleted file id.
+  Future<int> deletePost(ApiPost post, Forum forum) async {
+    final dynamic data = await request({
+      'route': 'forum.deletePost',
+      'ID': post.id,
+    });
+    int i = forum.posts.indexWhere((p) => p.id == post.id);
+    forum.posts.removeAt(i);
+    return data['ID'];
+  }
+
+  Future<List<ApiPost>> searchPost(
+      {String category, int limit = 20, int paged = 1}) async {
     final Map<String, dynamic> data = {};
     data['route'] = 'forum.search';
     data['category_name'] = category;
+    data['paged'] = paged;
+    data['numberposts'] = limit;
     final jsonList = await request(data);
 
     List<ApiPost> _posts = [];
@@ -302,18 +339,27 @@ class API extends GetxController {
 
   fetchPosts({Forum forum, String category}) async {
     if (category != null) forum = forumContainer[category];
-    if (forum.canLoad == false) return;
+    if (forum.canLoad == false) {
+      print(
+          'Can not load anymore: loading: ${forum.loading}, noMorePosts: ${forum.noMorePosts}');
+      return;
+    }
     forum.loading = true;
     forum.render();
 
     List<ApiPost> _posts;
-    _posts = await searchPost(category: forum.category);
+    _posts = await searchPost(
+        category: forum.category, paged: forum.pageNo, limit: forum.limit);
 
     if (_posts.length == 0) {
       forum.noMorePosts = true;
+      forum.loading = false;
       forum.render();
       return;
     }
+
+    forum.pageNo++;
+    print('forum.pageNo: ${forum.pageNo}');
 
     _posts.forEach((ApiPost p) {
       forum.posts.add(p);

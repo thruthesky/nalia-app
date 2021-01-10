@@ -1,4 +1,5 @@
 import 'package:nalia_app/models/api.file.model.dart';
+import 'package:nalia_app/services/global.dart';
 
 class ApiPost {
   ApiPost({
@@ -38,6 +39,8 @@ class ApiPost {
   String shortDateTime;
   List<dynamic> comments;
   String category;
+  bool get isMine => postAuthor == api.id;
+  bool get isNotMine => !isMine;
 
   factory ApiPost.fromJson(Map<String, dynamic> json) => ApiPost(
         id: json["ID"],

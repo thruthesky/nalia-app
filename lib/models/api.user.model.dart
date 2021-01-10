@@ -40,6 +40,9 @@ class ApiUser {
   String userEmail;
   String userRegistered;
   String sessionId;
+
+  /// [mode] is used only when `loginOrRegister` method is being invoked.
+  /// It is one of `login` or `register`.
   String mode;
   String primaryPhotoUrl;
   String get fullName => name;

@@ -10,6 +10,7 @@ import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ForumListScreen extends StatefulWidget {
   @override
@@ -26,9 +27,22 @@ class _ForumListScreenState extends State<ForumListScreen> {
       render: () => setState(() => null),
     );
     fetchPosts();
+
+    forum.itemPositionsListener.itemPositions.addListener(() {
+      int lastVisibleIndex =
+          forum.itemPositionsListener.itemPositions.value.last.index;
+      if (forum.loading) return;
+      if (lastVisibleIndex > forum.posts.length - 4) {
+        fetchPosts();
+      }
+      // print('Item No: $lastVisibleIndex');
+      // fetchPosts();
+    });
   }
 
+  /// TODO loading next page
   fetchPosts() async {
+    // print('ForumListScreen::fetchPosts() pageNo: ${forum.pageNo}');
     try {
       await api.fetchPosts(forum: forum);
     } catch (e) {
@@ -56,7 +70,7 @@ class _ForumListScreenState extends State<ForumListScreen> {
             ? PostEditForm(forum)
             : Column(
                 children: [
-                  Expanded(child: PostList(forum: forum)),
+                  PostList(forum: forum),
                   Spinner(loading: forum.loading),
                   NoMorePosts(noMorePosts: forum.noMorePosts)
                 ],
@@ -76,15 +90,19 @@ class PostList extends StatefulWidget {
 class _PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
-    if (widget.forum.postInEdit != null) return SizedBox.shrink();
-    return Container(
-        child: ListView.builder(
-      controller: widget.forum.listController,
-      itemCount: widget.forum.posts.length,
-      itemBuilder: (_, i) {
-        return PostView(forum: widget.forum, i: i);
-      },
-    ));
+    if (widget.forum.canList == false) return SizedBox.shrink();
+    return Expanded(
+      child: Container(
+        child: ScrollablePositionedList.builder(
+          itemScrollController: widget.forum.listController,
+          itemPositionsListener: widget.forum.itemPositionsListener,
+          itemCount: widget.forum.posts.length,
+          itemBuilder: (_, i) {
+            return PostView(forum: widget.forum, i: i);
+          },
+        ),
+      ),
+    );
   }
 }
 
@@ -95,6 +113,10 @@ class NoMorePosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('No more posts');
+    return noMorePosts
+        ? SafeArea(
+            child: Text('No more posts'),
+          )
+        : SizedBox.shrink();
   }
 }
