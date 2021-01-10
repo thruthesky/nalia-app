@@ -10,6 +10,7 @@ class ApiUser {
   String plid;
   String agegroup;
   String get age {
+    if (birthdate == null || birthdate == '') return '0';
     final _yy = int.parse(birthdate.substring(0, 2));
     final _mm = int.parse(birthdate.substring(2, 4));
     final _dd = int.parse(birthdate.substring(4, 6));
@@ -88,6 +89,7 @@ class ApiUser {
   });
 
   ApiUser.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
     nickname = json['nickname'];
     firstName = json['first_name'];
     lastName = json['last_name'];

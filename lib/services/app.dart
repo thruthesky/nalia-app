@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,34 +13,36 @@ import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/helper.functions.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:nalia_app/services/push_notification.dart';
 
-// import 'package:nalia_app/services/global.dart';
-// import 'package:get_storage/get_storage.dart';
+import 'package:rxdart/subjects.dart';
 
 class App {
   Location location = Location();
   bool locationServiceEnabled = false;
   RxBool locationServiceChanges = false.obs;
   RxBool locationAppPermissionChanges = false.obs;
+  BehaviorSubject<bool> firebaseReady = BehaviorSubject.seeded(false);
   // PermissionStatus _permissionGranted;
 
   /// [justGotDailyBonus] is to indiate that the user got bonus.
   RxBool justGotDailyBonus = false.obs;
 
+  PushNotification pushNotification;
   App() {
-    // initLocalStorage();
+    initFirebase();
   }
 
-  initLocalStorage() {
-    // GetStorage.init().then((b) {
-    //   localStorage = GetStorage();
-    //   localStorageReady.add(true);
-    // });
-
-    // localStorageReady.listen((v) {
-    //   if (v == false) return;
-    //   // initLocation();
-    // });
+  initFirebase() async {
+    try {
+      // Wait for Firebase to initialize and set `_initialized` state to true
+      await Firebase.initializeApp();
+      firebaseReady.add(true);
+      pushNotification = PushNotification();
+      pushNotification.init();
+    } catch (e) {
+      print('--------------> Firebase initialization failed !!');
+    }
   }
 
   void error(dynamic e, [String message]) {

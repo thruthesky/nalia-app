@@ -27,7 +27,11 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(milliseconds: 600), () async {
-      Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
+      // Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
+    });
+
+    app.firebaseReady.listen((ready) {
+      print('Firebase ready: $ready');
     });
   }
 

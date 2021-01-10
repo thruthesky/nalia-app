@@ -39,6 +39,10 @@ class _ForumListScreenState extends State<ForumListScreen> {
         fetchPosts();
       }
     });
+
+    app.firebaseReady.listen((ready) {
+      print('Firebase ready: $ready');
+    });
   }
 
   fetchPosts() async {

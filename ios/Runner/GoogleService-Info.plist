@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>973770265003-ascrvghapqnd46ba52pr764inu0aqq5p.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.973770265003-ascrvghapqnd46ba52pr764inu0aqq5p</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>973770265003-9v24kgvjgs5kf4f0q66vni917o3c0fib.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBqZs6JzzBMTPlKrq_khcT-3QH99ec6gxQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>973770265003</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>kr.nalia.app</string>
+	<key>PROJECT_ID</key>
+	<string>nalia-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nalia-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:973770265003:ios:315efd433ab1e7e0d8c2ee</string>
+</dict>
+</plist>
