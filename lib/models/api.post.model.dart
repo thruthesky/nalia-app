@@ -1,3 +1,4 @@
+import 'package:nalia_app/models/api.comment.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/services/global.dart';
 
@@ -37,10 +38,38 @@ class ApiPost {
   List<ApiFile> files;
   String authorName;
   String shortDateTime;
-  List<dynamic> comments;
+  List<ApiComment> comments;
   String category;
   bool get isMine => postAuthor == api.id;
   bool get isNotMine => !isMine;
+
+  insertOrUpdateComment(ApiComment comment) {
+    // if it's new comment right under post, then add at bottom.
+    if (comment.commentParent == '0') {
+      comments.add(comment);
+      print('parent id: 0, add at bottom');
+      return;
+    }
+
+    // find existing comment and update.
+    int i = comments.indexWhere((c) => c.commentId == comment.commentId);
+    if (i != -1) {
+      comment.depth = comments[i].depth;
+      comments[i] = comment;
+      return;
+    }
+
+    // find parent and add below the parent.
+    int p = comments.indexWhere((c) => c.commentId == comment.commentParent);
+    if (p != -1) {
+      comment.depth = comments[p].depth + 1;
+      comments.insert(p + 1, comment);
+      return;
+    }
+
+    // error. code should not come here.
+    print('error on comment add:');
+  }
 
   factory ApiPost.fromJson(Map<String, dynamic> json) => ApiPost(
         id: json["ID"],
@@ -57,7 +86,8 @@ class ApiPost {
             List<ApiFile>.from(json["files"].map((x) => ApiFile.fromJson(x))),
         authorName: json["author_name"],
         shortDateTime: json["short_date_time"],
-        comments: List<dynamic>.from(json["comments"].map((x) => x)),
+        comments: List<ApiComment>.from(
+            json["comments"].map((x) => ApiComment.fromJson(x))),
         category: json["category"],
       );
 
@@ -75,7 +105,8 @@ class ApiPost {
         "files": List<dynamic>.from(files.map((x) => x.toJson().toString())),
         "author_name": authorName,
         "short_date_time": shortDateTime,
-        "comments": List<dynamic>.from(comments.map((x) => x)),
+        "comments":
+            List<dynamic>.from(comments.map((x) => x.toJson().toString())),
         "category": category,
       };
 

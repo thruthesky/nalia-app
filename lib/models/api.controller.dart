@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart' as Prefix;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nalia_app/models/api.comment.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/models/api.user.model.dart';
@@ -58,7 +59,12 @@ class Forum {
   }
 
   /// Inserts a new post on top or updates an existing post.
-  insertOrUpdate(post) {
+  ///
+  /// Logic
+  /// - find existing post and replace. Or add new one on top.
+  /// - render the view
+  /// - scroll to the post
+  insertOrUpdatePost(post) {
     postInEdit = null;
     int i = posts.indexWhere((p) => p.id == post.id);
     int jumpTo = 0;
@@ -245,6 +251,31 @@ class API extends GetxController {
     return ApiPost.fromJson(json);
   }
 
+  Future<ApiComment> editComment({
+    content = '',
+    List<ApiFile> files,
+    @required ApiPost post,
+    ApiComment parent,
+    ApiComment comment,
+  }) async {
+    final data = {
+      'route': 'forum.editComment',
+      'comment_post_ID': post.id,
+      if (comment != null &&
+          comment.commentId != null &&
+          comment.commentId != '')
+        'comment_ID': comment.commentId,
+      if (parent != null) 'comment_parent': parent.commentId,
+      'comment_content': content ?? '',
+    };
+    if (files != null) {
+      Set ids = files.map((file) => file.id).toSet();
+      data['files'] = ids.join(',');
+    }
+    final json = await request(data);
+    return ApiComment.fromJson(json);
+  }
+
   Future<ApiPost> getPost(dynamic id) async {
     final json = await request({'route': 'forum.getPost', 'id': id});
     return ApiPost.fromJson(json);
@@ -264,6 +295,22 @@ class API extends GetxController {
     int i = forum.posts.indexWhere((p) => p.id == post.id);
     forum.posts.removeAt(i);
     return data['ID'];
+  }
+
+  /// Deletes a comment.
+  ///
+  /// [comment] is the comment to be deleted.
+  /// [post] is the post of the comment.
+  ///
+  /// It returns deleted file id.
+  Future<int> deleteComment(ApiComment comment, ApiPost post) async {
+    final dynamic data = await request({
+      'route': 'forum.deleteComment',
+      'comment_ID': comment.commentId,
+    });
+    int i = post.comments.indexWhere((c) => c.commentId == comment.commentId);
+    post.comments.removeAt(i);
+    return data['comment_ID'];
   }
 
   Future<List<ApiPost>> searchPost(
@@ -315,24 +362,27 @@ class API extends GetxController {
 
   /// Deletes a file.
   ///
-  /// id] is the file id to delete.
-  /// [post] is the post that this file is attached to.
+  /// [id] is the file id to delete.
+  /// [postOrComment] is a post or a comment that the file is attached to.
   ///
   /// It returns deleted file id.
-  Future<int> deleteFile(int id, {ApiPost post}) async {
+  Future<int> deleteFile(int id, {dynamic postOrComment}) async {
     final dynamic data = await request({
       'route': 'file.delete',
       'ID': id,
     });
-    int i = post.files.indexWhere((file) => file.id == id);
-    post.files.removeAt(i);
+    int i = postOrComment.files.indexWhere((file) => file.id == id);
+    postOrComment.files.removeAt(i);
     return data['ID'];
   }
 
-  /// Forum List Management
+  /// Forum data model container
+  ///
+  /// App can list/view multiple forum category at the same time.
+  /// That's why it manages the container for each category.
   Map<String, Forum> forumContainer = {};
 
-  Forum resetForum({@required String category, @required Function render}) {
+  Forum initForum({@required String category, @required Function render}) {
     forumContainer[category] = Forum(category: category, render: render);
     return forumContainer[category];
   }
@@ -341,7 +391,9 @@ class API extends GetxController {
     if (category != null) forum = forumContainer[category];
     if (forum.canLoad == false) {
       print(
-          'Can not load anymore: loading: ${forum.loading}, noMorePosts: ${forum.noMorePosts}');
+        'Can not load anymore: loading: ${forum.loading},'
+        ' noMorePosts: ${forum.noMorePosts}',
+      );
       return;
     }
     forum.loading = true;

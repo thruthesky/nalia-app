@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.file.model.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/widgets/cache_image.dart';
 
-class PostEditFormFiles extends StatefulWidget {
-  const PostEditFormFiles({
+class FilesForm extends StatefulWidget {
+  const FilesForm({
     Key key,
-    this.post,
+    this.postOrComment,
   }) : super(key: key);
 
-  final ApiPost post;
+  final dynamic postOrComment;
 
   @override
-  _PostEditFormFilesState createState() => _PostEditFormFilesState();
+  _FilesFormState createState() => _FilesFormState();
 }
 
-class _PostEditFormFilesState extends State<PostEditFormFiles> {
+class _FilesFormState extends State<FilesForm> {
   @override
   Widget build(BuildContext context) {
-    if (widget.post.files.length == 0) return SizedBox.shrink();
+    if (widget.postOrComment == null || widget.postOrComment.files.length == 0)
+      return SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -32,7 +32,7 @@ class _PostEditFormFilesState extends State<PostEditFormFiles> {
           mainAxisSpacing: 8.0,
           crossAxisSpacing: 8.0,
           children: [
-            for (ApiFile file in widget.post.files)
+            for (ApiFile file in widget.postOrComment.files)
               Stack(
                 fit: StackFit.expand,
                 children: [
@@ -62,8 +62,10 @@ class _PostEditFormFilesState extends State<PostEditFormFiles> {
                         print('delete: $re');
                         if (re) {
                           try {
-                            final id = await api.deleteFile(file.id,
-                                post: widget.post);
+                            final id = await api.deleteFile(
+                              file.id,
+                              postOrComment: widget.postOrComment,
+                            );
                             setState(() => null);
                             print('deletedResult: $id');
                           } catch (e) {

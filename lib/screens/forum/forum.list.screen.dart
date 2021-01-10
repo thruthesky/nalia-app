@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
-import 'package:nalia_app/screens/forum/widgets/post.edit.form.dart';
-import 'package:nalia_app/screens/forum/widgets/post.view.dart';
+import 'package:nalia_app/screens/forum/widgets/post.form.dart';
+import 'package:nalia_app/screens/forum/widgets/post.list.dart';
+import 'package:nalia_app/screens/forum/widgets/post.list.no_more_posts.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ForumListScreen extends StatefulWidget {
   @override
@@ -22,12 +22,15 @@ class _ForumListScreenState extends State<ForumListScreen> {
   @override
   void initState() {
     super.initState();
-    forum = api.resetForum(
+
+    /// Initialize forum
+    forum = api.initForum(
       category: Get.arguments['category'],
       render: () => setState(() => null),
     );
     fetchPosts();
 
+    /// Loading next page
     forum.itemPositionsListener.itemPositions.addListener(() {
       int lastVisibleIndex =
           forum.itemPositionsListener.itemPositions.value.last.index;
@@ -35,14 +38,10 @@ class _ForumListScreenState extends State<ForumListScreen> {
       if (lastVisibleIndex > forum.posts.length - 4) {
         fetchPosts();
       }
-      // print('Item No: $lastVisibleIndex');
-      // fetchPosts();
     });
   }
 
-  /// TODO loading next page
   fetchPosts() async {
-    // print('ForumListScreen::fetchPosts() pageNo: ${forum.pageNo}');
     try {
       await api.fetchPosts(forum: forum);
     } catch (e) {
@@ -67,7 +66,7 @@ class _ForumListScreenState extends State<ForumListScreen> {
           ],
         ),
         child: forum.postInEdit != null
-            ? PostEditForm(forum)
+            ? PostForm(forum)
             : Column(
                 children: [
                   PostList(forum: forum),
@@ -77,46 +76,5 @@ class _ForumListScreenState extends State<ForumListScreen> {
               ),
       ),
     );
-  }
-}
-
-class PostList extends StatefulWidget {
-  PostList({@required this.forum});
-  final Forum forum;
-  @override
-  _PostListState createState() => _PostListState();
-}
-
-class _PostListState extends State<PostList> {
-  @override
-  Widget build(BuildContext context) {
-    if (widget.forum.canList == false) return SizedBox.shrink();
-    return Expanded(
-      child: Container(
-        child: ScrollablePositionedList.builder(
-          itemScrollController: widget.forum.listController,
-          itemPositionsListener: widget.forum.itemPositionsListener,
-          itemCount: widget.forum.posts.length,
-          itemBuilder: (_, i) {
-            return PostView(forum: widget.forum, i: i);
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class NoMorePosts extends StatelessWidget {
-  const NoMorePosts({Key key, @required this.noMorePosts}) : super(key: key);
-
-  final bool noMorePosts;
-
-  @override
-  Widget build(BuildContext context) {
-    return noMorePosts
-        ? SafeArea(
-            child: Text('No more posts'),
-          )
-        : SizedBox.shrink();
   }
 }

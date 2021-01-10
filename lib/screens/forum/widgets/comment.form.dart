@@ -1,0 +1,109 @@
+import 'package:flutter/material.dart';
+import 'package:nalia_app/models/api.comment.model.dart';
+import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/models/api.post.model.dart';
+import 'package:nalia_app/screens/forum/widgets/files.form.dart';
+import 'package:nalia_app/services/defines.dart';
+import 'package:nalia_app/services/global.dart';
+
+class CommentForm extends StatefulWidget {
+  const CommentForm({
+    Key key,
+    @required this.post,
+    this.parent,
+    this.comment,
+    @required this.forum,
+  }) : super(key: key);
+
+  /// post of the comment
+  final ApiPost post;
+  final ApiComment parent;
+  final ApiComment comment;
+  final Forum forum;
+
+  @override
+  _CommentFormState createState() => _CommentFormState();
+}
+
+class _CommentFormState extends State<CommentForm> {
+  final content = TextEditingController();
+
+  bool get canSubmit => content.text != '';
+  int percentage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    content.text = widget.comment.commentContent;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Input comment:'),
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.camera_alt),
+                onPressed: () async {
+                  try {
+                    final file = await app.imageUpload(
+                        quality: 95,
+                        onProgress: (p) => setState(() => percentage = p));
+                    print('file upload success: $file');
+                    percentage = 0;
+                    widget.comment.files.add(file);
+                    setState(() => null);
+                  } catch (e) {
+                    if (e == ERROR_IMAGE_NOT_SELECTED) {
+                    } else {
+                      app.error(e);
+                    }
+                  }
+                },
+              ),
+              Expanded(
+                child: TextFormField(
+                  controller: content,
+                  onChanged: (v) => setState(() => null),
+                ),
+              ),
+            ],
+          ),
+          if (canSubmit)
+            RaisedButton(
+              child: Text('Submit'),
+              onPressed: () async {
+                try {
+                  final editedComment = await api.editComment(
+                    content: content.text,
+                    parent: widget.parent,
+                    comment: widget.comment,
+                    post: widget.post,
+                    files: widget.comment.files,
+                  );
+
+                  widget.post.insertOrUpdateComment(editedComment);
+                  content.text = '';
+                  if (widget.parent != null)
+                    widget.parent.mode = CommentMode.none;
+                  if (widget.comment != null)
+                    widget.comment.mode = CommentMode.none;
+                  setState(() => null);
+                  widget.forum.render();
+                  print('editeComment: $editedComment');
+                } catch (e) {
+                  app.error(e);
+                }
+              },
+            ),
+          FilesForm(postOrComment: widget.comment),
+        ],
+      ),
+    );
+  }
+}

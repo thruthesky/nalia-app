@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
-import 'package:nalia_app/screens/forum/widgets/post.edit.form.files.dart';
+import 'package:nalia_app/screens/forum/widgets/files.form.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 
-class PostEditForm extends StatefulWidget {
-  PostEditForm(this.forum);
+class PostForm extends StatefulWidget {
+  PostForm(this.forum);
 
   final Forum forum;
   @override
-  _PostEditFormState createState() => _PostEditFormState();
+  _PostFormState createState() => _PostFormState();
 }
 
-class _PostEditFormState extends State<PostEditForm> {
+class _PostFormState extends State<PostForm> {
   final title = TextEditingController();
   final content = TextEditingController();
   int percentage = 0;
@@ -21,7 +21,7 @@ class _PostEditFormState extends State<PostEditForm> {
   @override
   void initState() {
     super.initState();
-    print('_PostEditFormState::initState()');
+    print('_PostFormState::initState()');
     post = widget.forum.postInEdit;
     title.text = post.postTitle;
     content.text = post.postContent;
@@ -39,40 +39,35 @@ class _PostEditFormState extends State<PostEditForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextFormField(
-              controller: title,
-            ),
-            TextFormField(
-              controller: content,
-            ),
-            PostEditFormFiles(
-              post: forum.postInEdit,
-            ),
+            TextFormField(controller: title),
+            TextFormField(controller: content),
+            FilesForm(postOrComment: forum.postInEdit),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     RaisedButton(
-                        child: Text(
-                            'Photo' + (percentage > 0 ? "$percentage%" : "")),
-                        onPressed: () async {
-                          try {
-                            final file = await app.imageUpload(
-                                quality: 95,
-                                onProgress: (p) =>
-                                    setState(() => percentage = p));
-                            print('file upload success: $file');
-                            percentage = 0;
-                            post.files.add(file);
-                            setState(() => null);
-                          } catch (e) {
-                            if (e == ERROR_IMAGE_NOT_SELECTED) {
-                            } else {
-                              app.error(e);
-                            }
+                      child: Text(
+                          'Photo' + (percentage > 0 ? "$percentage%" : "")),
+                      onPressed: () async {
+                        try {
+                          final file = await app.imageUpload(
+                              quality: 95,
+                              onProgress: (p) =>
+                                  setState(() => percentage = p));
+                          print('file upload success: $file');
+                          percentage = 0;
+                          post.files.add(file);
+                          setState(() => null);
+                        } catch (e) {
+                          if (e == ERROR_IMAGE_NOT_SELECTED) {
+                          } else {
+                            app.error(e);
                           }
-                        }),
+                        }
+                      },
+                    ),
                   ],
                 ),
                 Row(
@@ -89,7 +84,7 @@ class _PostEditFormState extends State<PostEditForm> {
                             content: content.text,
                             files: post.files,
                           );
-                          forum.insertOrUpdate(editedPost);
+                          forum.insertOrUpdatePost(editedPost);
                           // reset();
                         } catch (e) {
                           app.error(e);
