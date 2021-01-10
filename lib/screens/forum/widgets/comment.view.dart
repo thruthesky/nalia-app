@@ -33,47 +33,49 @@ class _CommentViewState extends State<CommentView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Comment No.: ${widget.comment.commentId}'),
-          Text('Comment Content: ${widget.comment.commentContent}'),
-          PostViewFiles(postOrComment: widget.comment),
-          Row(
-            children: [
-              RaisedButton(
-                child: Text('Reply'),
-                onPressed: () {
-                  setState(() {
-                    widget.comment.mode = CommentMode.reply;
-                  });
-                },
-              ),
-              if (widget.comment.isMine)
+          if (widget.comment.mode == CommentMode.none) ...[
+            Text('Comment No.: ${widget.comment.commentId}'),
+            Text('Comment Content: ${widget.comment.commentContent}'),
+            PostViewFiles(postOrComment: widget.comment),
+            Row(
+              children: [
                 RaisedButton(
-                  child: Text('Edit'),
+                  child: Text('Reply'),
                   onPressed: () {
                     setState(() {
-                      widget.comment.mode = CommentMode.edit;
+                      widget.comment.mode = CommentMode.reply;
                     });
                   },
                 ),
-              if (widget.comment.isMine)
-                RaisedButton(
-                  child: Text('Delete'),
-                  onPressed: () async {
-                    final re = await app.confirm(
-                        'Delete', 'Do you want to delete the comment?');
-                    if (re == false) return;
-                    try {
-                      final deleted =
-                          await api.deleteComment(widget.comment, widget.post);
-                      print('deleted: $deleted');
-                      widget.forum.render();
-                    } catch (e) {
-                      app.error(e);
-                    }
-                  },
-                ),
-            ],
-          ),
+                if (widget.comment.isMine)
+                  RaisedButton(
+                    child: Text('Edit'),
+                    onPressed: () {
+                      setState(() {
+                        widget.comment.mode = CommentMode.edit;
+                      });
+                    },
+                  ),
+                if (widget.comment.isMine)
+                  RaisedButton(
+                    child: Text('Delete'),
+                    onPressed: () async {
+                      final re = await app.confirm(
+                          'Delete', 'Do you want to delete the comment?');
+                      if (re == false) return;
+                      try {
+                        final deleted = await api.deleteComment(
+                            widget.comment, widget.post);
+                        print('deleted: $deleted');
+                        widget.forum.render();
+                      } catch (e) {
+                        app.error(e);
+                      }
+                    },
+                  ),
+              ],
+            ),
+          ],
           if (widget.comment.mode == CommentMode.reply)
             CommentForm(
               parent: widget.comment,

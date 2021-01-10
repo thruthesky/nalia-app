@@ -28,13 +28,21 @@ class CommentForm extends StatefulWidget {
 class _CommentFormState extends State<CommentForm> {
   final content = TextEditingController();
 
+  /// [comment] to create or update
+  ///
+  /// Attention, the reason why it has a copy in state class is because
+  /// when the app does hot reload(in development mode), the state disappears
+  /// (like when file is uploaded and it disappears on hot reload).
+  ApiComment comment;
+
   bool get canSubmit => content.text != '';
   int percentage = 0;
 
   @override
   void initState() {
     super.initState();
-    content.text = widget.comment.commentContent;
+    comment = widget.comment;
+    content.text = comment.commentContent;
   }
 
   @override
@@ -56,7 +64,7 @@ class _CommentFormState extends State<CommentForm> {
                         onProgress: (p) => setState(() => percentage = p));
                     print('file upload success: $file');
                     percentage = 0;
-                    widget.comment.files.add(file);
+                    comment.files.add(file);
                     setState(() => null);
                   } catch (e) {
                     if (e == ERROR_IMAGE_NOT_SELECTED) {
@@ -82,26 +90,26 @@ class _CommentFormState extends State<CommentForm> {
                   final editedComment = await api.editComment(
                     content: content.text,
                     parent: widget.parent,
-                    comment: widget.comment,
+                    comment: comment,
                     post: widget.post,
-                    files: widget.comment.files,
+                    files: comment.files,
                   );
 
                   widget.post.insertOrUpdateComment(editedComment);
                   content.text = '';
+                  comment.files = [];
                   if (widget.parent != null)
                     widget.parent.mode = CommentMode.none;
-                  if (widget.comment != null)
-                    widget.comment.mode = CommentMode.none;
+                  if (widget.comment != null) comment.mode = CommentMode.none;
                   setState(() => null);
                   widget.forum.render();
-                  print('editeComment: $editedComment');
+                  print('editeComment..: $editedComment');
                 } catch (e) {
                   app.error(e);
                 }
               },
             ),
-          FilesForm(postOrComment: widget.comment),
+          FilesForm(postOrComment: comment),
         ],
       ),
     );
