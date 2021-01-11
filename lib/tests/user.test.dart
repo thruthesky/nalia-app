@@ -1,9 +1,13 @@
 import 'dart:math';
 
+import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:faker/faker.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
+
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class UserTest {
   data(int i) {
@@ -48,5 +52,36 @@ class UserTest {
       print(e);
       app.error(e);
     }
+  }
+
+  Future<File> downloadImage(String url) async {
+    var tempDir = await getTemporaryDirectory();
+    String savePath = tempDir.path + "/image.jpg'";
+    print('save path $savePath');
+
+    Dio dio = Dio();
+
+    Response response = await dio.get(
+      url,
+      onReceiveProgress: (received, total) {
+        if (total != -1) {
+          print((received / total * 100).toStringAsFixed(0) + "%");
+        }
+      },
+      //Received data with List<int>
+      options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status < 500;
+          }),
+    );
+    print(response.headers);
+    File file = File(savePath);
+    var raf = file.openSync(mode: FileMode.write);
+    raf.writeFromSync(response.data);
+    await raf.close();
+
+    return File(savePath);
   }
 }
