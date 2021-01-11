@@ -95,13 +95,17 @@ class PushNotification {
   /// Test on both Android device, Emulator, and iOS device. Simulator is not working.
   onForegroundMessage(RemoteMessage message) {
     print('onForegroundMessage()');
-    print('Message data: ${message.data}');
+    print('Message data: ${message?.data}');
 
     app.toast(message.notification.title, message.notification.body);
 
     if (message.notification != null) {
       print(
           'Messsage: ${message.notification.title}, ${message.notification.body}');
+    }
+
+    if (message?.data['type'] == 'post') {
+      Get.toNamed(RouteNames.forumList, arguments: {'id', message.data['id']});
     }
   }
 

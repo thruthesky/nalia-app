@@ -33,7 +33,8 @@ class _CommentViewState extends State<CommentView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.comment.mode == CommentMode.none) ...[
+          if (widget.comment.mode == CommentMode.none ||
+              widget.comment.mode == CommentMode.reply) ...[
             Text('Comment No.: ${widget.comment.commentId}'),
             Text('Comment Content: ${widget.comment.commentContent}'),
             PostViewFiles(postOrComment: widget.comment),

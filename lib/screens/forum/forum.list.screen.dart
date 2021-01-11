@@ -23,11 +23,20 @@ class _ForumListScreenState extends State<ForumListScreen> {
   void initState() {
     super.initState();
 
-    /// Initialize forum
-    forum = api.initForum(
+    // Initialize forum
+
+    // forum = Forum(...);
+    // api.addForun(forum);
+    forum = Forum(
       category: Get.arguments['category'],
       render: () => setState(() => null),
     );
+    api.attachForum(forum);
+
+    // forum = api.initForum(
+    //   category: Get.arguments['category'],
+    //   render: () => setState(() => null),
+    // );
     fetchPosts();
 
     /// Loading next page
@@ -40,9 +49,9 @@ class _ForumListScreenState extends State<ForumListScreen> {
       }
     });
 
-    app.firebaseReady.listen((ready) {
-      print('Firebase ready: $ready');
-    });
+    // app.firebaseReady.listen((ready) {
+    //   print('Firebase ready: $ready');
+    // });
   }
 
   fetchPosts() async {

@@ -81,6 +81,9 @@ class Forum {
   }
 }
 
+/// [API] is the Api class for commuting backend.
+/// It extends `GetxController` to update when user information changes.
+///
 class API extends GetxController {
   @override
   void onInit() {
@@ -382,9 +385,15 @@ class API extends GetxController {
   /// That's why it manages the container for each category.
   Map<String, Forum> forumContainer = {};
 
+  @Deprecated('user attachForum')
   Forum initForum({@required String category, @required Function render}) {
     forumContainer[category] = Forum(category: category, render: render);
     return forumContainer[category];
+  }
+
+  Forum attachForum(Forum forum) {
+    forumContainer[forum.category] = forum;
+    return forumContainer[forum.category];
   }
 
   fetchPosts({Forum forum, String category}) async {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/models/api.controller.dart';
@@ -33,12 +34,20 @@ class _MainScreenState extends State<MainScreen> {
     app.firebaseReady.listen((ready) {
       print('Firebase ready: $ready');
     });
+
+    Dio dio = Dio();
+    () async {
+      final res = await dio
+          .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
+
+      print('res: ${res.data}');
+    }();
   }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      defaultTransition: Transition.noTransition,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
