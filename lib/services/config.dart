@@ -5,7 +5,8 @@ class Config {
   static const os = String.fromEnvironment('OS', defaultValue: '');
 }
 
-String v3Url = 'http://192.168.0.5/wordpress/v3/index.php';
+// String v3Url = 'http://192.168.0.5/wordpress/v3/index.php';  // Mr Song IP
+String v3Url = 'http://192.168.100.17/wordpress55/v3/index.php'; // Charles
 
 // String get v3Url => Config.device == 'device'
 //     ? 'https://api.nalia.kr/v3/index.php'

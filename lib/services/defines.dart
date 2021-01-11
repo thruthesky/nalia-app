@@ -84,5 +84,7 @@ final spaceLg = SizedBox(width: lg, height: lg);
 final spaceXl = SizedBox(width: xl, height: xl);
 final spaceXxl = SizedBox(width: xxl, height: xxl);
 
+final pagePadding = EdgeInsets.all(16);
+
 final Color kBackgroundColor = Colors.amber[50];
 final Color kPrimaryColor = Colors.blueGrey;

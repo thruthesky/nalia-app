@@ -131,6 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Text('Generate 40 Users'),
               ),
+              RaisedButton(
+                child: Text('Purchase'),
+                onPressed: () => Get.toNamed(RouteNames.purchase),
+              ),
               Divider(),
               Text('Login test users'),
               Wrap(
