@@ -43,6 +43,9 @@ dependencies:
 
   flutter_svg: ^0.19.1
 
+  line_chart: ^1.0.9
+  percent_indicator: ^2.1.8
+
   image_picker:
     git:
       url: https://github.com/cpboyd/plugins.git

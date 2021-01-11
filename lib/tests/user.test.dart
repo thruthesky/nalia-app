@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:intl/intl.dart';
 import 'package:faker/faker.dart';
+import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/config.dart';
@@ -61,6 +62,7 @@ class UserTest {
         ApiPost uploadedPost = await api.editPost(id: gallery.id, files: [uploadedFile]);
         // print(uploadedPost);
         await api.setFeaturedImage(uploadedPost, uploadedFile);
+        await Bio.to.updateBio('profile_photo_url', uploadedFile.url);
 
         // 0 개에서 9개 사이로 이미지를 랜덤으로 추가한다.
         int n = Random().nextInt(10);

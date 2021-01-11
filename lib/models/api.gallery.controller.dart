@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/global.dart';
@@ -56,6 +57,7 @@ class Gallery extends GetxController {
         post.featuredImageId = 0;
         post.featuredImageUrl = null;
         post.featuredImageThumbnailUrl = null;
+        await Bio.to.updateBio('profile_photo_url', '');
       }
       update();
     } catch (e) {
@@ -71,6 +73,7 @@ class Gallery extends GetxController {
     }
     try {
       await api.setFeaturedImage(post, photo);
+      await Bio.to.updateBio('profile_photo_url', photo.url);
       post.featuredImageId = photo.id;
       post.featuredImageUrl = photo.url;
       post.featuredImageThumbnailUrl = photo.thumbnailUrl;

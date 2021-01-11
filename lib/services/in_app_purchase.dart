@@ -49,8 +49,7 @@ class SkPaymentTransationPayment {
 
 class SkPaymentTransation {
   SkPaymentTransationPayment payment;
-  SkPaymentTransation(payment)
-      : this.payment = SkPaymentTransationPayment(payment);
+  SkPaymentTransation(payment) : this.payment = SkPaymentTransationPayment(payment);
 }
 
 class PurchaseDocumentPurchaseDetails {
@@ -244,8 +243,7 @@ class FireflutterInAppPurchase {
             print('=> purchased on purchaseUpdatedStream');
             // for android & consumable product only.
             if (Platform.isAndroid) {
-              if (!autoConsume &&
-                  consumableIds.contains(purchaseDetails.productID)) {
+              if (!autoConsume && consumableIds.contains(purchaseDetails.productID)) {
                 await connection.consumePurchase(purchaseDetails);
               }
             }
@@ -272,16 +270,14 @@ class FireflutterInAppPurchase {
     final bool available = await connection.isAvailable();
 
     if (available) {
-      ProductDetailsResponse response =
-          await connection.queryProductDetails(_productIds);
+      ProductDetailsResponse response = await connection.queryProductDetails(_productIds);
 
       /// Check if any of given product id(s) are missing.
       if (response.notFoundIDs.isNotEmpty) {
         missingIds = response.notFoundIDs;
       }
 
-      response.productDetails
-          .forEach((product) => products[product.id] = product);
+      response.productDetails.forEach((product) => products[product.id] = product);
 
       productReady.add(products);
     } else {
@@ -360,8 +356,7 @@ class FireflutterInAppPurchase {
     // });
   }
 
-  Future<PurchaseSession> _recordSuccess(
-      PurchaseDetails purchaseDetails) async {
+  Future<PurchaseSession> _recordSuccess(PurchaseDetails purchaseDetails) async {
     ProductDetails productDetails = products[purchaseDetails.productID];
 
     // final session = await getPurchaseSession(purchaseDetails);
@@ -424,8 +419,7 @@ class FireflutterInAppPurchase {
   /// 속성에 저장하고, DB 에 보관한다. 그리고 이 값을 바탕으로 해당 정보를 참조하면 된다.
   String _applicationUserName;
   String get _generateApplicationUserName {
-    _applicationUserName =
-        api.user.iD + '-' + DateTime.now().millisecondsSinceEpoch.toString();
+    _applicationUserName = api.user.id + '-' + DateTime.now().millisecondsSinceEpoch.toString();
     return _applicationUserName;
   }
 

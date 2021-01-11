@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:nalia_app/screens/forum/forum.list.screen.dart';
 import 'package:nalia_app/screens/gallery/gallery.screen.dart';
 import 'package:nalia_app/screens/home/home.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
+import 'package:nalia_app/screens/menu/menu.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
 import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     Timer(Duration(milliseconds: 600), () async {
-      Get.toNamed(RouteNames.userSearch);
+      // Get.toNamed(RouteNames.userSearch);
       // Get.toNamed(RouteNames.gallery);
       // Get.toNamed(RouteNames.profile);
       // Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
@@ -81,7 +81,8 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.forumList, page: () => ForumListScreen()),
         GetPage(name: RouteNames.userSearch, page: () => UserSearchScreen()),
         GetPage(name: RouteNames.gallery, page: () => GalleryScreen()),
-        GetPage(name: RouteNames.purchase, page: () => PurchaseScreen())
+        GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
+        GetPage(name: RouteNames.menu, page: () => MenuScreen())
       ],
     );
   }

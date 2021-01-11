@@ -21,8 +21,7 @@ class CustomAppBarMenu extends StatefulWidget {
 class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
   @override
   Widget build(BuildContext context) {
-    Color color =
-        widget.route == RouteNames.home ? Colors.white : kPrimaryColor;
+    Color color = widget.route == RouteNames.home ? Colors.white : kPrimaryColor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -43,15 +42,8 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
                     return IconAnimator(
                       finish: Icon(FontAwesome5Solid.heartbeat, color: color),
                       children: [
-                        AnimationFrame(
-                            icon: FontAwesome5Solid.heartbeat,
-                            color: Colors.red,
-                            size: 28,
-                            duration: 500),
-                        AnimationFrame(
-                            icon: FontAwesome5Solid.heartbeat,
-                            color: color,
-                            duration: 500),
+                        AnimationFrame(icon: FontAwesome5Solid.heartbeat, color: Colors.red, size: 28, duration: 500),
+                        AnimationFrame(icon: FontAwesome5Solid.heartbeat, color: color, duration: 500),
                       ],
                     );
                   }
@@ -124,21 +116,25 @@ class _AppIndicatorState extends State<AppIndicator> {
       bottom: 0,
       left: 0,
       right: 0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Obx(() {
-            if (app.locationReady) {
-              return NoneIndicator();
-            } else {
-              return ErrorIndicator();
-            }
-          }),
-          spaceXxs,
-          GreenIndicator(),
-          spaceXxs,
-          EtcIndicator(),
-        ],
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() {
+              if (app.locationReady) {
+                return NoneIndicator();
+              } else {
+                return ErrorIndicator();
+              }
+            }),
+            spaceXxs,
+            GreenIndicator(),
+            spaceXxs,
+            EtcIndicator(),
+          ],
+        ),
+        onTap: () => Get.toNamed(RouteNames.menu),
       ),
     );
   }

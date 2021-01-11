@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
+import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
+import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/helper.functions.dart';
@@ -282,5 +284,9 @@ class App {
       posts = await api.searchPost(category: 'gallery', limit: 1);
     }
     return posts.first;
+  }
+
+  Future recommend({ApiBio user, String jewelry, String item, int count}) async {
+    return 0;
   }
 }

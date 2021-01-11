@@ -1,8 +1,10 @@
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/services/global.dart';
 
 class Bio extends GetxController {
+  static Bio to = Get.find<Bio>();
   ApiBio data;
   bool ready = false;
   @override

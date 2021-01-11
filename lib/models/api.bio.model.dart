@@ -1,6 +1,7 @@
 class ApiBio {
   ApiBio({
     this.userId,
+    this.name,
     this.createdAt,
     this.updatedAt,
     this.birthdate,
@@ -12,9 +13,11 @@ class ApiBio {
     this.smoking,
     this.hobby,
     this.dateMethod,
+    this.profilePhotoUrl,
   });
 
   String userId;
+  String name;
   String createdAt;
   String updatedAt;
   String birthdate;
@@ -26,9 +29,11 @@ class ApiBio {
   String smoking;
   String hobby;
   String dateMethod;
+  String profilePhotoUrl;
 
   factory ApiBio.fromJson(Map<String, dynamic> json) => ApiBio(
         userId: json["user_ID"],
+        name: json["name"],
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
         birthdate: json["birthdate"],
@@ -40,10 +45,12 @@ class ApiBio {
         smoking: json["smoking"],
         hobby: json["hobby"],
         dateMethod: json["dateMethod"],
+        profilePhotoUrl: json['profile_photo_url'],
       );
 
   Map<String, dynamic> toJson() => {
         "user_ID": userId,
+        "name": name,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
         "birthdate": birthdate,
@@ -55,6 +62,7 @@ class ApiBio {
         "smoking": smoking,
         "hobby": hobby,
         "dateMethod": dateMethod,
+        "user_profile_photo": profilePhotoUrl,
       };
   @override
   String toString() {

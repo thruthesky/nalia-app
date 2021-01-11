@@ -113,11 +113,10 @@ class API extends GetxController {
   GetStorage localStorage;
 
   ApiUser user;
-  String get id => user?.iD;
+  String get id => user?.id;
   String get sessionId => user?.sessionId;
-  String get primaryPhotoUrl => user?.primaryPhotoUrl;
+  String get primaryPhotoUrl => user?.profilePhotoUrl;
   String get fullName => user?.fullName;
-  String get dateMethod => user?.dateMethod;
   bool get profileComplete =>
       loggedIn && primaryPhotoUrl != null && primaryPhotoUrl.isNotEmpty && fullName != null && fullName.isNotEmpty;
 
@@ -147,6 +146,14 @@ class API extends GetxController {
       throw res.data['code'];
     }
     return res.data['data'];
+  }
+
+  Future query(String table, String where) {
+    return request({
+      'route': 'app.query',
+      'table': table,
+      'where': where,
+    });
   }
 
   /// [data] will be saved as user property. You can save whatever but may need to update the ApiUser model accordingly.

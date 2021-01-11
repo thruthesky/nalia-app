@@ -58,8 +58,7 @@ class PushNotification {
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     // Check if app is opened from terminated state and get message data.
-    RemoteMessage initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+    RemoteMessage initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       onMessageOpenedFromTermiated(initialMessage);
     }
@@ -80,10 +79,10 @@ class PushNotification {
   /// Save the token to database.
   saveTokenToDatabase(String token) async {
     this.token = token;
-    print('saveTokenToDatabase: $token');
     try {
       await api.updateToken(token);
     } catch (e) {
+      print('error saveTokenToDatabase: $token');
       app.error(e);
     }
   }
@@ -100,8 +99,7 @@ class PushNotification {
     app.toast(message.notification.title, message.notification.body);
 
     if (message.notification != null) {
-      print(
-          'Messsage: ${message.notification.title}, ${message.notification.body}');
+      print('Messsage: ${message.notification.title}, ${message.notification.body}');
     }
 
     if (message?.data['type'] == 'post') {
@@ -119,8 +117,7 @@ class PushNotification {
     app.alert(str);
     // If it the message has data, then do some exttra work based on the data.
     if (initialMessage?.data['type'] == 'post') {
-      Get.toNamed(RouteNames.forumList,
-          arguments: {'id', initialMessage.data['id']});
+      Get.toNamed(RouteNames.forumList, arguments: {'id', initialMessage.data['id']});
     }
   }
 

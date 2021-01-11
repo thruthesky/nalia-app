@@ -9,6 +9,7 @@ class ApiUser {
   String autoStatusCheck;
   String plid;
   String agegroup;
+
   String get age {
     if (birthdate == null || birthdate == '') return '0';
     final _yy = int.parse(birthdate.substring(0, 2));
@@ -22,8 +23,7 @@ class ApiUser {
     AgeDuration _age;
 
     // Set the age of the user
-    _age = Age.dateDifference(
-        fromDate: birthday, toDate: today, includeToDate: false);
+    _age = Age.dateDifference(fromDate: birthday, toDate: today, includeToDate: false);
 
     return _age.years.toString();
   }
@@ -36,7 +36,7 @@ class ApiUser {
   String name;
   String birthday;
   String birthdate;
-  String iD;
+  String id;
   String userLogin;
   String userEmail;
   String userRegistered;
@@ -45,15 +45,17 @@ class ApiUser {
   /// [mode] is used only when `loginOrRegister` method is being invoked.
   /// It is one of `login` or `register`.
   String mode;
-  String primaryPhotoUrl;
+  // String primaryPhotoUrl;
   String get fullName => name;
-  String dateMethod;
-  String height;
-  String weight;
-  String city;
-  String hobby;
-  String drinking;
-  String smoking;
+  // String dateMethod;
+  // String height;
+  // String weight;
+  // String city;
+  // String hobby;
+  // String drinking;
+  // String smoking;
+
+  String profilePhotoUrl;
 
   ApiUser({
     this.nickname,
@@ -72,20 +74,13 @@ class ApiUser {
     this.name,
     this.birthday,
     this.birthdate,
-    this.iD,
+    this.id,
     this.userLogin,
     this.userEmail,
     this.userRegistered,
     this.sessionId,
     this.mode,
-    this.primaryPhotoUrl,
-    this.dateMethod,
-    this.height,
-    this.weight,
-    this.city,
-    this.hobby,
-    this.drinking,
-    this.smoking,
+    this.profilePhotoUrl,
   });
 
   ApiUser.fromJson(Map<String, dynamic> json) {
@@ -106,21 +101,13 @@ class ApiUser {
     name = json['name'];
     birthday = json['birthday'];
     birthdate = json['birthdate'];
-    iD = json['ID'];
+    id = json['ID'];
     userLogin = json['user_login'];
     userEmail = json['user_email'];
     userRegistered = json['user_registered'];
     sessionId = json['session_id'];
     mode = json['mode'];
-    primaryPhotoUrl = json['primaryPhotoUrl'];
-
-    dateMethod = json['dateMethod'] ?? '';
-    height = json['height'] ?? '';
-    weight = json['weight'] ?? '';
-    city = json['city'] ?? '';
-    hobby = json['hobby'] ?? '';
-    drinking = json['drinking'] ?? '';
-    smoking = json['smoking'] ?? '';
+    profilePhotoUrl = json['profilePhotoUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -141,21 +128,13 @@ class ApiUser {
     data['name'] = this.name;
     data['birthday'] = this.birthday;
     data['birthdate'] = this.birthdate;
-    data['ID'] = this.iD;
+    data['ID'] = this.id;
     data['user_login'] = this.userLogin;
     data['user_email'] = this.userEmail;
     data['user_registered'] = this.userRegistered;
     data['session_id'] = this.sessionId;
     data['mode'] = this.mode;
-    data['primaryPhotoUrl'] = this.primaryPhotoUrl;
-    data['dateMethod'] = this.dateMethod;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-
-    data['city'] = this.city;
-    data['hobby'] = this.hobby;
-    data['drinking'] = this.drinking;
-    data['smoking'] = this.smoking;
+    data['profilePhotoUrl'] = this.profilePhotoUrl;
 
     return data;
   }
