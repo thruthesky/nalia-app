@@ -115,20 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               RaisedButton(
-                onPressed: () async {
-                  try {
-                    for (int i = 0; i < 40; i++) {
-                      final temp = UserTest().data(i);
-                      final re = await api.loginOrRegister(
-                          email: temp['user_email'],
-                          pass: temp['user_pass'],
-                          data: temp);
-                      print('re: $re');
-                    }
-                  } catch (e) {
-                    app.error(e);
-                  }
-                },
+                onPressed: UserTest().generate,
                 child: Text('Generate 40 Users'),
               ),
               Divider(),

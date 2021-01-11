@@ -23,47 +23,61 @@ const String RING = 'ring';
 
 const double HEADER_HEIGHT = 44.0;
 
-const List<int> HeightGroups = [
-  145,
-  150,
-  155,
-  160,
-  165,
-  170,
-  175,
-  180,
-  185,
-  190
-];
-const List<int> WeightGroups = [
-  45,
-  50,
-  55,
-  60,
-  65,
-  70,
-  75,
-  80,
-  85,
-  90,
-  95,
-  100,
-  110,
-  120,
-];
+// const List<int> HeightGroups = [
+//   145,
+//   150,
+//   155,
+//   160,
+//   165,
+//   170,
+//   175,
+//   180,
+//   185,
+//   190
+// ];
+// const List<int> WeightGroups = [
+//   45,
+//   50,
+//   55,
+//   60,
+//   65,
+//   70,
+//   75,
+//   80,
+//   85,
+//   90,
+//   95,
+//   100,
+//   110,
+//   120,
+// ];
 
 const List<String> Cities = [
-  '김해',
-  '서울',
-  '동해',
-  '창원',
-  '대구',
-  '부산',
-  '강릉',
-  '수원',
-  '진주'
+  'Seoul',
+  'Busan',
+  'Manila',
+  'Angeles',
+  'Tokyo',
+  'Beijing',
+  'Los Angeles',
+  'Califonia',
 ];
-const List<String> Hobbies = ['독서', '영화', '음악', '운동', '피아노', '영어'];
+const List<String> Hobbies = [
+  'Reading Books',
+  'Movies',
+  'Music',
+  'Sports',
+  'Piano',
+  'Dancing'
+];
+const List<String> DateMethods = [
+  'Watching movies',
+  'Walking',
+  'Drinking coffee',
+  'Travel',
+  'Watching a play',
+  'Eating'
+];
 final hintStyle = TextStyle(fontSize: 12, color: Colors.grey);
 final titleStyle = TextStyle(fontSize: 24, color: Colors.grey[900]);
 

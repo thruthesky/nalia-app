@@ -29,6 +29,7 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(milliseconds: 600), () async {
+      Get.toNamed(RouteNames.profile);
       // Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
     });
 
