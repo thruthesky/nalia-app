@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,10 @@ import 'package:nalia_app/screens/login/login.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
 import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
+import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:nalia_app/tests/user.test.dart';
 
 void main() {
   // Let the plugin know that this app supports pending purchases.
@@ -33,7 +36,19 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(milliseconds: 600), () async {
+      Get.toNamed(RouteNames.profile);
       // Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
+
+      () async {
+        final ut = UserTest();
+        try {
+          File file = await ut.downloadImage(v3HomeUrl + '/tmp/img/1.jpg');
+          print(file);
+        } catch (e) {
+          print('file error:');
+          print(e);
+        }
+      }();
     });
 
     app.firebaseReady.listen((ready) async {

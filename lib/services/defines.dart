@@ -53,17 +53,31 @@ const List<int> WeightGroups = [
 ];
 
 const List<String> Cities = [
-  '김해',
-  '서울',
-  '동해',
-  '창원',
-  '대구',
-  '부산',
-  '강릉',
-  '수원',
-  '진주'
+  'Seoul',
+  'Busan',
+  'Manila',
+  'Angeles',
+  'Tokyo',
+  'Beijing',
+  'Los Angeles',
+  'Califonia',
 ];
-const List<String> Hobbies = ['독서', '영화', '음악', '운동', '피아노', '영어'];
+const List<String> Hobbies = [
+  'Reading Books',
+  'Movies',
+  'Music',
+  'Sports',
+  'Piano',
+  'Dancing'
+];
+const List<String> DateMethods = [
+  'Watching movies',
+  'Walking',
+  'Drinking coffee',
+  'Travel',
+  'Watching a play',
+  'Eating'
+];
 final hintStyle = TextStyle(fontSize: 12, color: Colors.grey);
 final titleStyle = TextStyle(fontSize: 24, color: Colors.grey[900]);
 

@@ -440,4 +440,20 @@ class API extends GetxController {
   }
 
   /// EO
+  ///
+
+  /// Update login user's record of a table.
+  Future appUpdate(String table, String field, String value) {
+    return request({
+      'route': 'app.update',
+      'table': table,
+      'field': field,
+      'value': value,
+    });
+  }
+
+  /// Get login user's record of a table.
+  Future appGet(String table) {
+    return request({'route': 'app.get', 'table': table});
+  }
 }
