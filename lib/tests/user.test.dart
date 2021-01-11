@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:intl/intl.dart';
 import 'package:faker/faker.dart';
+import 'package:nalia_app/models/api.file.model.dart';
+import 'package:nalia_app/models/api.post.model.dart';
+import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 
@@ -32,9 +36,9 @@ class UserTest {
     try {
       for (int i = 0; i < 40; i++) {
         final temp = UserTest().data(i);
-        final re = await api.loginOrRegister(
-            email: temp['user_email'], pass: temp['user_pass'], data: temp);
-        print('re: $re');
+        api.logout();
+        final re = await api.loginOrRegister(email: temp['user_email'], pass: temp['user_pass'], data: temp);
+        // print('re: $re');
         await api.appUpdate('bio', 'name', temp['name']);
         await api.appUpdate('bio', 'gender', temp['gender']);
         await api.appUpdate('bio', 'birthdate', temp['birthdate']);
@@ -43,6 +47,34 @@ class UserTest {
         await api.appUpdate('bio', 'hobby', temp['hobby']);
         await api.appUpdate('bio', 'city', temp['city']);
         await api.appUpdate('bio', 'dateMethod', temp['dateMethod']);
+
+        /// Setting primary photo. 대표 사진 추가.
+        ApiPost gallery = await app.getGalleryPost();
+        await api.deletePost(gallery);
+        gallery = await app.getGalleryPost();
+        // print('user_ID: ${gallery.postAuthor}');
+        File file = await app.downloadImage(url: Config.backendSiteUrl + '/tmp/img/${i + 1}.jpg');
+        // print('file:');
+        // print(file);
+        ApiFile uploadedFile = await api.uploadFile(file: file, onProgress: (p) => null);
+        // print(uploadedFile);
+        ApiPost uploadedPost = await api.editPost(id: gallery.id, files: [uploadedFile]);
+        // print(uploadedPost);
+        await api.setFeaturedImage(uploadedPost, uploadedFile);
+
+        // 0 개에서 9개 사이로 이미지를 랜덤으로 추가한다.
+        int n = Random().nextInt(10);
+        List rnd = List.generate(40, (r) => r);
+        rnd.shuffle();
+        // print(rnd);
+        for (int j = 0; j < n; j++) {
+          if (j == i) continue;
+
+          File file = await app.downloadImage(url: Config.backendSiteUrl + '/tmp/img/${j + 1}.jpg');
+          ApiFile uploadedFile = await api.uploadFile(file: file, onProgress: (p) => null);
+          uploadedPost.files.add(uploadedFile);
+        }
+        await api.editPost(id: gallery.id, files: uploadedPost.files);
       }
     } catch (e) {
       print(e);

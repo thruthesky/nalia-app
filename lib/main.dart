@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -30,27 +31,15 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final API c = Get.put(api);
   final Gallery b = Get.put(Gallery());
-
   @override
   void initState() {
     super.initState();
 
     Timer(Duration(milliseconds: 600), () async {
-      Get.toNamed(RouteNames.gallery);
+      Get.toNamed(RouteNames.userSearch);
+      // Get.toNamed(RouteNames.gallery);
       // Get.toNamed(RouteNames.profile);
       // Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
-
-      // () async {
-      //   try {
-      //     File file = await app.downloadImage(
-      //       url: Config.backendSiteUrl + '/tmp/img/1.jpg',
-      //     );
-      //     print(file);
-      //   } catch (e) {
-      //     print('file error:');
-      //     print(e);
-      //   }
-      // }();
     });
 
     app.firebaseReady.listen((ready) async {
@@ -63,16 +52,14 @@ class _MainScreenState extends State<MainScreen> {
           'diamond_box',
         },
       );
-      print(
-          'products: ${purchase.products} : Simulator does not show products.');
+      print('products: ${purchase.products} : Simulator does not show products.');
     });
 
     Dio dio = Dio();
     () async {
       final res = await dio
           // .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
-          .get(
-              'http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
+          .get('http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
 
       print('res: ${res.data}');
     }();

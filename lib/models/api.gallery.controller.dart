@@ -18,17 +18,7 @@ class Gallery extends GetxController {
 
     api.authStateChanges.listen((user) async {
       try {
-        List<ApiPost> posts =
-            await api.searchPost(category: 'gallery', limit: 1);
-        if (posts.length == 0) {
-          print('No gallery post. create one');
-          await api.editPost(
-              category: 'gallery',
-              title: 'My gallery',
-              content: 'My gallery photos');
-          posts = await api.searchPost(category: 'gallery', limit: 1);
-        }
-        post = posts.first;
+        post = await app.getGalleryPost();
         update();
       } catch (e) {
         app.error(e);

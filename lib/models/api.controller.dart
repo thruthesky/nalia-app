@@ -30,8 +30,7 @@ class Forum {
   bool get canLoad => loading == false && noMorePosts == false;
   bool get canList => postInEdit == null && posts.length > 0;
   final ItemScrollController listController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   Function render;
 
@@ -95,8 +94,7 @@ class API extends GetxController {
       /// Load user profile from localStorage.
       /// If the user has logged in previously, he will be auto logged in on next app running.
       user = _loadUserProfile();
-      if (loggedIn)
-        print('ApiUser logged in with cached profile: ${user.sessionId}');
+      if (loggedIn) print('ApiUser logged in with cached profile: ${user.sessionId}');
 
       /// If user has logged in with localStorage data, refresh the user data from backend.
       if (loggedIn) {
@@ -121,11 +119,7 @@ class API extends GetxController {
   String get fullName => user?.fullName;
   String get dateMethod => user?.dateMethod;
   bool get profileComplete =>
-      loggedIn &&
-      primaryPhotoUrl != null &&
-      primaryPhotoUrl.isNotEmpty &&
-      fullName != null &&
-      fullName.isNotEmpty;
+      loggedIn && primaryPhotoUrl != null && primaryPhotoUrl.isNotEmpty && fullName != null && fullName.isNotEmpty;
 
   bool get loggedIn => user != null && user.sessionId != null;
   bool get notLoggedIn => !loggedIn;
@@ -238,8 +232,7 @@ class API extends GetxController {
 
   userProfile(String sessionId) async {
     if (sessionId == null) return;
-    final Map<String, dynamic> data =
-        await request({'route': 'user.profile', 'session_id': sessionId});
+    final Map<String, dynamic> data = await request({'route': 'user.profile', 'session_id': sessionId});
     user = ApiUser.fromJson(data);
     update();
     return user;
@@ -277,10 +270,7 @@ class API extends GetxController {
     final data = {
       'route': 'forum.editComment',
       'comment_post_ID': post.id,
-      if (comment != null &&
-          comment.commentId != null &&
-          comment.commentId != '')
-        'comment_ID': comment.commentId,
+      if (comment != null && comment.commentId != null && comment.commentId != '') 'comment_ID': comment.commentId,
       if (parent != null) 'comment_parent': parent.commentId,
       'comment_content': content ?? '',
     };
@@ -297,8 +287,7 @@ class API extends GetxController {
     return ApiPost.fromJson(json);
   }
 
-  Future<Map<dynamic, dynamic>> setFeaturedImage(
-      ApiPost post, ApiFile file) async {
+  Future<Map<dynamic, dynamic>> setFeaturedImage(ApiPost post, ApiFile file) async {
     final json = await request({
       'route': 'forum.setFeaturedImage',
       'ID': post.id,
@@ -313,13 +302,15 @@ class API extends GetxController {
   /// After the post has been deleted, it will be removed from [forum]
   ///
   /// It returns deleted file id.
-  Future<int> deletePost(ApiPost post, Forum forum) async {
+  Future<int> deletePost(ApiPost post, [Forum forum]) async {
     final dynamic data = await request({
       'route': 'forum.deletePost',
       'ID': post.id,
     });
-    int i = forum.posts.indexWhere((p) => p.id == post.id);
-    forum.posts.removeAt(i);
+    if (forum != null) {
+      int i = forum.posts.indexWhere((p) => p.id == post.id);
+      forum.posts.removeAt(i);
+    }
     return data['ID'];
   }
 
@@ -339,13 +330,13 @@ class API extends GetxController {
     return data['comment_ID'];
   }
 
-  Future<List<ApiPost>> searchPost(
-      {String category, int limit = 20, int paged = 1}) async {
+  Future<List<ApiPost>> searchPost({String category, int limit = 20, int paged = 1, String author}) async {
     final Map<String, dynamic> data = {};
     data['route'] = 'forum.search';
     data['category_name'] = category;
     data['paged'] = paged;
     data['numberposts'] = limit;
+    if (author != null) data['author'] = author;
     final jsonList = await request(data);
 
     List<ApiPost> _posts = [];
@@ -433,8 +424,7 @@ class API extends GetxController {
     forum.render();
 
     List<ApiPost> _posts;
-    _posts = await searchPost(
-        category: forum.category, paged: forum.pageNo, limit: forum.limit);
+    _posts = await searchPost(category: forum.category, paged: forum.pageNo, limit: forum.limit);
 
     if (_posts.length == 0) {
       forum.noMorePosts = true;

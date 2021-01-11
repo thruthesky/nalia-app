@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
@@ -20,9 +22,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // File file;
   @override
   void initState() {
     super.initState();
+
+    // () async {
+    //   try {
+    //     file = await app.downloadImage(
+    //       url: Config.backendSiteUrl + '/tmp/img/10.jpg',
+    //     );
+    //     print(file);
+    //     setState(() {});
+    //   } catch (e) {
+    //     print('file error:');
+    //     print(e);
+    //   }
+    // }();
   }
 
   @override
@@ -41,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+              // if (file != null) Image.file(file),
               Wrap(
                 children: [
                   RaisedButton(
@@ -72,22 +89,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   RaisedButton(
                     child: Text('Reminder'),
-                    onPressed: () =>
-                        Get.toNamed(RouteNames.forumList, arguments: {
+                    onPressed: () => Get.toNamed(RouteNames.forumList, arguments: {
                       'category': 'reminder',
                     }),
                   ),
                   RaisedButton(
                     child: Text('QnA'),
-                    onPressed: () =>
-                        Get.toNamed(RouteNames.forumList, arguments: {
+                    onPressed: () => Get.toNamed(RouteNames.forumList, arguments: {
                       'category': 'qna',
                     }),
                   ),
                   RaisedButton(
                     child: Text('Discussion'),
-                    onPressed: () =>
-                        Get.toNamed(RouteNames.forumList, arguments: {
+                    onPressed: () => Get.toNamed(RouteNames.forumList, arguments: {
                       'category': 'discussion',
                     }),
                   ),
@@ -96,8 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () async {
                       try {
                         final post = await PostTest().run();
-                        print(
-                            'post created: id: ${post.id}, no of images: ${post.files.length}');
+                        print('post created: id: ${post.id}, no of images: ${post.files.length}');
                         print(post.files[0].url);
                       } catch (e) {
                         app.error(e);
@@ -131,8 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () async {
                         final tu = UserTest().data(i);
                         try {
-                          final u = await api.login(
-                              email: tu['user_email'], pass: tu['user_pass']);
+                          final u = await api.login(email: tu['user_email'], pass: tu['user_pass']);
                           print('Login success: $u');
                         } catch (e) {
                           app.error(e);
