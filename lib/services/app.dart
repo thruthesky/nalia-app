@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
-import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
@@ -18,6 +16,8 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:nalia_app/services/push_notification.dart';
 
 import 'package:rxdart/subjects.dart';
+
+import 'package:path_provider/path_provider.dart';
 
 class App {
   Location location = Location();
@@ -104,6 +104,14 @@ class App {
       locationServiceChanges.value == true &&
       locationAppPermissionChanges.value == true;
 
+  /// Upload an image.
+  ///
+  /// It can be used for upload photos for a post, comment, gallery, or even user profile photo.
+  /// ```dart
+  /// ApiFile file = await app.imageUpload(onProgress: onProgress);
+  /// post.files.add(file);
+  /// final edited = await api.editPost(id: post.id, files: post.files);
+  /// ```
   Future<ApiFile> imageUpload({int quality = 90, Function onProgress}) async {
     /// Ask user
     final re = await Get.bottomSheet(
@@ -120,6 +128,11 @@ class App {
                 leading: Icon(Icons.videocam),
                 title: Text('get photo from gallery'),
                 onTap: () => Get.back(result: ImageSource.gallery),
+              ),
+              ListTile(
+                leading: Icon(Icons.cancel),
+                title: Text('cancel'),
+                onTap: () => Get.back(result: null),
               ),
             ],
           ),
@@ -217,5 +230,51 @@ class App {
       },
       animationDuration: Duration(milliseconds: 500),
     );
+  }
+
+  /// [downloadImage] download images into local temp folderisBlank
+  ///
+  /// ```dart
+  /// () async {
+  /// try {
+  ///   File file = await app.downloadImage(
+  ///     url: Config.backendSiteUrl + '/tmp/img/1.jpg',
+  ///     onProgress: (p) => print('progress: $p%'),
+  ///   );
+  ///  print(file);
+  ///   } catch (e) {
+  ///  print('file error:');
+  ///  print(e);
+  ///   }
+  /// }();
+  /// ```
+  Future<File> downloadImage(
+      {@required String url, Function onProgress}) async {
+    var tempDir = await getTemporaryDirectory();
+    String savePath = tempDir.path + '/' + getFilenameFromPath(url);
+
+    Dio dio = Dio();
+
+    final response = await dio.get(
+      url,
+      onReceiveProgress: (received, total) {
+        if (total != -1) {
+          if (onProgress != null) onProgress((received / total * 100).round());
+        }
+      },
+      //Received data with List<int>
+      options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status < 500;
+          }),
+    );
+    File file = File(savePath);
+    var raf = file.openSync(mode: FileMode.write);
+    raf.writeFromSync(response.data);
+    await raf.close();
+
+    return File(savePath);
   }
 }

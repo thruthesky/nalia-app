@@ -19,6 +19,9 @@ class ApiPost {
     this.shortDateTime,
     this.comments,
     this.category,
+    this.featuredImageUrl,
+    this.featuredImageThumbnailUrl,
+    this.featuredImageId,
   }) {
     if (files == null) files = [];
     if (postTitle == null) postTitle = '';
@@ -40,6 +43,11 @@ class ApiPost {
   String shortDateTime;
   List<ApiComment> comments;
   String category;
+
+  String featuredImageUrl;
+  String featuredImageThumbnailUrl;
+  int featuredImageId;
+
   bool get isMine => postAuthor == api.id;
   bool get isNotMine => !isMine;
 
@@ -72,7 +80,7 @@ class ApiPost {
   }
 
   factory ApiPost.fromJson(Map<String, dynamic> json) => ApiPost(
-        id: json["ID"],
+        id: json["ID"] is String ? int.parse(json["ID"]) : json["ID"],
         postAuthor: json["post_author"],
         postDate: DateTime.parse(json["post_date"]),
         postContent: json["post_content"],
@@ -89,6 +97,9 @@ class ApiPost {
         comments: List<ApiComment>.from(
             json["comments"].map((x) => ApiComment.fromJson(x))),
         category: json["category"],
+        featuredImageUrl: json["featured_image_url"],
+        featuredImageThumbnailUrl: json["featured_image_thumbnail_url"],
+        featuredImageId: json["featured_image_ID"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -108,6 +119,9 @@ class ApiPost {
         "comments":
             List<dynamic>.from(comments.map((x) => x.toJson().toString())),
         "category": category,
+        "featured_image_url": featuredImageUrl,
+        "featured_image_thumbnail_url": featuredImageThumbnailUrl,
+        "featured_image_ID": featuredImageId,
       };
 
   @override

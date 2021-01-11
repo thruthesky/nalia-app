@@ -8,6 +8,7 @@ class UserAvatar extends StatelessWidget {
   final Function onTap;
   @override
   Widget build(BuildContext context) {
+    print('url: $url');
     return GestureDetector(
       child: Container(
         width: size,

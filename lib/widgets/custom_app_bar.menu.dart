@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:icon_animator/icon_animator.dart';
 import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/models/api.gallery.controller.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
@@ -54,6 +55,7 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
                       ],
                     );
                   }
+
                   return Icon(FontAwesome5Solid.heartbeat, color: color);
                 }),
                 onPressed: () => Get.toNamed(RouteNames.myJewelry),
@@ -65,10 +67,10 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
                 splashRadius: 28.4,
               ),
 
-              GetBuilder<API>(
+              GetBuilder<Gallery>(
                 builder: (_) {
                   return UserAvatar(
-                    _.primaryPhotoUrl,
+                    _.featuredImageUrl,
                     size: HEADER_HEIGHT - 10.0,
                     onTap: () => Get.toNamed(RouteNames.profile),
                   );

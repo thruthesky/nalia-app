@@ -11,6 +11,7 @@ import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/services/config.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nalia_app/services/helper.functions.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 /// [Forum] is a data model for a forum category.
@@ -101,8 +102,13 @@ class API extends GetxController {
       if (loggedIn) {
         userProfile(sessionId);
       }
+
+      authStateChanges.add(user);
     });
   }
+
+  /// [authStateChanges] is posted on user login or logout. Not on profile reading or updating.
+  BehaviorSubject<ApiUser> authStateChanges = BehaviorSubject.seeded(null);
 
   Prefix.Dio dio = Prefix.Dio();
   final url = v3Url;
@@ -181,6 +187,7 @@ class API extends GetxController {
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     await _saveUserProfile(user);
+    authStateChanges.add(user);
     update();
     return user;
   }
@@ -205,8 +212,14 @@ class API extends GetxController {
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     await _saveUserProfile(user);
+    authStateChanges.add(user);
     update();
     return user;
+  }
+
+  logout() {
+    user = null;
+    authStateChanges.add(user);
   }
 
   updateToken(String token) {
@@ -243,9 +256,9 @@ class API extends GetxController {
     if (data == null) data = {};
     if (id != null) data['ID'] = id;
     data['route'] = 'forum.editPost';
-    data['category'] = category;
-    data['post_title'] = title;
-    data['post_content'] = content;
+    if (category != null) data['category'] = category;
+    if (title != null) data['post_title'] = title;
+    if (content != null) data['post_content'] = content;
     if (files != null) {
       Set ids = files.map((file) => file.id).toSet();
       data['files'] = ids.join(',');
@@ -282,6 +295,16 @@ class API extends GetxController {
   Future<ApiPost> getPost(dynamic id) async {
     final json = await request({'route': 'forum.getPost', 'id': id});
     return ApiPost.fromJson(json);
+  }
+
+  Future<Map<dynamic, dynamic>> setFeaturedImage(
+      ApiPost post, ApiFile file) async {
+    final json = await request({
+      'route': 'forum.setFeaturedImage',
+      'ID': post.id,
+      'featured_image_ID': file.id,
+    });
+    return json;
   }
 
   /// Deletes a post.
@@ -352,7 +375,7 @@ class API extends GetxController {
       url,
       data: formData,
       onSendProgress: (int sent, int total) {
-        if (onProgress != null) onProgress((sent * 100 / total).round());
+        if (onProgress != null) onProgress(sent * 100 / total);
       },
     );
     if (res.data is String || res.data['code'] == null) {
@@ -366,7 +389,8 @@ class API extends GetxController {
   /// Deletes a file.
   ///
   /// [id] is the file id to delete.
-  /// [postOrComment] is a post or a comment that the file is attached to.
+  /// [postOrComment] is a post or a comment that the file is attached to. The
+  /// file will be removed from the `files` array after deletion.
   ///
   /// It returns deleted file id.
   Future<int> deleteFile(int id, {dynamic postOrComment}) async {

@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ? Spinner()
                 : Expanded(
                     child: WebView(
-                      initialUrl: passCallbackUrl,
+                      initialUrl: Config.passCallbackUrl,
                       javascriptMode: JavascriptMode.unrestricted,
                       javascriptChannels: Set.from([
                         JavascriptChannel(
