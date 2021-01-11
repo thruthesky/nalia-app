@@ -33,7 +33,11 @@ const List<int> HeightGroups = [
   175,
   180,
   185,
-  190
+  190,
+  195,
+  200,
+  205,
+  210,
 ];
 const List<int> WeightGroups = [
   45,
@@ -62,14 +66,7 @@ const List<String> Cities = [
   'Los Angeles',
   'Califonia',
 ];
-const List<String> Hobbies = [
-  'Reading Books',
-  'Movies',
-  'Music',
-  'Sports',
-  'Piano',
-  'Dancing'
-];
+const List<String> Hobbies = ['Reading Books', 'Movies', 'Music', 'Sports', 'Piano', 'Dancing'];
 const List<String> DateMethods = [
   'Watching movies',
   'Walking',
@@ -78,6 +75,9 @@ const List<String> DateMethods = [
   'Watching a play',
   'Eating'
 ];
+
+const List<int> Locations = [1, 5, 10, 20, 30, 50, 100];
+
 final hintStyle = TextStyle(fontSize: 12, color: Colors.grey);
 final titleStyle = TextStyle(fontSize: 24, color: Colors.grey[900]);
 
