@@ -7,20 +7,31 @@ import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:get/get.dart';
 
 class ApiUserSearch {
-  ApiUserSearch({this.fromAge, this.toAge});
+  ApiUserSearch({
+    this.fromAge,
+    this.toAge,
+    this.fromHeight,
+    this.toHeight,
+    this.fromWeight,
+    this.toWeight,
+  });
   int fromAge = 0;
   int toAge = 0;
 
-  int fromHeight;
-  int toHeight;
+  int fromHeight = 0;
+  int toHeight = 0;
 
-  int fromWeight;
-  int toWeight;
+  int fromWeight = 0;
+  int toWeight = 0;
 
   toJson() {
     return {
       'fromAge': fromAge,
       'toAge': toAge,
+      'fromHeight': fromHeight,
+      'toHeight': fromHeight,
+      'fromWeight': fromWeight,
+      'toWeight': toWeight,
     };
   }
 
@@ -39,7 +50,14 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
   bool loggedIn = false;
 
   /// Ages range is from 0 to 79.
-  final options = ApiUserSearch(fromAge: 0, toAge: 0);
+  final options = ApiUserSearch(
+    fromAge: 0,
+    toAge: 0,
+    fromHeight: 0,
+    fromWeight: 0,
+    toHeight: 0,
+    toWeight: 0,
+  );
 
   buildChoice({bool selected = false, String text, Function onTap}) {
     return GestureDetector(
@@ -83,86 +101,6 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                       : 'age'.tr,
                   onTap: () {
                     showDialog(
-                        context: context,
-                        builder: (context) {
-                          return StatefulBuilder(
-                            builder: (_, setState) {
-                              return AlertDialog(
-                                content: Row(
-                                  children: [
-                                    Text('age'.tr),
-                                    DropdownButton<int>(
-                                      value: options.fromAge,
-                                      onChanged: (x) {
-                                        setState(() {
-                                          options.fromAge = x;
-                                          if (options.toAge < options.fromAge) {
-                                            options.toAge = options.fromAge + 9;
-                                          }
-                                        });
-                                        onSearchOptionChanged();
-                                      },
-                                      items: [
-                                        DropdownMenuItem(
-                                          value: 0,
-                                          child: Text('all'.tr),
-                                        ),
-                                        for (int i = 20; i < 60; i++)
-                                          DropdownMenuItem(
-                                            value: i,
-                                            child: Text(
-                                                'fromAge %s'.trArgs(['$i'])),
-                                          ),
-                                      ],
-                                    ),
-                                    if (options.fromAge > 0)
-                                      DropdownButton<int>(
-                                        value: options.toAge,
-                                        onChanged: (x) {
-                                          if (x < options.fromAge) {
-                                            x = options.fromAge + 9;
-                                            app.alert(
-                                                'toAge is smaller than fromAge'
-                                                    .tr);
-                                          }
-                                          setState(() {
-                                            options.toAge = x;
-                                          });
-                                          onSearchOptionChanged();
-                                        },
-                                        items: [
-                                          for (int i = options.fromAge + 1;
-                                              i < 80;
-                                              i++)
-                                            DropdownMenuItem(
-                                              value: i,
-                                              child: Text(
-                                                  'toAge %s'.trArgs(['$i'])),
-                                            ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                      child: Text('@Ok'.tr),
-                                      onPressed: () => Get.back()),
-                                ],
-                              );
-                            },
-                          );
-                        });
-                  },
-                ),
-                buildChoice(
-                  selected: options.fromHeight > 0,
-                  text: options.fromHeight > 0
-                      ? 'Height ${options.fromHeight}~${options.toHeight}'
-                          .trArgs(
-                              ['${options.fromHeight}', '${options.toHeight}'])
-                      : 'age'.tr,
-                  onTap: () {
-                    showDialog(
                       context: context,
                       builder: (context) {
                         return StatefulBuilder(
@@ -170,16 +108,14 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                             return AlertDialog(
                               content: Row(
                                 children: [
-                                  Text('height'.tr),
+                                  Text('age'.tr),
                                   DropdownButton<int>(
-                                    value: options.fromHeight,
+                                    value: options.fromAge,
                                     onChanged: (x) {
                                       setState(() {
-                                        options.fromHeight = x;
-                                        if (options.toHeight <
-                                            options.fromHeight) {
-                                          options.toHeight =
-                                              options.fromHeight + 9;
+                                        options.fromAge = x;
+                                        if (options.toAge < options.fromAge) {
+                                          options.toAge = options.fromAge + 9;
                                         }
                                       });
                                       onSearchOptionChanged();
@@ -192,34 +128,34 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                                       for (int i = 20; i < 60; i++)
                                         DropdownMenuItem(
                                           value: i,
-                                          child: Text(
-                                              'fromHeight %s'.trArgs(['$i'])),
+                                          child:
+                                              Text('fromAge %s'.trArgs(['$i'])),
                                         ),
                                     ],
                                   ),
-                                  if (options.fromHeight > 0)
+                                  if (options.fromAge > 0)
                                     DropdownButton<int>(
-                                      value: options.toHeight,
+                                      value: options.toAge,
                                       onChanged: (x) {
-                                        if (x < options.fromHeight) {
-                                          x = options.fromHeight + 9;
+                                        if (x < options.fromAge) {
+                                          x = options.fromAge + 9;
                                           app.alert(
-                                              'fromHeight is smaller than fromAge'
+                                              'toAge is smaller than fromAge'
                                                   .tr);
                                         }
                                         setState(() {
-                                          options.fromHeight = x;
+                                          options.toAge = x;
                                         });
                                         onSearchOptionChanged();
                                       },
                                       items: [
-                                        for (int i = options.fromHeight + 1;
+                                        for (int i = options.fromAge + 1;
                                             i < 80;
                                             i++)
                                           DropdownMenuItem(
                                             value: i,
-                                            child: Text(
-                                                'toHeight %s'.trArgs(['$i'])),
+                                            child:
+                                                Text('toAge %s'.trArgs(['$i'])),
                                           ),
                                       ],
                                     ),
@@ -238,12 +174,12 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                   },
                 ),
                 buildChoice(
-                  selected: options.fromWeight > 0,
-                  text: options.fromWeight > 0
-                      ? 'Height ${options.fromWeight}~${options.toWeight}'
+                  selected: options.fromHeight != 0,
+                  text: options.fromHeight != 0
+                      ? 'Height ${options.fromHeight}~${options.toHeight}'
                           .trArgs(
-                              ['${options.fromWeight}', '${options.toWeight}'])
-                      : 'age'.tr,
+                              ['${options.fromHeight}', '${options.toHeight}'])
+                      : 'Height'.tr,
                   onTap: () {
                     showDialog(
                       context: context,
@@ -255,16 +191,21 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                                 children: [
                                   Text('weight'.tr),
                                   DropdownButton<int>(
-                                    value: options.fromWeight,
+                                    value: options.fromHeight,
                                     onChanged: (x) {
-                                      setState(() {
-                                        options.fromWeight = x;
-                                        if (options.toWeight <
-                                            options.fromWeight) {
-                                          options.toWeight =
-                                              options.fromWeight+ 9;
-                                        }
-                                      });
+                                      setState(
+                                        () {
+                                          options.fromHeight = x;
+                                          if (options.toHeight <
+                                              options.fromHeight) {
+                                            options.toHeight = HeightGroups[
+                                                HeightGroups.indexWhere((h) =>
+                                                        h ==
+                                                        options.fromHeight) +
+                                                    1];
+                                          }
+                                        },
+                                      );
                                       onSearchOptionChanged();
                                     },
                                     items: [
@@ -272,37 +213,40 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                                         value: 0,
                                         child: Text('all'.tr),
                                       ),
-                                      for (int i = 20; i < 60; i++)
+                                      for (var h in HeightGroups)
                                         DropdownMenuItem(
-                                          value: i,
+                                          value: h,
                                           child: Text(
-                                              'fromWeight %s'.trArgs(['$i'])),
+                                              'fromHeight %s'.trArgs(['$h'])),
                                         ),
                                     ],
                                   ),
-                                  if (options.fromWeight > 0)
+                                  if (options.fromHeight > 0)
                                     DropdownButton<int>(
-                                      value: options.toWeight,
+                                      value: options.toHeight,
                                       onChanged: (x) {
-                                        if (x < options.fromWeight) {
-                                          x = options.fromWeight + 9;
+                                        if (x < options.fromHeight) {
+                                          // x = options.fromHeight + 9;
+                                          print('F');
+                                          options.toHeight = HeightGroups[
+                                              HeightGroups.indexWhere((h) =>
+                                                      h == options.fromHeight) +
+                                                  1];
                                           app.alert(
-                                              'fromWeight is smaller than fromAge'
+                                              'toHeight is smaller than fromHeight'
                                                   .tr);
                                         }
                                         setState(() {
-                                          options.fromWeight = x;
+                                          options.toHeight = x;
                                         });
                                         onSearchOptionChanged();
                                       },
                                       items: [
-                                        for (int i = options.fromWeight + 1;
-                                            i < 80;
-                                            i++)
+                                        for (int h in HeightGroups)
                                           DropdownMenuItem(
-                                            value: i,
+                                            value: h,
                                             child: Text(
-                                                'toWeight %s'.trArgs(['$i'])),
+                                                'toHeight %s'.trArgs(['$h'])),
                                           ),
                                       ],
                                     ),

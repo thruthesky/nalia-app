@@ -23,34 +23,34 @@ const String RING = 'ring';
 
 const double HEADER_HEIGHT = 44.0;
 
-// const List<int> HeightGroups = [
-//   145,
-//   150,
-//   155,
-//   160,
-//   165,
-//   170,
-//   175,
-//   180,
-//   185,
-//   190
-// ];
-// const List<int> WeightGroups = [
-//   45,
-//   50,
-//   55,
-//   60,
-//   65,
-//   70,
-//   75,
-//   80,
-//   85,
-//   90,
-//   95,
-//   100,
-//   110,
-//   120,
-// ];
+const List<int> HeightGroups = [
+  145,
+  150,
+  155,
+  160,
+  165,
+  170,
+  175,
+  180,
+  185,
+  190
+];
+const List<int> WeightGroups = [
+  45,
+  50,
+  55,
+  60,
+  65,
+  70,
+  75,
+  80,
+  85,
+  90,
+  95,
+  100,
+  110,
+  120,
+];
 
 const List<String> Cities = [
   'Seoul',
