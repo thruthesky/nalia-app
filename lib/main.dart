@@ -8,6 +8,7 @@ import 'package:nalia_app/screens/forum/forum.list.screen.dart';
 import 'package:nalia_app/screens/home/home.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
+import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 
@@ -58,6 +59,7 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.login, page: () => LoginScreen()),
         GetPage(name: RouteNames.profile, page: () => ProfileScreen()),
         GetPage(name: RouteNames.forumList, page: () => ForumListScreen()),
+        GetPage(name: RouteNames.userSearch, page: () => UserSearchScreen())
       ],
       // home: HomeScreen(),
     );

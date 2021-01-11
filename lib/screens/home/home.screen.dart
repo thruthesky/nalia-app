@@ -108,6 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                   ),
+                  RaisedButton(
+                    child: Text('User search'),
+                    onPressed: () => Get.toNamed(RouteNames.userSearch),
+                  ),
                 ],
               ),
               RaisedButton(

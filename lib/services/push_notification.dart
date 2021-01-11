@@ -8,10 +8,10 @@ import 'package:nalia_app/services/route_names.dart';
 /// Note that this method is on an isolated space.
 ///
 /// It works only on Android. it is not designed for iOS.
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print(
-      "_firebaseMessagingBackgroundHandler(): ${message.messageId}, ${message.notification.title}, ${message.notification.body}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print(
+//       "_firebaseMessagingBackgroundHandler(): ${message.messageId}, ${message.notification.title}, ${message.notification.body}");
+// }
 
 class PushNotification {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
