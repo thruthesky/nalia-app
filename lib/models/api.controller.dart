@@ -454,6 +454,15 @@ class API extends GetxController {
     forum.render();
   }
 
+  /// Return true if there is no problem on user's profile or throws an error.
+  Future<bool> checkUserProfile() async {
+    // print("if ($hasName && $hasGener && $hasBirthday)");
+    if (notLoggedIn) {
+      throw 'LOGIN_FIRST';
+    }
+    return true;
+  }
+
   /// EO
   ///
 

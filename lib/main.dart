@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/models/api.gallery.controller.dart';
 import 'package:nalia_app/screens/forum/forum.list.screen.dart';
@@ -10,11 +11,14 @@ import 'package:nalia_app/screens/gallery/gallery.screen.dart';
 import 'package:nalia_app/screens/home/home.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
+import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 
 void main() {
+  // Let the plugin know that this app supports pending purchases.
+  InAppPurchaseConnection.enablePendingPurchases();
   runApp(MainScreen());
 }
 
@@ -49,14 +53,26 @@ class _MainScreenState extends State<MainScreen> {
       // }();
     });
 
-    app.firebaseReady.listen((ready) {
+    app.firebaseReady.listen((ready) async {
       print('Firebase ready: $ready');
+      if (ready == false) return;
+      purchase.init(
+        productIds: {
+          'lucky_box',
+          'jewelry_box',
+          'diamond_box',
+        },
+      );
+      print(
+          'products: ${purchase.products} : Simulator does not show products.');
     });
 
     Dio dio = Dio();
     () async {
       final res = await dio
-          .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
+          // .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
+          .get(
+              'http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
 
       print('res: ${res.data}');
     }();
@@ -78,6 +94,7 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.forumList, page: () => ForumListScreen()),
         GetPage(name: RouteNames.userSearch, page: () => UserSearchScreen()),
         GetPage(name: RouteNames.gallery, page: () => GalleryScreen()),
+        GetPage(name: RouteNames.purchase, page: () => PurchaseScreen())
       ],
     );
   }

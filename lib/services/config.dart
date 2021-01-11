@@ -23,3 +23,5 @@ class Config {
 }
 
 String v3Url = Config.backendSiteUrl + '/index.php';
+
+// String v3Url = 'http://192.168.100.17/wordpress55/v3/index.php'; // Charles
