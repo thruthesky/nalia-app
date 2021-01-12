@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/models/api.gallery.controller.dart';
+import 'package:nalia_app/screens/chat/chat.room.screen.dart';
+import 'package:nalia_app/screens/chat/chat.user_room_list.screen.dart';
 import 'package:nalia_app/screens/forum/forum.list.screen.dart';
 import 'package:nalia_app/screens/gallery/gallery.screen.dart';
 import 'package:nalia_app/screens/home/home.screen.dart';
@@ -30,7 +34,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final API c = Get.put(api);
-  final Gallery b = Get.put(Gallery());
+  final Gallery g = Get.put(Gallery());
+  final Bio b = Get.put(Bio());
   @override
   void initState() {
     super.initState();
@@ -63,6 +68,26 @@ class _MainScreenState extends State<MainScreen> {
 
       print('res: ${res.data}');
     }();
+
+    app.firebaseReady.listen((ready) {
+      if (ready == false) return;
+      api.authStateChanges.listen((user) {
+        if (user == null) return;
+// Listening login user's chat room changes.
+        // This must be here to listen new messages outside from chat screens.
+        // Reset room list, when user just logs in/out.
+        if (myRoomList == null) {
+          myRoomList = ChatMyRoomList(
+            loginUserId: api.id,
+            render: () {
+              // When there are changes(events) on my chat room list,
+              // notify to listeners.
+              myRoomListChanges.add(myRoomList.rooms);
+            },
+          );
+        }
+      });
+    });
   }
 
   @override
@@ -82,7 +107,9 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.userSearch, page: () => UserSearchScreen()),
         GetPage(name: RouteNames.gallery, page: () => GalleryScreen()),
         GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
-        GetPage(name: RouteNames.menu, page: () => MenuScreen())
+        GetPage(name: RouteNames.menu, page: () => MenuScreen()),
+        GetPage(name: RouteNames.chatRoom, page: () => ChatRoomScreen()),
+        GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
       ],
     );
   }

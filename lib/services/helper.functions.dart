@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
 
 /// Returns a random string
 ///
@@ -34,4 +35,28 @@ Future<String> getAbsoluteTemporaryFilePath(String relativePath) async {
 ///
 String getFilenameFromPath(String path) {
   return path.split('/').last;
+}
+
+String dateTime(dynamic dt) {
+  /// Server timestamp fires the event twice.
+  if (dt == null) {
+    return '';
+  }
+  DateTime time = DateTime.fromMillisecondsSinceEpoch(dt.seconds * 1000);
+  return DateFormat('yyyy-MM-dd h:m:s').format(time);
+}
+
+/// Returns '9:04 PM' if it's today. Or it returns '12/30/20'.
+String shortDateTime(dynamic dt) {
+  /// If it's firestore `FieldValue.serverTimstamp()`, the event may be fired
+  /// twice.
+  if (dt == null) {
+    return '';
+  }
+  DateTime time = DateTime.fromMillisecondsSinceEpoch(dt.seconds * 1000);
+  DateTime today = DateTime.now();
+  if (time.year == today.year && time.month == today.month && time.day == today.day) {
+    return DateFormat.jm().format(time);
+  }
+  return DateFormat('dd/MM/yy').format(time);
 }

@@ -321,7 +321,7 @@ class _HomeUserCardBottomMenuState extends State<HomeUserCardBottomMenu> {
                         Icons.chat,
                         color: Colors.white,
                       ),
-                      onPressed: () => {}, // app.openChatRoom(uid: user.uid),
+                      onPressed: () => app.openChatRoom(userId: user.userId),
                     ),
                   ],
                 ),

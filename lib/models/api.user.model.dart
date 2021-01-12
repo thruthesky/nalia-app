@@ -46,7 +46,7 @@ class ApiUser {
   /// It is one of `login` or `register`.
   String mode;
   // String primaryPhotoUrl;
-  String get fullName => name;
+  // String get fullName => name;
   // String dateMethod;
   // String height;
   // String weight;

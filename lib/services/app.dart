@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
+import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
@@ -16,6 +17,7 @@ import 'package:nalia_app/services/helper.functions.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:nalia_app/services/push_notification.dart';
+import 'package:nalia_app/services/route_names.dart';
 
 import 'package:rxdart/subjects.dart';
 
@@ -76,6 +78,8 @@ class App {
     } else if (e is DioError) {
       print(e.error);
       msg = e.message;
+    } else if (e is FirebaseException) {
+      msg = "Firebase Exception: ${e.code}, ${e.message}";
     } else {
       /// other errors.
       msg = "Unknown error";
@@ -288,4 +292,32 @@ class App {
   Future recommend({ApiBio user, String jewelry, String item, int count}) async {
     return 0;
   }
+
+  openChatRoom({String roomId, String userId}) {
+    if (api.id == userId) {
+      return app.alert('cannot chat to yourself'.tr);
+    }
+    // chatRoomEnter.add({'roomId': roomId, 'uid': uid});
+    // homeStackChange(HomeStack.chatRoom);
+    Get.toNamed(RouteNames.chatRoom, arguments: {'roomId': roomId, 'userId': userId});
+  }
+
+  /// Return true if there is no problem on user's profile or throws an error.
+  Future<bool> checkUserProfile() async {
+    // print("if ($hasName && $hasGener && $hasBirthday)");
+    if (api.notLoggedIn) {
+      throw ERROR_LOGIN_FIRST;
+    }
+
+    if (profileReady == false) throw ERROR_PROFILE_READY;
+    return true;
+  }
+
+  bool get profileReady =>
+      Bio.data.profilePhotoUrl != null &&
+      Bio.data.profilePhotoUrl != '' &&
+      Bio.data.name != null &&
+      Bio.data.name != '';
+
+  bool get profileComplete => api.profileComplete;
 }

@@ -39,10 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ? LoginFirst()
             : SingleChildScrollView(
                 child: GetBuilder<Bio>(
-                  init: Bio(),
                   builder: (model) {
                     if (model.ready == false) return SizedBox.shrink();
-                    ApiBio bio = model.data;
+                    ApiBio bio = Bio.data;
                     return Container(
                       padding: EdgeInsets.only(left: md, right: md),
                       child: Column(
@@ -102,10 +101,7 @@ class _DateMethodState extends State<DateMethod> {
   void initState() {
     super.initState();
 
-    dateMethodSub = dateMethod
-        .debounceTime(Duration(milliseconds: 500))
-        .distinct()
-        .listen((v) {
+    dateMethodSub = dateMethod.debounceTime(Duration(milliseconds: 500)).distinct().listen((v) {
       Get.find<Bio>().updateBio('dateMethod', v);
     });
   }
@@ -128,7 +124,7 @@ class _DateMethodState extends State<DateMethod> {
         GetBuilder<Bio>(
           builder: (_) {
             return TextFormField(
-              initialValue: _.data?.dateMethod ?? '',
+              initialValue: Bio.data?.dateMethod ?? '',
               onChanged: (v) => dateMethod.add(v),
             );
           },
@@ -154,7 +150,7 @@ class Height extends StatelessWidget {
           GetBuilder<Bio>(
             builder: (_) {
               return DropdownButton<String>(
-                value: _.data?.height ?? '',
+                value: Bio.data?.height ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('height', v);
@@ -202,7 +198,7 @@ class Weight extends StatelessWidget {
           GetBuilder<Bio>(
             builder: (_) {
               return DropdownButton<String>(
-                value: _.data?.weight ?? '',
+                value: Bio.data?.weight ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('weight', v);
@@ -249,7 +245,7 @@ class City extends StatelessWidget {
           GetBuilder<Bio>(
             builder: (_) {
               return DropdownButton<String>(
-                value: _.data?.city ?? '',
+                value: Bio.data?.city ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('city', v);
@@ -296,7 +292,7 @@ class Hobby extends StatelessWidget {
           GetBuilder<Bio>(
             builder: (_) {
               return DropdownButton<String>(
-                value: _.data?.hobby ?? '',
+                value: Bio.data?.hobby ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('hobby', v);
@@ -344,7 +340,7 @@ class Drinking extends StatelessWidget {
             builder: (_) {
               return SwitchListTile(
                 title: Text('drinking_yn'.tr),
-                value: _.data?.drinking == 'Y' ? true : false,
+                value: Bio.data?.drinking == 'Y' ? true : false,
                 onChanged: (bool value) async {
                   try {
                     await _.updateBio('drinking', value ? 'Y' : 'N');
@@ -375,7 +371,7 @@ class Smoking extends StatelessWidget {
             builder: (_) {
               return SwitchListTile(
                 title: Text('smoking_yn'.tr),
-                value: _.data?.smoking == 'Y' ? true : false,
+                value: Bio.data?.smoking == 'Y' ? true : false,
                 onChanged: (bool value) async {
                   try {
                     await _.updateBio('smoking', value ? 'Y' : 'N');

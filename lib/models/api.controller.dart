@@ -116,7 +116,7 @@ class API extends GetxController {
   String get id => user?.id;
   String get sessionId => user?.sessionId;
   String get primaryPhotoUrl => user?.profilePhotoUrl;
-  String get fullName => user?.fullName;
+  String get fullName => user?.name;
   bool get profileComplete =>
       loggedIn && primaryPhotoUrl != null && primaryPhotoUrl.isNotEmpty && fullName != null && fullName.isNotEmpty;
 

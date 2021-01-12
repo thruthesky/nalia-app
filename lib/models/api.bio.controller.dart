@@ -5,16 +5,22 @@ import 'package:nalia_app/services/global.dart';
 
 class Bio extends GetxController {
   static Bio to = Get.find<Bio>();
-  ApiBio data;
+  static ApiBio data;
   bool ready = false;
   @override
   void onInit() {
     super.onInit();
 
-    getBio().then((bio) {
-      this.data = bio;
-      ready = true;
-      update();
+    api.authStateChanges.listen((user) {
+      if (user == null) {
+        Bio.data = null;
+      } else {
+        getBio().then((bio) {
+          Bio.data = bio;
+          ready = true;
+          update();
+        });
+      }
     });
   }
 

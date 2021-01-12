@@ -49,6 +49,8 @@ dependencies:
   line_chart: ^1.0.9
   percent_indicator: ^2.1.8
 
+  flutter_keyboard_visibility: ^4.0.2
+
   image_picker:
     git:
       url: https://github.com/cpboyd/plugins.git
