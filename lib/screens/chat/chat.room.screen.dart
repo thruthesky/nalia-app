@@ -57,7 +57,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     return _text;
   }
 
+  /// upload progress
   double progress = 0;
+
+  /// image type
+  String imageType = 'image';
 
   /// Scrolls down to the bottom when,
   /// * chat room is loaded (only one time.)
@@ -239,7 +243,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                     message.senderPhotoURL,
                                     size: 42,
                                   ),
-                            title: message.type == MessageType.image
+                            title: message.type == imageType
                                 ? CacheImage(message.text)
                                 : Text(
                                     translateIfChatProtocol(message.text),
@@ -300,7 +304,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 text: file.thumbnailUrl,
                                 displayName: Bio.data.userId,
                                 photoURL: Bio.data.profilePhotoUrl,
-                                type: MessageType.image,
+                                type: imageType,
                               );
                             } catch (e) {
                               app.error(e);
