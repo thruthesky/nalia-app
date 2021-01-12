@@ -30,7 +30,8 @@ class Forum {
   bool get canLoad => loading == false && noMorePosts == false;
   bool get canList => postInEdit == null && posts.length > 0;
   final ItemScrollController listController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   Function render;
 
@@ -94,7 +95,8 @@ class API extends GetxController {
       /// Load user profile from localStorage.
       /// If the user has logged in previously, he will be auto logged in on next app running.
       user = _loadUserProfile();
-      if (loggedIn) print('ApiUser logged in with cached profile: ${user.sessionId}');
+      if (loggedIn)
+        print('ApiUser logged in with cached profile: ${user.sessionId}');
 
       /// If user has logged in with localStorage data, refresh the user data from backend.
       if (loggedIn) {
@@ -118,7 +120,11 @@ class API extends GetxController {
   String get primaryPhotoUrl => user?.profilePhotoUrl;
   String get fullName => user?.name;
   bool get profileComplete =>
-      loggedIn && primaryPhotoUrl != null && primaryPhotoUrl.isNotEmpty && fullName != null && fullName.isNotEmpty;
+      loggedIn &&
+      primaryPhotoUrl != null &&
+      primaryPhotoUrl.isNotEmpty &&
+      fullName != null &&
+      fullName.isNotEmpty;
 
   bool get loggedIn => user != null && user.sessionId != null;
   bool get notLoggedIn => !loggedIn;
@@ -239,7 +245,8 @@ class API extends GetxController {
 
   userProfile(String sessionId) async {
     if (sessionId == null) return;
-    final Map<String, dynamic> data = await request({'route': 'user.profile', 'session_id': sessionId});
+    final Map<String, dynamic> data =
+        await request({'route': 'user.profile', 'session_id': sessionId});
     user = ApiUser.fromJson(data);
     update();
     return user;
@@ -277,7 +284,10 @@ class API extends GetxController {
     final data = {
       'route': 'forum.editComment',
       'comment_post_ID': post.id,
-      if (comment != null && comment.commentId != null && comment.commentId != '') 'comment_ID': comment.commentId,
+      if (comment != null &&
+          comment.commentId != null &&
+          comment.commentId != '')
+        'comment_ID': comment.commentId,
       if (parent != null) 'comment_parent': parent.commentId,
       'comment_content': content ?? '',
     };
@@ -294,7 +304,8 @@ class API extends GetxController {
     return ApiPost.fromJson(json);
   }
 
-  Future<Map<dynamic, dynamic>> setFeaturedImage(ApiPost post, ApiFile file) async {
+  Future<Map<dynamic, dynamic>> setFeaturedImage(
+      ApiPost post, ApiFile file) async {
     final json = await request({
       'route': 'forum.setFeaturedImage',
       'ID': post.id,
@@ -337,7 +348,8 @@ class API extends GetxController {
     return data['comment_ID'];
   }
 
-  Future<List<ApiPost>> searchPost({String category, int limit = 20, int paged = 1, String author}) async {
+  Future<List<ApiPost>> searchPost(
+      {String category, int limit = 20, int paged = 1, String author}) async {
     final Map<String, dynamic> data = {};
     data['route'] = 'forum.search';
     data['category_name'] = category;
@@ -431,7 +443,8 @@ class API extends GetxController {
     forum.render();
 
     List<ApiPost> _posts;
-    _posts = await searchPost(category: forum.category, paged: forum.pageNo, limit: forum.limit);
+    _posts = await searchPost(
+        category: forum.category, paged: forum.pageNo, limit: forum.limit);
 
     if (_posts.length == 0) {
       forum.noMorePosts = true;
@@ -476,5 +489,24 @@ class API extends GetxController {
   /// Get login user's record of a table.
   Future appGet(String table) {
     return request({'route': 'app.get', 'table': table});
+  }
+
+  recordFailurePurchase(Map<String, dynamic> data) {
+    data['route'] = 'in_app_purchase.recordFailure';
+    return request(data);
+  }
+
+  recordPendingPurchase(Map<String, dynamic> data) {
+    data['route'] = 'in_app_purchase.recordPending';
+    return request(data);
+  }
+
+  recordSuccessPurchase(Map<String, dynamic> data) {
+    data['route'] = 'in_app_purchase.recordSuccess';
+    return request(data);
+  }
+
+  getMyPurchases() {
+    return request({'route': 'in_app_purchase.myPurchase'});
   }
 }
