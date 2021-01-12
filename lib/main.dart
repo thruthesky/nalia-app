@@ -64,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
     () async {
       final res = await dio
           // .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
-          .get('http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
+          .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
 
       print('res: ${res.data}');
     }();

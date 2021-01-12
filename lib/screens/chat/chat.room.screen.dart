@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.bio.controller.dart';
+import 'package:nalia_app/models/api.bio.model.dart';
+import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/helper.functions.dart';
@@ -30,7 +32,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   StreamSubscription keyboardSubscription;
 
   bool get atBottom {
-    return scrollController.offset > (scrollController.position.maxScrollExtent - 640);
+    return scrollController.offset >
+        (scrollController.position.maxScrollExtent - 640);
   }
 
   bool get atTop {
@@ -38,11 +41,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   }
 
   bool get scrollUp {
-    return scrollController.position.userScrollDirection == ScrollDirection.forward;
+    return scrollController.position.userScrollDirection ==
+        ScrollDirection.forward;
   }
 
   bool get scrollDown {
-    return scrollController.position.userScrollDirection == ScrollDirection.reverse;
+    return scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse;
   }
 
   String get text {
@@ -96,7 +101,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     // if there is no incoming chat room id, then, create one
     try {
       await app.checkUserProfile();
-      await chat.enter(id: args['roomId'], users: [args['userId']], hatch: false);
+      await chat.enter(
+          id: args['roomId'], users: [args['userId']], hatch: false);
     } catch (e) {
       app.error(e);
     }
@@ -109,7 +115,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     });
 
     // scroll to bottom only if needed when user open/hide keyboard.
-    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
       if (visible && atBottom) {
         scrollToBottom(ms: 10);
       }
@@ -155,23 +162,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     String uid = chat.global.otherUserId;
     if (uid == null) return SizedBox.shrink();
 
-    return Text('Other user name');
+    // return Text('Other user name');
 
     // If there is other user, then return his name.
-    // return FutureBuilder(
-    //   future: ff.getOtherUserPublicData(uid),
-    //   builder: (_, snapshot) {
-    //     if (snapshot.hasError) return SizedBox.shrink();
-    //     if (snapshot.connectionState == ConnectionState.waiting) return Spinner();
-
-    //     final AppUser public = AppUser.fromData(snapshot.data, uid);
-    //     _otherUsername = Text(
-    //       public.fullName,
-    //       style: TextStyle(fontSize: md),
-    //     );
-    //     return _otherUsername;
-    //   },
-    // );
+    return FutureBuilder(
+      future: api.getOtherUserProfile(uid),
+      builder: (_, snapshot) {
+        if (snapshot.hasError) return SizedBox.shrink();
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Spinner();
+        final ApiUser public = snapshot.data;
+        _otherUsername = Text(
+          public.name,
+          style: TextStyle(fontSize: md),
+        );
+        return _otherUsername;
+      },
+    );
   }
 
   @override
@@ -209,8 +216,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('User name'),
-              IconButton(icon: Icon(Icons.notification_important), onPressed: () {}),
+              otherUsername,
+              IconButton(
+                  icon: Icon(Icons.notification_important), onPressed: () {}),
             ],
           ),
         ),
@@ -225,7 +233,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         controller: scrollController,
                         itemCount: chat.messages.length,
                         itemBuilder: (_, i) {
-                          final message = ChatMessage.fromData(chat.messages[i]);
+                          final message =
+                              ChatMessage.fromData(chat.messages[i]);
+
+                          print("first message : " + message.toString());
                           return ListTile(
                             leading: message.isMine(api.id)
                                 ? SizedBox.shrink()
@@ -235,12 +246,16 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                   ),
                             title: Text(
                               translateIfChatProtocol(message.text),
-                              textAlign: message.isMine(api.id) ? TextAlign.right : TextAlign.left,
+                              textAlign: message.isMine(api.id)
+                                  ? TextAlign.right
+                                  : TextAlign.left,
                             ),
                             subtitle: Text(
                               'at ' + dateTime(message.createdAt),
                               style: TextStyle(fontSize: 8),
-                              textAlign: message.isMine(api.id) ? TextAlign.right : TextAlign.left,
+                              textAlign: message.isMine(api.id)
+                                  ? TextAlign.right
+                                  : TextAlign.left,
                             ),
                             trailing: message.isMine(api.id)
                                 ? UserAvatar(

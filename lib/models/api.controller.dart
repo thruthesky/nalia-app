@@ -239,9 +239,16 @@ class API extends GetxController {
 
   userProfile(String sessionId) async {
     if (sessionId == null) return;
-    final Map<String, dynamic> data = await request({'route': 'user.profile', 'session_id': sessionId});
-    user = ApiUser.fromJson(data);
+    final Map<String, dynamic> res = await request({'route': 'user.profile', 'session_id': sessionId});
+    user = ApiUser.fromJson(res);
     update();
+    return user;
+  }
+
+  getOtherUserProfile(String userID) async {
+    if (userID == null || userID == '') return;
+    final Map<String, dynamic> res = await request({'route': 'user.profile', 'user_ID': userID});
+    user = ApiUser.fromJson(res);
     return user;
   }
 

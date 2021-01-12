@@ -99,7 +99,7 @@ class ApiPost {
         category: json["category"],
         featuredImageUrl: json["featured_image_url"],
         featuredImageThumbnailUrl: json["featured_image_thumbnail_url"],
-        featuredImageId: json["featured_image_ID"] ?? 0,
+        featuredImageId: int.parse(json["featured_image_ID"] ?? '0'),
       );
 
   Map<String, dynamic> toJson() => {
