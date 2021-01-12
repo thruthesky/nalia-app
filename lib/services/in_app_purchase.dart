@@ -170,10 +170,10 @@ class FireflutterInAppPurchase {
   /// Not that the app can then, connect to backend server to verifiy if the
   /// payment was really made and deliver products to user on the backend.
   ///
-  /// Note that, the event data of [success] is `PurchaseSession`
+  /// Note that, the event data of [success] is `PurchaseDetails`
   ///
   // ignore: close_sinks
-  PublishSubject<PurchaseSession> success = PublishSubject<PurchaseSession>();
+  PublishSubject<PurchaseDetails> success = PublishSubject<PurchaseDetails>();
 
   InAppPurchaseConnection connection = InAppPurchaseConnection.instance;
 
@@ -241,8 +241,8 @@ class FireflutterInAppPurchase {
             }
             if (purchaseDetails.pendingCompletePurchase) {
               await connection.completePurchase(purchaseDetails);
-              final session = await _recordSuccess(purchaseDetails);
-              success.add(session);
+              await _recordSuccess(purchaseDetails);
+              success.add(purchaseDetails);
             }
           }
         },
@@ -283,17 +283,17 @@ class FireflutterInAppPurchase {
     ProductDetails productDetails = products[purchaseDetails.productID];
     final Map<String, dynamic> data = {
       'status': SessionStatus.pending,
-      'productDetails_id': productDetails.id,
-      'productDetails_title': productDetails.title,
-      'productDetails_description': productDetails.description,
-      'productDetails_price': productDetails.price,
-      'purchaseDetails_productID': purchaseDetails.productID,
+      'productDetails_id': productDetails?.id,
+      'productDetails_title': productDetails?.title,
+      'productDetails_description': productDetails?.description,
+      'productDetails_price': productDetails?.price,
+      'purchaseDetails_productID': purchaseDetails?.productID,
       'purchaseDetails_pendingCompletePurchase':
-          purchaseDetails.pendingCompletePurchase,
+          purchaseDetails?.pendingCompletePurchase,
       'purchaseDetails_verificationData_localVerificationData':
-          purchaseDetails.verificationData.localVerificationData,
+          purchaseDetails?.verificationData?.localVerificationData,
       'purchaseDetails_verificationData_serverVerificationData':
-          purchaseDetails.verificationData.serverVerificationData,
+          purchaseDetails?.verificationData?.serverVerificationData,
     };
     await api.recordFailurePurchase(data);
   }
@@ -302,9 +302,9 @@ class FireflutterInAppPurchase {
     print(purchaseDetails);
     final Map<String, dynamic> data = {
       'status': SessionStatus.failure,
-      'purchaseDetails_productID': purchaseDetails.productID,
+      'purchaseDetails_productID': purchaseDetails?.productID,
       'purchaseDetails_skPaymentTransaction_transactionIdentifier':
-          purchaseDetails.skPaymentTransaction.transactionIdentifier,
+          purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
     };
     await api.recordFailurePurchase(data);
   }
@@ -313,30 +313,30 @@ class FireflutterInAppPurchase {
     ProductDetails productDetails = products[purchaseDetails.productID];
     final Map<String, dynamic> data = {
       'status': SessionStatus.success,
-      'purchaseDetails_transactionDate': purchaseDetails.transactionDate,
-      'purchaseDetails_purchaseID': purchaseDetails.purchaseID,
+      'purchaseDetails_transactionDate': purchaseDetails?.transactionDate,
+      'purchaseDetails_purchaseID': purchaseDetails?.purchaseID,
       'purchaseDetails_skPaymentTransaction_payment_productIdentifier':
-          purchaseDetails.skPaymentTransaction.payment.productIdentifier,
+          purchaseDetails?.skPaymentTransaction?.payment?.productIdentifier,
       'purchaseDetails_skPaymentTransaction_payment_quantity':
-          purchaseDetails.skPaymentTransaction.payment.quantity,
+          purchaseDetails?.skPaymentTransaction?.payment?.quantity,
       'purchaseDetails_skPaymentTransaction_transactionIdentifier':
-          purchaseDetails.skPaymentTransaction.transactionIdentifier,
+          purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
       'purchaseDetails_skPaymentTransaction_transactionTimeStamp':
-          purchaseDetails.skPaymentTransaction.transactionTimeStamp,
+          purchaseDetails?.skPaymentTransaction?.transactionTimeStamp,
       'purchaseDetails_verificationData_localVerificationData':
-          purchaseDetails.verificationData.localVerificationData,
+          purchaseDetails?.verificationData?.localVerificationData,
       'purchaseDetails_verificationData_serverVerificationData':
-          purchaseDetails.verificationData.serverVerificationData,
+          purchaseDetails?.verificationData?.serverVerificationData,
       'purchaseDetails_pendingCompletePurchase':
-          purchaseDetails.pendingCompletePurchase,
-      'productDetails_price': productDetails.price,
-      'productDetails_skProduct_price': productDetails.skProduct.price,
+          purchaseDetails?.pendingCompletePurchase,
+      'productDetails_price': productDetails?.price,
+      'productDetails_skProduct_price': productDetails?.skProduct?.price,
       'productDetails_skProduct_priceLocale_currencyCode':
-          productDetails.skProduct.priceLocale.currencyCode,
+          productDetails?.skProduct?.priceLocale?.currencyCode,
       'productDetails_skProduct_priceLocale_currencySymbol':
-          productDetails.skProduct.priceLocale.currencySymbol,
+          productDetails?.skProduct?.priceLocale?.currencySymbol,
       'productDetails_skProduct_productIdentifier':
-          productDetails.skProduct.productIdentifier,
+          productDetails?.skProduct?.productIdentifier,
     };
     await api.recordSuccessPurchase(data);
   }

@@ -61,14 +61,15 @@ class _MainScreenState extends State<MainScreen> {
           'products: ${purchase.products} : Simulator does not show products.');
     });
 
-    Dio dio = Dio();
-    () async {
-      final res = await dio
-          .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
-      // .get('http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
+    // Dio dio = Dio();
+    // () async {
+    //   final res = await dio
+    //       // .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
+    //       .get(
+    //           'http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
 
-      print('res: ${res.data}');
-    }();
+    //   print('res: ${res.data}');
+    // }();
 
     app.firebaseReady.listen((ready) {
       if (ready == false) return;

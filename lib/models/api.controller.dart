@@ -498,21 +498,21 @@ class API extends GetxController {
   }
 
   recordFailurePurchase(Map<String, dynamic> data) {
-    data['route'] = 'in_app_purchase.recordFailure';
+    data['route'] = 'inAppPurchase.recordFailure';
     return request(data);
   }
 
   recordPendingPurchase(Map<String, dynamic> data) {
-    data['route'] = 'in_app_purchase.recordPending';
+    data['route'] = 'inAppPurchase.recordPending';
     return request(data);
   }
 
   recordSuccessPurchase(Map<String, dynamic> data) {
-    data['route'] = 'in_app_purchase.recordSuccess';
+    data['route'] = 'inAppPurchase.recordSuccess';
     return request(data);
   }
 
   getMyPurchases() {
-    return request({'route': 'in_app_purchase.myPurchase'});
+    return request({'route': 'inAppPurchase.myPurchase'});
   }
 }
