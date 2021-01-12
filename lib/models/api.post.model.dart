@@ -101,7 +101,8 @@ class ApiPost {
             ? 0
             : json["featured_image_ID"] is int
                 ? json["featured_image_ID"]
-                : json["featured_image_ID"].toString(),
+                /// Fix bug here, parse and return int if not as int already.
+                : int.parse(json["featured_image_ID"]),
       );
 
   Map<String, dynamic> toJson() => {

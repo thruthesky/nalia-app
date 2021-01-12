@@ -4,11 +4,12 @@ import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
-import 'package:nalia_app/models/api.user.model.dart';
+import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/helper.functions.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:nalia_app/widgets/cache_image.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 
@@ -32,7 +33,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   StreamSubscription keyboardSubscription;
 
   bool get atBottom {
-    return scrollController.offset > (scrollController.position.maxScrollExtent - 640);
+    return scrollController.offset >
+        (scrollController.position.maxScrollExtent - 640);
   }
 
   bool get atTop {
@@ -40,11 +42,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   }
 
   bool get scrollUp {
-    return scrollController.position.userScrollDirection == ScrollDirection.forward;
+    return scrollController.position.userScrollDirection ==
+        ScrollDirection.forward;
   }
 
   bool get scrollDown {
-    return scrollController.position.userScrollDirection == ScrollDirection.reverse;
+    return scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse;
   }
 
   String get text {
@@ -52,6 +56,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     textController.text = '';
     return _text;
   }
+
+  /// upload progress
+  double progress = 0;
 
   /// Scrolls down to the bottom when,
   /// * chat room is loaded (only one time.)
@@ -98,7 +105,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     // if there is no incoming chat room id, then, create one
     try {
       await app.checkUserProfile();
-      await chat.enter(id: args['roomId'], users: [args['userId']], hatch: false);
+      await chat.enter(
+          id: args['roomId'], users: [args['userId']], hatch: false);
     } catch (e) {
       app.error(e);
     }
@@ -111,7 +119,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     });
 
     // scroll to bottom only if needed when user open/hide keyboard.
-    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
       if (visible && atBottom) {
         scrollToBottom(ms: 10);
       }
@@ -164,7 +173,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       future: app.getBio(uid),
       builder: (_, snapshot) {
         if (snapshot.hasError) return SizedBox.shrink();
-        if (snapshot.connectionState == ConnectionState.waiting) return Spinner();
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Spinner();
         _otherUsername = Text(
           snapshot.data.name,
           style: TextStyle(fontSize: md),
@@ -205,7 +215,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               otherUsername,
-              IconButton(icon: Icon(Icons.notification_important), onPressed: () {}),
+              IconButton(
+                  icon: Icon(Icons.notification_important), onPressed: () {}),
             ],
           ),
         ),
@@ -220,9 +231,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         controller: scrollController,
                         itemCount: chat.messages.length,
                         itemBuilder: (_, i) {
-                          final message = ChatMessage.fromData(chat.messages[i]);
-
-                          print("first message : " + message.toString());
+                          final message =
+                              ChatMessage.fromData(chat.messages[i]);
                           return ListTile(
                             leading: message.isMine(api.id)
                                 ? SizedBox.shrink()
@@ -230,14 +240,20 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                     message.senderPhotoURL,
                                     size: 42,
                                   ),
-                            title: Text(
-                              translateIfChatProtocol(message.text),
-                              textAlign: message.isMine(api.id) ? TextAlign.right : TextAlign.left,
-                            ),
+                            title: message.isImage
+                                ? CacheImage(message.text)
+                                : Text(
+                                    translateIfChatProtocol(message.text),
+                                    textAlign: message.isMine(api.id)
+                                        ? TextAlign.right
+                                        : TextAlign.left,
+                                  ),
                             subtitle: Text(
                               'at ' + dateTime(message.createdAt),
                               style: TextStyle(fontSize: 8),
-                              textAlign: message.isMine(api.id) ? TextAlign.right : TextAlign.left,
+                              textAlign: message.isMine(api.id)
+                                  ? TextAlign.right
+                                  : TextAlign.left,
                             ),
                             trailing: message.isMine(api.id)
                                 ? UserAvatar(
@@ -254,6 +270,43 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     padding: EdgeInsets.all(sm),
                     child: Row(
                       children: [
+                        /// Upload Icon Button
+                        IconButton(
+                          /// if progress is not 0, show loader.
+                          icon: progress != 0
+                              ? Spinner()
+                              : Icon(Icons.camera_alt),
+                          onPressed: () async {
+                            /// return of still on progress of uploading.
+                            if (progress != 0) return;
+
+                            try {
+                              /// upload to php backend
+                              ApiFile file = await app.imageUpload(
+                                onProgress: (p) => setState(
+                                  () {
+                                    if (p == 100) {
+                                      Timer(Duration(milliseconds: 400), () {
+                                        progress = 0;
+                                      });
+                                    } else {
+                                      progress = p;
+                                    }
+                                  },
+                                ),
+                              );
+
+                              /// send plain url to firebase with additional data to determine type.
+                              await chat.sendMessage(
+                                text: file.thumbnailUrl,
+                                displayName: Bio.data.userId,
+                                photoURL: Bio.data.profilePhotoUrl,
+                              );
+                            } catch (e) {
+                              app.error(e);
+                            }
+                          },
+                        ),
                         Expanded(
                           child: TextFormField(
                             controller: textController,
