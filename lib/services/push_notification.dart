@@ -103,7 +103,7 @@ class PushNotification {
     }
 
     if (message?.data['type'] == 'post') {
-      Get.toNamed(RouteNames.forumList, arguments: {'id', message.data['id']});
+      app.open(RouteNames.forumList, arguments: {'id': message.data['id']});
     }
   }
 
@@ -117,7 +117,7 @@ class PushNotification {
     app.alert(str);
     // If it the message has data, then do some exttra work based on the data.
     if (initialMessage?.data['type'] == 'post') {
-      Get.toNamed(RouteNames.forumList, arguments: {'id', initialMessage.data['id']});
+      app.open(RouteNames.forumList, arguments: {'id': initialMessage.data['id']});
     }
   }
 
@@ -128,7 +128,7 @@ class PushNotification {
     print("onMessageOpenedFromBackground."
         " Message: ${message.notification.title}, ${message.notification.body}. data: ${message.data}");
     if (message.data['type'] == 'post') {
-      Get.toNamed(RouteNames.forumList, arguments: {'id', message.data['id']});
+      app.open(RouteNames.forumList, arguments: {'id': message.data['id']});
     }
   }
 

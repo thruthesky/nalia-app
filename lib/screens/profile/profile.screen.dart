@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               child: Text('사진 등록'),
-                              onPressed: () => Get.toNamed(RouteNames.gallery),
+                              onPressed: () => app.open(RouteNames.gallery),
                               // app.homeStackChange(HomeStack.gallery),
                             ),
                           ),

@@ -346,7 +346,7 @@ class _HomeUserCardBottomMenuState extends State<HomeUserCardBottomMenu> {
                         onPressed: () {
                           print('search');
                           // app.homeStackChange(HomeStack.userSearch);
-                          Get.toNamed(RouteNames.userSearch);
+                          app.open(RouteNames.userSearch);
                         }),
                   ],
                 ),

@@ -11,6 +11,7 @@ class Config {
       return 'https://api.nalia.kr/v3';
     } else {
       if (device == 'simulator') {
+        // return 'http://192.168.0.5/wordpress/v3';
         return 'https://local.nalia.kr/v3';
       } else {
         // return 'http://192.168.0.5/wordpress/v3'; // Mr Song

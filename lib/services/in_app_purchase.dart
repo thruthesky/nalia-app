@@ -330,7 +330,7 @@ class FireflutterInAppPurchase {
       'purchaseDetails_pendingCompletePurchase':
           purchaseDetails.pendingCompletePurchase,
       'productDetails_price': productDetails.price,
-      'productDetails_skProduct.price': productDetails.skProduct.price,
+      'productDetails_skProduct_price': productDetails.skProduct.price,
       'productDetails_skProduct_priceLocale_currencyCode':
           productDetails.skProduct.priceLocale.currencyCode,
       'productDetails_skProduct_priceLocale_currencySymbol':

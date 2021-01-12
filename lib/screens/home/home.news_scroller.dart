@@ -163,7 +163,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
   @override
   void dispose() {
     super.dispose();
-    notificationSubscription.cancel();
+    if (notificationSubscription != null) notificationSubscription.cancel();
   }
 
   @override

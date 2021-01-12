@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.bio.controller.dart';
+import 'package:nalia_app/models/api.bio.model.dart';
+import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/helper.functions.dart';
@@ -155,43 +157,36 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     String uid = chat.global.otherUserId;
     if (uid == null) return SizedBox.shrink();
 
-    return Text('Other user name');
+    // return Text('Other user name');
 
     // If there is other user, then return his name.
-    // return FutureBuilder(
-    //   future: ff.getOtherUserPublicData(uid),
-    //   builder: (_, snapshot) {
-    //     if (snapshot.hasError) return SizedBox.shrink();
-    //     if (snapshot.connectionState == ConnectionState.waiting) return Spinner();
-
-    //     final AppUser public = AppUser.fromData(snapshot.data, uid);
-    //     _otherUsername = Text(
-    //       public.fullName,
-    //       style: TextStyle(fontSize: md),
-    //     );
-    //     return _otherUsername;
-    //   },
-    // );
+    return FutureBuilder<ApiBio>(
+      future: app.getBio(uid),
+      builder: (_, snapshot) {
+        if (snapshot.hasError) return SizedBox.shrink();
+        if (snapshot.connectionState == ConnectionState.waiting) return Spinner();
+        _otherUsername = Text(
+          snapshot.data.name,
+          style: TextStyle(fontSize: md),
+        );
+        return _otherUsername;
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
+    print('ChatRoomScreen::initState()');
     enterChatRoom(Get.arguments);
   }
 
   @override
   void dispose() {
     super.dispose();
-
+    print('ChatRoomScreen::dispose()');
     chat.unsubscribe();
     chat = null;
-
-    // bool keyboardOpen = KeyboardVisibilityProvider.isKeyboardVisible(context);
-    // print('keyboardOpen: $keyboardOpen');
-    // if (keyboardOpen) {
-    //   FocusScope.of(Get.context).requestFocus(new FocusNode());
-    // }
 
     keyboardSubscription.cancel();
   }
@@ -209,7 +204,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('User name'),
+              otherUsername,
               IconButton(icon: Icon(Icons.notification_important), onPressed: () {}),
             ],
           ),
@@ -226,6 +221,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         itemCount: chat.messages.length,
                         itemBuilder: (_, i) {
                           final message = ChatMessage.fromData(chat.messages[i]);
+
+                          print("first message : " + message.toString());
                           return ListTile(
                             leading: message.isMine(api.id)
                                 ? SizedBox.shrink()

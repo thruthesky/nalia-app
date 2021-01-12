@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
@@ -10,6 +12,7 @@ import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:badges/badges.dart';
 
 class CustomAppBarMenu extends StatefulWidget {
   CustomAppBarMenu({@required this.route});
@@ -19,6 +22,34 @@ class CustomAppBarMenu extends StatefulWidget {
 }
 
 class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
+  StreamSubscription subscription;
+  int count = 0;
+  @override
+  void initState() {
+    super.initState();
+    subscription = myRoomListChanges.listen((rooms) {
+      count = 0;
+      if (rooms != null && rooms.length > 0) {
+        for (final room in rooms) {
+          // Skip counting
+          if (chat != null && chat.id == room.id) {
+            continue;
+          }
+          if (room.newMessages != null) {
+            count += room.newMessages;
+          }
+        }
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    subscription.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     Color color = widget.route == RouteNames.home ? Colors.white : kPrimaryColor;
@@ -33,7 +64,7 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
             children: [
               IconButton(
                 icon: Icon(FontAwesome5Solid.users, color: color),
-                onPressed: () => Get.toNamed(RouteNames.home),
+                onPressed: () => app.open(RouteNames.home),
                 splashRadius: 28.4,
               ),
               IconButton(
@@ -50,21 +81,35 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
 
                   return Icon(FontAwesome5Solid.heartbeat, color: color);
                 }),
-                onPressed: () => Get.toNamed(RouteNames.myJewelry),
+                onPressed: () => app.open(RouteNames.myJewelry),
                 splashRadius: 28.4,
               ),
-              IconButton(
-                icon: Icon(FontAwesome5Solid.comments, color: color),
-                onPressed: () => Get.toNamed(RouteNames.chatRoomList),
-                splashRadius: 28.4,
+              GestureDetector(
+                onTap: () => app.open(RouteNames.chatRoomList),
+                behavior: HitTestBehavior.opaque,
+                child: Badge(
+                  showBadge: count > 0,
+                  toAnimate: false,
+                  badgeContent: Text(
+                    '$count',
+                    style: TextStyle(fontSize: 11, color: Colors.white),
+                  ),
+                  child: Icon(FontAwesome5Solid.comments, color: color),
+                ),
               ),
+
+              // IconButton(
+              //   icon: Icon(FontAwesome5Solid.comments, color: color),
+              //   onPressed: () => app.open(RouteNames.chatRoomList),
+              //   splashRadius: 28.4,
+              // ),
 
               GetBuilder<Gallery>(
                 builder: (_) {
                   return UserAvatar(
                     _.featuredImageUrl,
                     size: HEADER_HEIGHT - 10.0,
-                    onTap: () => Get.toNamed(RouteNames.profile),
+                    onTap: () => app.open(RouteNames.profile),
                   );
                 },
               ),
@@ -75,7 +120,7 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
               //     return UserAvatar(
               //       ff.userPublicData[PRIMARY_PHOTO],
               //       size: HEADER_HEIGHT - 10.0,
-              //       onTap: () => Get.toNamed(RouteNames.profile),
+              //       onTap: () => app.open(RouteNames.profile),
               //     );
               //   },
               // ),
@@ -83,7 +128,7 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
                 children: [
                   IconButton(
                     icon: Icon(FontAwesome5Solid.bars, color: color),
-                    onPressed: () => Get.toNamed(RouteNames.menu),
+                    onPressed: () => app.open(RouteNames.menu),
                     splashRadius: 28.4,
                   ),
                   AppIndicator(),
@@ -134,7 +179,7 @@ class _AppIndicatorState extends State<AppIndicator> {
             EtcIndicator(),
           ],
         ),
-        onTap: () => Get.toNamed(RouteNames.menu),
+        onTap: () => app.open(RouteNames.menu),
       ),
     );
   }

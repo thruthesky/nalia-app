@@ -299,7 +299,7 @@ class App {
     }
     // chatRoomEnter.add({'roomId': roomId, 'uid': uid});
     // homeStackChange(HomeStack.chatRoom);
-    Get.toNamed(RouteNames.chatRoom, arguments: {'roomId': roomId, 'userId': userId});
+    app.open(RouteNames.chatRoom, arguments: {'roomId': roomId, 'userId': userId});
   }
 
   /// Return true if there is no problem on user's profile or throws an error.
@@ -320,4 +320,17 @@ class App {
       Bio.data.name != '';
 
   bool get profileComplete => api.profileComplete;
+
+  Future<ApiBio> getBio(String userId) async {
+    final rows = await api.query("bio", "user_ID=$userId");
+    if (rows.length == 0) {
+      return null;
+    } else {
+      return ApiBio.fromJson(rows[0]);
+    }
+  }
+
+  open(String routeName, {Map<String, dynamic> arguments}) {
+    Get.offAllNamed(routeName, arguments: arguments);
+  }
 }
