@@ -14,8 +14,11 @@ dependencies:
 
   cupertino_icons: ^1.0.0
 
-  firebase_core: "0.5.3"
+  firebase_core: "0.6.0"
+  cloud_firestore: "^0.15.0"
   firebase_messaging: "^8.0.0-dev.11"
+
+  crypto: ^2.1.5
 
   rxdart: ^0.25.0
   dio: ^3.0.10
@@ -62,6 +65,9 @@ dependencies:
 
   icon_animator:
     path: packages/icon_animator
+
+  firechat:
+    path: packages/firechat
 
 dev_dependencies:
   flutter_test:

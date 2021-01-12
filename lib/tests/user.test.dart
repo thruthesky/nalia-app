@@ -38,7 +38,7 @@ class UserTest {
       for (int i = 0; i < 40; i++) {
         final temp = UserTest().data(i);
         api.logout();
-        final re = await api.loginOrRegister(email: temp['user_email'], pass: temp['user_pass'], data: temp);
+        await api.loginOrRegister(email: temp['user_email'], pass: temp['user_pass'], data: temp);
         // print('re: $re');
         await api.appUpdate('bio', 'name', temp['name']);
         await api.appUpdate('bio', 'gender', temp['gender']);

@@ -286,7 +286,7 @@ class FireflutterInAppPurchase {
   }
 
   _recordPending(PurchaseDetails purchaseDetails) async {
-    ProductDetails productDetails = products[purchaseDetails.productID];
+    // ProductDetails productDetails = products[purchaseDetails.productID];
     // TODO save to wordpress dabase
 
     // await db.collection('purchase').add({
@@ -357,7 +357,7 @@ class FireflutterInAppPurchase {
   }
 
   Future<PurchaseSession> _recordSuccess(PurchaseDetails purchaseDetails) async {
-    ProductDetails productDetails = products[purchaseDetails.productID];
+    // ProductDetails productDetails = products[purchaseDetails.productID];
 
     // final session = await getPurchaseSession(purchaseDetails);
     // await db.collection('purchase').doc(session.id).update({

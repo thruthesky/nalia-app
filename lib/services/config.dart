@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Config {
-  static const appName =
-      String.fromEnvironment('APP_NAME', defaultValue: 'App name missing');
+  static const appName = String.fromEnvironment('APP_NAME', defaultValue: 'App name missing');
   static const device = String.fromEnvironment('DEVICE', defaultValue: '');
   static const os = String.fromEnvironment('OS', defaultValue: '');
 
@@ -13,7 +12,7 @@ class Config {
       if (device == 'simulator') {
         return 'https://local.nalia.kr/v3';
       } else {
-        return 'http://169.254.162.149/wordpress/v3';
+        return 'http://192.168.0.5/wordpress/v3';
       }
     }
   }

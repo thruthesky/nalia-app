@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icon_animator/icon_animator.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
-import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/models/api.user_card.controller.dart';
 import 'package:nalia_app/screens/home/home.news_scroller.dart';
 import 'package:nalia_app/screens/home/home.user_card.bottom_menu.dart';

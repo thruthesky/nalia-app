@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
+import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/tests/post.test.dart';
 import 'package:nalia_app/tests/user.test.dart';
@@ -35,6 +36,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   );
                 },
               ),
+              Text('endpoint: $v3Url'),
               Wrap(
                 children: [
                   RaisedButton(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 
-import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
 
 class HomeUserCardSlideThumbnails extends StatefulWidget {

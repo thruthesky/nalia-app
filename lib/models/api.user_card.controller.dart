@@ -8,10 +8,10 @@ class UserCardController extends GetxController {
   static UserCardController get to => Get.find<UserCardController>();
 
   // 한번에 20 장씩 사용자를 로드한다. TODO: 차후, 옵션으로 할 수 있도록 한다.
-  int _limit = 20;
+  // int _limit = 20;
   bool _noMoreUsers = false;
   bool _inLoading = false;
-  int _fetchNo = 0;
+  // int _fetchNo = 0;
   List<ApiBio> users = [];
   bool reset = false;
 
