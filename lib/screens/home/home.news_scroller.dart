@@ -144,7 +144,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
   @override
   void initState() {
     super.initState();
-    print('initState()');
+    // print('initState()');
 
     // notificationSubscription = app.firestoreNotificationChanges.listen((data) {
     //   print('NewScroller => initState => app.firestoreNotifcationChange => $data');

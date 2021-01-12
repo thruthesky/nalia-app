@@ -347,7 +347,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                                       value: options.toWeight,
                                       onChanged: (x) {
                                         if (x < options.fromWeight) {
-                                          print('F');
+                                          // print('F');
                                           options.toWeight =
                                               WeightGroups[WeightGroups.indexWhere((h) => h == options.fromWeight) + 1];
                                           app.alert('toWeight is smaller than fromWeight'.tr);

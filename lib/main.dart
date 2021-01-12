@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firechat/firechat.dart';
@@ -48,8 +49,10 @@ class _MainScreenState extends State<MainScreen> {
     });
 
     app.firebaseReady.listen((ready) async {
-      print('Firebase ready: $ready');
+      // print('Firebase ready: $ready');
       if (ready == false) return;
+      // todo: purchase produces error on iOS.
+      if (Platform.isIOS) return;
       purchase.init(
         productIds: {
           'lucky_box',
@@ -72,10 +75,10 @@ class _MainScreenState extends State<MainScreen> {
 
     app.firebaseReady.listen((ready) {
       if (ready == false) return;
-      api.authStateChanges.listen((user) {
+      api.authChanges.listen((user) {
         if (user == null) return;
 
-        print('user: $user');
+        print('main.dart -> firebaseReady -> authChanges ->user: $user');
         // Listening login user's chat room changes.
         // This must be here to listen new messages outside from chat screens.
         // Reset room list, when user just logs in/out.

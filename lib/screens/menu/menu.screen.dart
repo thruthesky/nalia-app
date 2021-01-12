@@ -44,6 +44,10 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: Text('Login'),
                   ),
                   RaisedButton(
+                    onPressed: () => api.logout(),
+                    child: Text('Logout'),
+                  ),
+                  RaisedButton(
                     onPressed: () => app.open(RouteNames.profile),
                     child: Text('Profile'),
                   ),

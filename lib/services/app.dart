@@ -280,6 +280,7 @@ class App {
 
   /// Get the login user's post of gallery. It will create one if none exists.
   Future<ApiPost> getGalleryPost() async {
+    if (api.notLoggedIn) return null;
     List<ApiPost> posts = await api.searchPost(category: 'gallery', limit: 1, author: api.id);
     if (posts.length == 0) {
       print('No gallery post. create one');

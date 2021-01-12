@@ -16,8 +16,13 @@ import 'package:nalia_app/services/route_names.dart';
 class PushNotification {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   String token;
-  init() {
-    initFirebaseMessaging();
+  init() async {
+    try {
+      await initFirebaseMessaging();
+    } catch (e) {
+      print('==> ERROR: Failed on PushNotification.init() e:');
+      print(e);
+    }
   }
 
   initFirebaseMessaging() async {

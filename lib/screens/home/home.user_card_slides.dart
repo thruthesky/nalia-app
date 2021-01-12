@@ -31,7 +31,7 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
   }
 
   renderView(ApiBio user, int index) {
-    print("user.profilePhotoUrl: ${user.profilePhotoUrl}");
+    // print("user.profilePhotoUrl: ${user.profilePhotoUrl}");
     renderCount++;
     return Stack(
       key: Key(user.userId),

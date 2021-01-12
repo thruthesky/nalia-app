@@ -34,7 +34,7 @@ class UserCardController extends GetxController {
 
     final re = await api.query('bio', "profile_photo_url!='' ORDER BY updatedAt DESC LIMIT 15");
     // print('re: $re');
-    print(jsonEncode(re[0]));
+    // print(jsonEncode(re[0]));
     for (int i = 0; i < re.length; i++) {
       users.add(ApiBio.fromJson(re[i]));
       // print('url: ${users[i].profilePhotoUrl}');
