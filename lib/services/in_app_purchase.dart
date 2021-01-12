@@ -36,12 +36,10 @@ class PurchaseDocumentProductDetails {
 }
 
 class SkPaymentTransationPayment {
-  String applicationUserName;
   int quantity;
   String productIdentifier;
   SkPaymentTransationPayment(payment) {
     if (payment == null) return;
-    this.applicationUserName = payment['applicationUserName'];
     this.quantity = payment['quantity'];
     this.productIdentifier = payment['productIdentifier'];
   }
@@ -49,7 +47,8 @@ class SkPaymentTransationPayment {
 
 class SkPaymentTransation {
   SkPaymentTransationPayment payment;
-  SkPaymentTransation(payment) : this.payment = SkPaymentTransationPayment(payment);
+  SkPaymentTransation(payment)
+      : this.payment = SkPaymentTransationPayment(payment);
 }
 
 class PurchaseDocumentPurchaseDetails {
@@ -69,10 +68,6 @@ class PurchaseDocumentPurchaseDetails {
 class PurchaseSession {
   /// [id] is the document id of Firestore
   String id;
-
-  /// applicationUserName is used as session id.
-  String applicationUserName;
-  String get sessionId => applicationUserName;
 
   String status;
 
@@ -98,7 +93,6 @@ class PurchaseSession {
   PurchaseSession(
       {this.data,
       this.id,
-      this.applicationUserName,
       this.displayName,
       this.email,
       this.phoneNumber,
@@ -114,7 +108,6 @@ class PurchaseSession {
     return PurchaseSession(
       data: data,
       id: data['id'],
-      applicationUserName: data['applicationUserName'],
       displayName: data['displayName'],
       email: data['email'],
       stamp: data['stamp'],
@@ -184,8 +177,6 @@ class FireflutterInAppPurchase {
 
   InAppPurchaseConnection connection = InAppPurchaseConnection.instance;
 
-  // String _pendingPurchaseDocumentId;
-
   /// Initialize payment
   ///
   /// Attention, [init] should be called after Firebase initialization since
@@ -243,7 +234,8 @@ class FireflutterInAppPurchase {
             print('=> purchased on purchaseUpdatedStream');
             // for android & consumable product only.
             if (Platform.isAndroid) {
-              if (!autoConsume && consumableIds.contains(purchaseDetails.productID)) {
+              if (!autoConsume &&
+                  consumableIds.contains(purchaseDetails.productID)) {
                 await connection.consumePurchase(purchaseDetails);
               }
             }
@@ -270,14 +262,16 @@ class FireflutterInAppPurchase {
     final bool available = await connection.isAvailable();
 
     if (available) {
-      ProductDetailsResponse response = await connection.queryProductDetails(_productIds);
+      ProductDetailsResponse response =
+          await connection.queryProductDetails(_productIds);
 
       /// Check if any of given product id(s) are missing.
       if (response.notFoundIDs.isNotEmpty) {
         missingIds = response.notFoundIDs;
       }
 
-      response.productDetails.forEach((product) => products[product.id] = product);
+      response.productDetails
+          .forEach((product) => products[product.id] = product);
 
       productReady.add(products);
     } else {
@@ -286,148 +280,70 @@ class FireflutterInAppPurchase {
   }
 
   _recordPending(PurchaseDetails purchaseDetails) async {
-    // ProductDetails productDetails = products[purchaseDetails.productID];
-    // TODO save to wordpress dabase
-
-    // await db.collection('purchase').add({
-    //   'applicationUserName': applicationUserName,
-    //   'status': SessionStatus.pending,
-    //   'uid': user.uid,
-    //   'displayName': user.displayName,
-    //   'email': user.email,
-    //   'phoneNumber': user.phoneNumber,
-    //   'photoURL': user.photoURL,
-    //   'productDetails': {
-    //     'id': productDetails.id,
-    //     'title': productDetails.title,
-    //     'description': productDetails.description,
-    //     'price': productDetails.price,
-    //   },
-    //   'purchaseDetails': {
-    //     'productID': purchaseDetails.productID,
-    //     'pendingCompletePurchase': purchaseDetails.pendingCompletePurchase,
-    //     'verificationData': {
-    //       'localVerificationData': {
-    //         'pending': purchaseDetails.verificationData.localVerificationData,
-    //       },
-    //       'serverVerificationData': {
-    //         'pending': purchaseDetails.verificationData.serverVerificationData,
-    //       },
-    //     },
-    //   },
-    //   'beginAt': FieldValue.serverTimestamp(),
-    // });
-    // _pendingPurchaseDocumentId = doc.id;
+    ProductDetails productDetails = products[purchaseDetails.productID];
+    final Map<String, dynamic> data = {
+      'status': SessionStatus.pending,
+      'productDetails_id': productDetails.id,
+      'productDetails_title': productDetails.title,
+      'productDetails_description': productDetails.description,
+      'productDetails_price': productDetails.price,
+      'purchaseDetails_productID': purchaseDetails.productID,
+      'purchaseDetails_pendingCompletePurchase':
+          purchaseDetails.pendingCompletePurchase,
+      'purchaseDetails_verificationData_localVerificationData':
+          purchaseDetails.verificationData.localVerificationData,
+      'purchaseDetails_verificationData_serverVerificationData':
+          purchaseDetails.verificationData.serverVerificationData,
+    };
+    await api.recordFailurePurchase(data);
   }
-
-  // Future<PurchaseSession> getPurchaseSession(
-  //     PurchaseDetails purchaseDetails) async {
-  //   String id =
-  //       purchaseDetails.skPaymentTransaction.payment.applicationUsername;
-  //   return getPurchaseSessionBySessionId(id);
-  // }
-
-  // Future<PurchaseSession> getPurchaseSessionBySessionId(String id) async {
-  //   QuerySnapshot querySnapshot = await purchaseCol
-  //       .where('uid', isEqualTo: user.uid)
-  //       .where('applicationUserName', isEqualTo: id)
-  //       .get();
-  //   if (querySnapshot.size == 0) {
-  //     throw PURCHASE_SESSION_NOT_FOUND;
-  //   }
-  //   final session = PurchaseSession.fromSnapshot(querySnapshot.docs[0]);
-
-  //   return session;
-  // }
 
   _recordFailure(PurchaseDetails purchaseDetails) async {
     print(purchaseDetails);
-
-    // TODO: save to purchase history
-
-    // final session = await getPurchaseSession(purchaseDetails);
-
-    // purchaseCol.doc(session.id).update({
-    //   'status': SessionStatus.failure,
-    //   'purchaseDetails.productID': purchaseDetails.productID,
-    //   'purchaseDetails.skPaymentTransaction.transactionIdentifier':
-    //       purchaseDetails.skPaymentTransaction.transactionIdentifier,
-    //   'endAt': FieldValue.serverTimestamp(),
-    // });
+    final Map<String, dynamic> data = {
+      'status': SessionStatus.failure,
+      'purchaseDetails_productID': purchaseDetails.productID,
+      'purchaseDetails_skPaymentTransaction_transactionIdentifier':
+          purchaseDetails.skPaymentTransaction.transactionIdentifier,
+    };
+    await api.recordFailurePurchase(data);
   }
 
-  Future<PurchaseSession> _recordSuccess(PurchaseDetails purchaseDetails) async {
-    // ProductDetails productDetails = products[purchaseDetails.productID];
-
-    // final session = await getPurchaseSession(purchaseDetails);
-    // await db.collection('purchase').doc(session.id).update({
-    //   'status': SessionStatus.success,
-    //   'purchaseDetails.transactionDate': purchaseDetails.transactionDate,
-    //   'purchaseDetails.purchaseID': purchaseDetails.purchaseID,
-    //   'purchaseDetails.skPaymentTransaction.payment.applicationUsername':
-    //       purchaseDetails.skPaymentTransaction.payment.applicationUsername,
-    //   'purchaseDetails.skPaymentTransaction.payment.productIdentifier':
-    //       purchaseDetails.skPaymentTransaction.payment.productIdentifier,
-    //   'purchaseDetails.skPaymentTransaction.payment.quantity':
-    //       purchaseDetails.skPaymentTransaction.payment.quantity,
-    //   'purchaseDetails.skPaymentTransaction.transactionIdentifier':
-    //       purchaseDetails.skPaymentTransaction.transactionIdentifier,
-    //   'purchaseDetails.skPaymentTransaction.transactionTimeStamp':
-    //       purchaseDetails.skPaymentTransaction.transactionTimeStamp,
-    //   'purchaseDetails.verificationData.localVerificationData.success':
-    //       purchaseDetails.verificationData.localVerificationData,
-    //   'purchaseDetails.verificationData.serverVerificationData.success':
-    //       purchaseDetails.verificationData.serverVerificationData,
-
-    //   'purchaseDetails.pendingCompletePurchase':
-    //       purchaseDetails.pendingCompletePurchase,
-
-    //   'productDetails.price': productDetails.price,
-    //   'productDetails.skProduct.price': productDetails.skProduct.price,
-
-    //   'productDetails.skProduct.priceLocale.currencyCode':
-    //       productDetails.skProduct.priceLocale.currencyCode,
-
-    //   'productDetails.skProduct.priceLocale.currencySymbol':
-    //       productDetails.skProduct.priceLocale.currencySymbol,
-
-    //   'productDetails.skProduct.productIdentifier':
-    //       productDetails.skProduct.productIdentifier,
-    //   // 'skuDetail.sku': productDetails.skuDetail.sku,
-    //   // 'skuDetail.price': productDetails.skuDetail.price,
-    //   // 'skuDetail.priceCurrencyCode': productDetails.skuDetail.priceCurrencyCode,
-    //   // 'skuDetail.originalPrice': productDetails.skuDetail.originalPrice,
-    //   // 'skuDetail.type': productDetails.skuDetail.type,
-    //   'endAt': FieldValue.serverTimestamp(),
-    // // });
-
-    // return session;
+  _recordSuccess(PurchaseDetails purchaseDetails) async {
+    ProductDetails productDetails = products[purchaseDetails.productID];
+    final Map<String, dynamic> data = {
+      'status': SessionStatus.success,
+      'purchaseDetails_transactionDate': purchaseDetails.transactionDate,
+      'purchaseDetails_purchaseID': purchaseDetails.purchaseID,
+      'purchaseDetails_skPaymentTransaction_payment_productIdentifier':
+          purchaseDetails.skPaymentTransaction.payment.productIdentifier,
+      'purchaseDetails_skPaymentTransaction_payment_quantity':
+          purchaseDetails.skPaymentTransaction.payment.quantity,
+      'purchaseDetails_skPaymentTransaction_transactionIdentifier':
+          purchaseDetails.skPaymentTransaction.transactionIdentifier,
+      'purchaseDetails_skPaymentTransaction_transactionTimeStamp':
+          purchaseDetails.skPaymentTransaction.transactionTimeStamp,
+      'purchaseDetails_verificationData_localVerificationData':
+          purchaseDetails.verificationData.localVerificationData,
+      'purchaseDetails_verificationData_serverVerificationData':
+          purchaseDetails.verificationData.serverVerificationData,
+      'purchaseDetails_pendingCompletePurchase':
+          purchaseDetails.pendingCompletePurchase,
+      'productDetails_price': productDetails.price,
+      'productDetails_skProduct_price': productDetails.skProduct.price,
+      'productDetails_skProduct_priceLocale_currencyCode':
+          productDetails.skProduct.priceLocale.currencyCode,
+      'productDetails_skProduct_priceLocale_currencySymbol':
+          productDetails.skProduct.priceLocale.currencySymbol,
+      'productDetails_skProduct_productIdentifier':
+          productDetails.skProduct.productIdentifier,
+    };
+    await api.recordSuccessPurchase(data);
   }
 
-  /// Unique purchase session id
-  ///
-  /// Since there is no way to determine the same purchase session when the
-  /// purchase has finished.
-  ///
-  /// TODO find the right way to determine the purchase session.
-  ///
-  /// Purchase session id
-  ///
-  /// 문제: 세션 A 가 진행 중에 앱이 종료된 경우, 앱 재 실행 후 세션 A 가 계속 진행되는데,
-  /// 이 때, DB 에 많은 세션 정보 중 어떤 것이 세션 A 인지 알 수 있는 방법이 없다.
-  /// 그래서 아래와 같이 고유 값을 생성하고 `buyConsumable()` 의 [applicationUserName]
-  /// 속성에 저장하고, DB 에 보관한다. 그리고 이 값을 바탕으로 해당 정보를 참조하면 된다.
-  String _applicationUserName;
-  String get _generateApplicationUserName {
-    _applicationUserName = api.user.id + '-' + DateTime.now().millisecondsSinceEpoch.toString();
-    return _applicationUserName;
-  }
-
-  String get applicationUserName => _applicationUserName;
   Future buyConsumable(ProductDetails product) async {
     PurchaseParam purchaseParam = PurchaseParam(
       productDetails: product,
-      applicationUserName: _generateApplicationUserName,
     );
 
     await connection.buyConsumable(
@@ -437,14 +353,7 @@ class FireflutterInAppPurchase {
 
   /// Returns the Collection Query to get the login user's success purchases.
   Future get getMyPurchases async {
-    // TODO return my successful purchase
-
-    //   return db
-    //       .collection('purchase')
-    //       .where('uid', isEqualTo: user.uid)
-    //       .where('status', isEqualTo: 'success')
-    //       .orderBy('beginAt')
-    //       .get();
+    return await api.getMyPurchases();
   }
 
   boxIcon(String id) {

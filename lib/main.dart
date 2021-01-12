@@ -57,14 +57,15 @@ class _MainScreenState extends State<MainScreen> {
           'diamond_box',
         },
       );
-      print('products: ${purchase.products} : Simulator does not show products.');
+      print(
+          'products: ${purchase.products} : Simulator does not show products.');
     });
 
     Dio dio = Dio();
     () async {
       final res = await dio
-          // .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
           .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
+      // .get('http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
 
       print('res: ${res.data}');
     }();
@@ -109,7 +110,8 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
         GetPage(name: RouteNames.menu, page: () => MenuScreen()),
         GetPage(name: RouteNames.chatRoom, page: () => ChatRoomScreen()),
-        GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
+        GetPage(
+            name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
       ],
     );
   }
