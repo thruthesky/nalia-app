@@ -239,7 +239,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                     message.senderPhotoURL,
                                     size: 42,
                                   ),
-                            title: message.type == 'image'
+                            title: message.type == MessageType.image
                                 ? CacheImage(message.text)
                                 : Text(
                                     translateIfChatProtocol(message.text),
@@ -300,7 +300,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 text: file.thumbnailUrl,
                                 displayName: Bio.data.userId,
                                 photoURL: Bio.data.profilePhotoUrl,
-                                type: 'image',
+                                type: MessageType.image,
                               );
                             } catch (e) {
                               app.error(e);
