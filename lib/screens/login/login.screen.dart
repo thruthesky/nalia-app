@@ -44,14 +44,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: Colors.black),
                       children: [
                         TextSpan(text: '나리야 앱은 '),
-                        TextSpan(
-                            text: '성인인증',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: '성인인증', style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(text: '을 통해서 '),
                         TextSpan(
                           text: '20세 이상 성인이 실명',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.red),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                         ),
                         // TextSpan(text: ' 성인이'),
                         // TextSpan(text: '실명'),
@@ -73,8 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         JavascriptChannel(
                             name: 'messageHandler',
                             onMessageReceived: (JavascriptMessage jm) async {
-                              api.user =
-                                  ApiUser.fromJson(jsonDecode(jm.message));
+                              api.user = ApiUser.fromJson(jsonDecode(jm.message));
                               print("Pass login api.user: ${api.user}");
                               int agegroup = int.parse(api.user.agegroup);
                               if (agegroup == 0 || agegroup == 10) {
@@ -88,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               // await app.firebaseLoginOrRegister(user);
 
-                              Get.toNamed(RouteNames.profile);
+                              app.open(RouteNames.profile);
                             })
                       ]),
                     ),

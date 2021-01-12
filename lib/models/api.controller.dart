@@ -148,6 +148,10 @@ class API extends GetxController {
     return res.data['data'];
   }
 
+  /// Query directly to database with SQL.
+  /// ```dart
+  /// final re = await api.query('bio', "profile_photo_url!='' ORDER BY updatedAt DESC LIMIT 15");
+  /// ```
   Future query(String table, String where) {
     return request({
       'route': 'app.query',
@@ -242,13 +246,6 @@ class API extends GetxController {
     final Map<String, dynamic> res = await request({'route': 'user.profile', 'session_id': sessionId});
     user = ApiUser.fromJson(res);
     update();
-    return user;
-  }
-
-  getOtherUserProfile(String userID) async {
-    if (userID == null || userID == '') return;
-    final Map<String, dynamic> res = await request({'route': 'user.profile', 'user_ID': userID});
-    user = ApiUser.fromJson(res);
     return user;
   }
 
@@ -360,12 +357,13 @@ class API extends GetxController {
     return _posts;
   }
 
-  Future<ApiFile> uploadFile({@required File file, Function onProgress}) async {
+  Future<ApiFile> uploadFile({@required File file, Function onProgress, String postType}) async {
     /// [Prefix] 를 쓰는 이유는 Dio 의 FromData 와 Flutter 의 기본 HTTP 와 충돌하기 때문이다.
     final formData = Prefix.FormData.fromMap({
       /// `route` 와 `session_id` 등 추가 파라메타 값을 전달 할 수 있다.
       'route': 'file.upload',
       'session_id': sessionId,
+      if (postType != null) 'post_type': postType,
 
       /// 아래에서 `userfile` 이, `$_FILES[userfile]` 와 같이 들어간다.
       'userfile': await Prefix.MultipartFile.fromFile(

@@ -32,8 +32,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   StreamSubscription keyboardSubscription;
 
   bool get atBottom {
-    return scrollController.offset >
-        (scrollController.position.maxScrollExtent - 640);
+    return scrollController.offset > (scrollController.position.maxScrollExtent - 640);
   }
 
   bool get atTop {
@@ -41,13 +40,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   }
 
   bool get scrollUp {
-    return scrollController.position.userScrollDirection ==
-        ScrollDirection.forward;
+    return scrollController.position.userScrollDirection == ScrollDirection.forward;
   }
 
   bool get scrollDown {
-    return scrollController.position.userScrollDirection ==
-        ScrollDirection.reverse;
+    return scrollController.position.userScrollDirection == ScrollDirection.reverse;
   }
 
   String get text {
@@ -101,8 +98,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     // if there is no incoming chat room id, then, create one
     try {
       await app.checkUserProfile();
-      await chat.enter(
-          id: args['roomId'], users: [args['userId']], hatch: false);
+      await chat.enter(id: args['roomId'], users: [args['userId']], hatch: false);
     } catch (e) {
       app.error(e);
     }
@@ -115,8 +111,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     });
 
     // scroll to bottom only if needed when user open/hide keyboard.
-    keyboardSubscription =
-        keyboardVisibilityController.onChange.listen((bool visible) {
+    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
       if (visible && atBottom) {
         scrollToBottom(ms: 10);
       }
@@ -165,15 +160,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     // return Text('Other user name');
 
     // If there is other user, then return his name.
-    return FutureBuilder(
-      future: api.getOtherUserProfile(uid),
+    return FutureBuilder<ApiBio>(
+      future: app.getBio(uid),
       builder: (_, snapshot) {
         if (snapshot.hasError) return SizedBox.shrink();
-        if (snapshot.connectionState == ConnectionState.waiting)
-          return Spinner();
-        final ApiUser public = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.waiting) return Spinner();
         _otherUsername = Text(
-          public.name,
+          snapshot.data.name,
           style: TextStyle(fontSize: md),
         );
         return _otherUsername;
@@ -184,21 +177,16 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   @override
   void initState() {
     super.initState();
+    print('ChatRoomScreen::initState()');
     enterChatRoom(Get.arguments);
   }
 
   @override
   void dispose() {
     super.dispose();
-
+    print('ChatRoomScreen::dispose()');
     chat.unsubscribe();
     chat = null;
-
-    // bool keyboardOpen = KeyboardVisibilityProvider.isKeyboardVisible(context);
-    // print('keyboardOpen: $keyboardOpen');
-    // if (keyboardOpen) {
-    //   FocusScope.of(Get.context).requestFocus(new FocusNode());
-    // }
 
     keyboardSubscription.cancel();
   }
@@ -217,8 +205,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               otherUsername,
-              IconButton(
-                  icon: Icon(Icons.notification_important), onPressed: () {}),
+              IconButton(icon: Icon(Icons.notification_important), onPressed: () {}),
             ],
           ),
         ),
@@ -233,8 +220,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         controller: scrollController,
                         itemCount: chat.messages.length,
                         itemBuilder: (_, i) {
-                          final message =
-                              ChatMessage.fromData(chat.messages[i]);
+                          final message = ChatMessage.fromData(chat.messages[i]);
 
                           print("first message : " + message.toString());
                           return ListTile(
@@ -246,16 +232,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                   ),
                             title: Text(
                               translateIfChatProtocol(message.text),
-                              textAlign: message.isMine(api.id)
-                                  ? TextAlign.right
-                                  : TextAlign.left,
+                              textAlign: message.isMine(api.id) ? TextAlign.right : TextAlign.left,
                             ),
                             subtitle: Text(
                               'at ' + dateTime(message.createdAt),
                               style: TextStyle(fontSize: 8),
-                              textAlign: message.isMine(api.id)
-                                  ? TextAlign.right
-                                  : TextAlign.left,
+                              textAlign: message.isMine(api.id) ? TextAlign.right : TextAlign.left,
                             ),
                             trailing: message.isMine(api.id)
                                 ? UserAvatar(

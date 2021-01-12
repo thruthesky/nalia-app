@@ -13,7 +13,7 @@ class UserAvatar extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        child: url == null
+        child: url == null || url == ''
             ? Icon(Icons.person)
             : ClipOval(
                 child: CacheImage(url),

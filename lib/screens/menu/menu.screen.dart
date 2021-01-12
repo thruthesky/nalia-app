@@ -40,11 +40,11 @@ class _MenuScreenState extends State<MenuScreen> {
               Wrap(
                 children: [
                   RaisedButton(
-                    onPressed: () => Get.toNamed(RouteNames.login),
+                    onPressed: () => app.open(RouteNames.login),
                     child: Text('Login'),
                   ),
                   RaisedButton(
-                    onPressed: () => Get.toNamed(RouteNames.profile),
+                    onPressed: () => app.open(RouteNames.profile),
                     child: Text('Profile'),
                   ),
                   RaisedButton(
@@ -68,19 +68,19 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   RaisedButton(
                     child: Text('Reminder'),
-                    onPressed: () => Get.toNamed(RouteNames.forumList, arguments: {
+                    onPressed: () => app.open(RouteNames.forumList, arguments: {
                       'category': 'reminder',
                     }),
                   ),
                   RaisedButton(
                     child: Text('QnA'),
-                    onPressed: () => Get.toNamed(RouteNames.forumList, arguments: {
+                    onPressed: () => app.open(RouteNames.forumList, arguments: {
                       'category': 'qna',
                     }),
                   ),
                   RaisedButton(
                     child: Text('Discussion'),
-                    onPressed: () => Get.toNamed(RouteNames.forumList, arguments: {
+                    onPressed: () => app.open(RouteNames.forumList, arguments: {
                       'category': 'discussion',
                     }),
                   ),
@@ -102,7 +102,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   RaisedButton(
                     child: Text('User search'),
-                    onPressed: () => Get.toNamed(RouteNames.userSearch),
+                    onPressed: () => app.open(RouteNames.userSearch),
                   ),
                 ],
               ),
@@ -112,7 +112,7 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
               RaisedButton(
                 child: Text('Purchase'),
-                onPressed: () => Get.toNamed(RouteNames.purchase),
+                onPressed: () => app.open(RouteNames.purchase),
               ),
               Divider(),
               Text('Login test users'),

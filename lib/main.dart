@@ -41,10 +41,10 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     Timer(Duration(milliseconds: 600), () async {
-      // Get.toNamed(RouteNames.userSearch);
-      // Get.toNamed(RouteNames.gallery);
-      // Get.toNamed(RouteNames.profile);
-      // Get.toNamed(RouteNames.forumList, arguments: {'category': 'reminder'});
+      // app.open(RouteNames.userSearch);
+      // app.open(RouteNames.gallery);
+      // app.open(RouteNames.profile);
+      // app.open(RouteNames.forumList, arguments: {'category': 'reminder'});
     });
 
     app.firebaseReady.listen((ready) async {
