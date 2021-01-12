@@ -57,8 +57,7 @@ class _MainScreenState extends State<MainScreen> {
           'diamond_box',
         },
       );
-      print(
-          'products: ${purchase.products} : Simulator does not show products.');
+      print('products: ${purchase.products} : Simulator does not show products.');
     });
 
     // Dio dio = Dio();
@@ -75,7 +74,9 @@ class _MainScreenState extends State<MainScreen> {
       if (ready == false) return;
       api.authStateChanges.listen((user) {
         if (user == null) return;
-// Listening login user's chat room changes.
+
+        print('user: $user');
+        // Listening login user's chat room changes.
         // This must be here to listen new messages outside from chat screens.
         // Reset room list, when user just logs in/out.
         if (myRoomList == null) {
@@ -111,8 +112,7 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
         GetPage(name: RouteNames.menu, page: () => MenuScreen()),
         GetPage(name: RouteNames.chatRoom, page: () => ChatRoomScreen()),
-        GetPage(
-            name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
+        GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
       ],
     );
   }
