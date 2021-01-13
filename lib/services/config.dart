@@ -14,8 +14,8 @@ class Config {
         // return 'http://192.168.0.5/wordpress/v3';
         return 'https://local.nalia.kr/v3';
       } else {
-        return 'http://192.168.0.5/wordpress/v3'; // Mr Song
-        // return 'http://192.168.100.17/wordpress55/v3'; // charles
+        // return 'http://192.168.0.5/wordpress/v3'; // Mr Song
+        return 'http://192.168.100.17/wordpress55/v3'; // charles
       }
     }
   }
