@@ -263,9 +263,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                           /// if progress is not 0, show loader.
                           icon: progress != 0 ? Spinner() : Icon(Icons.camera_alt),
                           onPressed: () async {
-                            /// return of still on progress of uploading.
-                            if (progress != 0) return;
-
                             try {
                               /// upload to php backend
                               ApiFile file = await app.imageUpload(
