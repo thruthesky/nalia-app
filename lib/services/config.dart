@@ -16,6 +16,7 @@ class Config {
       } else {
         return 'http://192.168.0.5/wordpress/v3'; // Mr Song
         // return 'http://192.168.100.17/wordpress55/v3'; // charles
+        // return 'http://192.168.100.6/wordpress/v3'; // Ace
       }
     }
   }
