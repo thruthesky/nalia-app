@@ -44,8 +44,9 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
         if (snapshot.hasError) return SizedBox.shrink();
         if (snapshot.connectionState == ConnectionState.waiting)
           return Spinner();
+
         _otherUsername[uid] = Text(
-          snapshot.data.name,
+          '${snapshot.data?.name}',
           style: TextStyle(fontSize: md),
         );
         return _otherUsername[uid];
@@ -74,7 +75,9 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
           if (snapshot.hasError) return SizedBox.shrink();
           if (snapshot.connectionState == ConnectionState.waiting)
             return Spinner();
-          _otherUserAvatar[uid] = UserAvatar(snapshot.data.profilePhotoUrl);
+          _otherUserAvatar[uid] = UserAvatar(
+            snapshot.data != null ? snapshot.data.profilePhotoUrl : '',
+          );
           return _otherUserAvatar[uid];
         },
       ),
@@ -84,11 +87,15 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
   @override
   void initState() {
     super.initState();
-    subscription = myRoomListChanges.listen((rooms) => setState(() {
+    subscription = myRoomListChanges.listen(
+      (rooms) => setState(
+        () {
           // print('rooms:');
           // print(rooms);
           // print("myRoomList?.fetched: ${myRoomList?.fetched}");
-        }));
+        },
+      ),
+    );
   }
 
   @override
@@ -112,7 +119,7 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
               ? LoginFirst()
               : myRoomList?.fetched != true
                   ? Spinner()
-                  : ListView.builder(
+                  : myRoomList.rooms.length > 0 ? ListView.builder(
                       itemCount: myRoomList.rooms.length,
                       itemBuilder: (_, i) {
                         ChatUserRoom room = myRoomList.rooms[i];
@@ -123,19 +130,27 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
                           trailing: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(shortDateTime(room.createdAt),
-                                  style: hintStyle),
+                              Text(
+                                shortDateTime(room.createdAt),
+                                style: hintStyle,
+                              ),
                               Spacer(),
                               if (room.newMessages > 0)
                                 ConstrainedBox(
                                   constraints: BoxConstraints(maxHeight: md),
                                   child: Chip(
-                                    labelPadding:
-                                        EdgeInsets.fromLTRB(4, -4, 4, -4),
+                                    labelPadding: EdgeInsets.fromLTRB(
+                                      4,
+                                      -4,
+                                      4,
+                                      -4,
+                                    ),
                                     label: Text(
                                       '${room.newMessages}',
                                       style: TextStyle(
-                                          fontSize: 11, color: Colors.white),
+                                        fontSize: 11,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     backgroundColor: Colors.red,
                                   ),
@@ -146,7 +161,7 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
                           onTap: () => app.openChatRoom(roomId: room.id),
                         );
                       },
-                    ),
+                    ) : Center(child: Text('No Chats...')),
         ),
       ),
     );
