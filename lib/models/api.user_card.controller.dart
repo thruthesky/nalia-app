@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/services/global.dart';

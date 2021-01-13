@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nalia_app/models/api.user.model.dart';
 import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';

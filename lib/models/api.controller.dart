@@ -119,7 +119,11 @@ class API extends GetxController {
   String get primaryPhotoUrl => user?.profilePhotoUrl;
   String get fullName => user?.name;
   bool get profileComplete =>
-      loggedIn && primaryPhotoUrl != null && primaryPhotoUrl.isNotEmpty && fullName != null && fullName.isNotEmpty;
+      loggedIn &&
+      primaryPhotoUrl != null &&
+      primaryPhotoUrl.isNotEmpty &&
+      fullName != null &&
+      fullName.isNotEmpty;
 
   bool get loggedIn => user != null && user.sessionId != null;
   bool get notLoggedIn => !loggedIn;
@@ -231,11 +235,8 @@ class API extends GetxController {
     authChanges.add(user);
   }
 
-  updateToken(String token) {
-    return request({'route': 'notification.updateToken', 'token': token});
-  }
-
-  updateUser(String key, String value) async {
+  /// Update user key/value on user meta (Not on wp_users table)
+  Future<ApiUser> updateUserMeta(String key, String value) async {
     final Map<String, dynamic> data = {
       'route': 'user.profileUpdate',
       key: value,
@@ -243,11 +244,13 @@ class API extends GetxController {
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     update();
+    return user;
   }
 
   userProfile(String sessionId) async {
     if (sessionId == null) return;
-    final Map<String, dynamic> res = await request({'route': 'user.profile', 'session_id': sessionId});
+    final Map<String, dynamic> res =
+        await request({'route': 'user.profile', 'session_id': sessionId});
     user = ApiUser.fromJson(res);
     update();
     return user;
@@ -285,7 +288,8 @@ class API extends GetxController {
     final data = {
       'route': 'forum.editComment',
       'comment_post_ID': post.id,
-      if (comment != null && comment.commentId != null && comment.commentId != '') 'comment_ID': comment.commentId,
+      if (comment != null && comment.commentId != null && comment.commentId != '')
+        'comment_ID': comment.commentId,
       if (parent != null) 'comment_parent': parent.commentId,
       'comment_content': content ?? '',
     };
@@ -345,7 +349,8 @@ class API extends GetxController {
     return data['comment_ID'];
   }
 
-  Future<List<ApiPost>> searchPost({String category, int limit = 20, int paged = 1, String author}) async {
+  Future<List<ApiPost>> searchPost(
+      {String category, int limit = 20, int paged = 1, String author}) async {
     final Map<String, dynamic> data = {};
     data['route'] = 'forum.search';
     data['category_name'] = category;
@@ -504,5 +509,72 @@ class API extends GetxController {
 
   getMyPurchases() {
     return request({'route': 'inAppPurchase.myPurchase'});
+  }
+
+  updateToken(String token) {
+    return request({'route': 'notification.updateToken', 'token': token});
+  }
+
+  sendMessageToTokens(
+      {String token, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+    Map<String, dynamic> req = {
+      'route': 'notification.sendMessageToTokens',
+      'token': token,
+      'title': title,
+      'body': body,
+      if (data != null) 'data': data,
+      'imageUrl': imageUrl,
+    };
+    return request(req);
+  }
+
+  sendMessageToTopic(
+      {String topic, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+    Map<String, dynamic> req = {
+      'route': 'notification.sendMessageToTopic',
+      'topic': topic,
+      'title': title,
+      'body': body,
+      if (data != null) 'data': data,
+      'imageUrl': imageUrl,
+    };
+    return request(req);
+  }
+
+  sendMessageToUsers(
+      {List<String> users,
+      String subscription,
+      String title,
+      String body,
+      Map<String, dynamic> data,
+      String imageUrl}) {
+    Map<String, dynamic> req = {
+      'route': 'notification.sendMessageToUsers',
+      'users': users,
+      if (subscription != null) 'subscription': subscription,
+      'title': title,
+      'body': body,
+      if (data != null) 'data': data,
+      'imageUrl': imageUrl,
+    };
+    return request(req);
+  }
+
+  subscribeTopic(String topic, [dynamic tokens]) {
+    Map<String, dynamic> req = {
+      'route': 'notification.subscribeTopic',
+      'topic': topic,
+      if (tokens != null) 'tokens': tokens,
+    };
+    return request(req);
+  }
+
+  unsubscribeTopic(String topic, [dynamic tokens]) {
+    Map<String, dynamic> req = {
+      'route': 'notification.unsubscribeTopic',
+      'topic': topic,
+      if (tokens != null) 'tokens': tokens,
+    };
+    return request(req);
   }
 }

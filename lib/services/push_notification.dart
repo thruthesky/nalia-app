@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:get/get.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 
@@ -79,6 +78,13 @@ class PushNotification {
 
     // Any time the token refreshes, store this in the database too.
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+
+    // When ever user logs in, update the token with user Id.
+    api.authChanges.listen((user) {
+      if (user == null) return;
+      // print('Saving token on user auth chagnes: $token');
+      saveTokenToDatabase(token);
+    });
   }
 
   /// Save the token to database.

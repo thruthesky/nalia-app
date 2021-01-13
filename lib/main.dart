@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -60,8 +58,7 @@ class _MainScreenState extends State<MainScreen> {
           'diamond_box',
         },
       );
-      print(
-          'products: ${purchase.products} : Simulator does not show products.');
+      print('products: ${purchase.products} : Simulator does not show products.');
     });
 
     // Dio dio = Dio();
@@ -123,8 +120,7 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
         GetPage(name: RouteNames.menu, page: () => MenuScreen()),
         GetPage(name: RouteNames.chatRoom, page: () => ChatRoomScreen()),
-        GetPage(
-            name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
+        GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
       ],
     );
   }
