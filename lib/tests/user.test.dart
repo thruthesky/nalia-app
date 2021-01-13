@@ -10,6 +10,17 @@ import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 
+const List<Map<String, double>> locations = [
+  {'latitude': 14.5827134, 'longitude': 120.9777218},
+  {'latitude': 14.5843948, 'longitude': 120.9754953, 'rizal': 0.30},
+  {'latitude': 14.5747701, 'longitude': 120.9915513, 'rizal': 1.73},
+  {'latitude': 14.5550189, 'longitude': 120.9809992, 'rizal': 3.10},
+  {'latitude': 14.651424, 'longitude': 121.0483225, 'rizal': 10.77},
+  {'latitude': 15.1689815, 'longitude': 120.5793488, 'rizal': 77.99},
+  {'latitude': 37.5297347, 'longitude': 126.9644588, 'rizal': 2619.15},
+  {'latitude': 35.1586788, 'longitude': 129.1597749, 'youngsan_station': 328.87},
+];
+
 class UserTest {
   data(int i) {
     String gender = i % 2 == 0 ? 'M' : 'F';
@@ -17,6 +28,8 @@ class UserTest {
     int phoneNo = 1012345678 + i;
 
     final birthday = DateTime(1960 + i, i % 12, i % 30);
+
+    final g = locations.elementAt(Random().nextInt(locations.length));
 
     return {
       'user_email': 'emaila$i@test.com',
@@ -30,6 +43,8 @@ class UserTest {
       'hobby': Hobbies[Random().nextInt(Hobbies.length)],
       'city': Cities[Random().nextInt(Cities.length)],
       'dateMethod': DateMethods[Random().nextInt(DateMethods.length)],
+      'latitude': g['latitude'].toString(),
+      'longitude': g['longitude'].toString(),
     };
   }
 
@@ -47,6 +62,8 @@ class UserTest {
         await api.appUpdate('bio', 'hobby', temp['hobby']);
         await api.appUpdate('bio', 'city', temp['city']);
         await api.appUpdate('bio', 'dateMethod', temp['dateMethod']);
+        await api.appUpdate('bio', 'latitude', temp['latitude']);
+        await api.appUpdate('bio', 'longitude', temp['longitude']);
 
         /// Setting primary photo. 대표 사진 추가.
         ApiPost gallery = await app.getGalleryPost();
