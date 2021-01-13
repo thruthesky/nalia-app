@@ -1,139 +1,139 @@
-// import 'package:dating/services/definitions.dart';
-// import 'package:dating/services/globals.dart';
-// import 'package:dating/widgets/spinner.dart';
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:fireflutter_in_app_purchase/fireflutter_in_app_purchase.dart';
-// import 'package:flutter_icons/flutter_icons.dart';
-// import 'package:get/get.dart';
-// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
+import 'package:nalia_app/services/defines.dart';
+import 'package:nalia_app/services/global.dart';
+import 'package:nalia_app/services/in_app_purchase.dart';
+import 'package:nalia_app/services/route_names.dart';
+import 'package:nalia_app/widgets/custom_app_bar.dart';
+import 'package:nalia_app/widgets/home.content_wrapper.dart';
+import 'package:nalia_app/widgets/spinner.dart';
 
-// class PurchaseHistoryScreen extends StatefulWidget {
-//   @override
-//   _PurchaseHistoryScreenState createState() => _PurchaseHistoryScreenState();
-// }
+class PurchaseHistoryScreen extends StatefulWidget {
+  @override
+  _PurchaseHistoryScreenState createState() => _PurchaseHistoryScreenState();
+}
 
-// class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
-//   @override
-//   void initState() {
-//     super.initState();
+class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
+  @override
+  void initState() {
+    super.initState();
 
-//     init();
-//   }
+    init();
+  }
 
-//   init() async {}
+  init() async {}
 
-//   time(Timestamp stamp) {
-//     if (stamp == null) return '';
-//     final dt = DateTime.fromMillisecondsSinceEpoch(stamp.seconds * 1000);
-//     return DateFormat('yyyy-MM-dd hh:mm aaa').format(dt);
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(route: RouteNames.purchase),
+      backgroundColor: kBackgroundColor,
+      body: HomeContentWrapper(
+        child: Column(
+          children: [
+            spaceMd,
+            Text('Jewelry box purchase history'),
+            spaceMd,
+            // FutureBuilder(
+            //   future: purchase.getMyPurchases,
+            //   builder: (_, snapshot) {
+            //     if (snapshot.hasError) {
+            //       return Text('Oh! An error has occurred.');
+            //     }
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return Spinner();
+            //     }
 
-//   boxIcon(PurchaseSession session) {
-//     return app.boxIcon(session.productDetails.id);
-//   }
+            //     QuerySnapshot shot = snapshot.data;
+            //     if (shot.size == 0) {
+            //       return Column(
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           spaceMd,
+            //           Container(
+            //             padding: EdgeInsets.all(md),
+            //             child: Text('There is no jewelry box purchased.'),
+            //             decoration: BoxDecoration(
+            //               color: Colors.orange[100],
+            //               borderRadius: BorderRadius.circular(50),
+            //             ),
+            //           ),
+            //           spaceMd,
+            //           TextButton(
+            //             child: Text('Go to buy a jewelry box'),
+            //             onPressed: () => app.open(RouteNames.purchase),
+            //           )
+            //         ],
+            //       );
+            //     }
 
-//   String priceFormat(PurchaseSession session) {
-//     return session.productDetails.price;
-//     // String str = session.productDetails.price;
-//     // str = str.replaceFirst('₩', '');
-//     // int n = int.parse(str);
-//     // return NumberFormat.currency(
-//     //   locale: 'ko_KR',
-//     //   symbol: '₩',
-//     // ).format(n);
-//   }
+            //     return Expanded(
+            //       child: ListView.builder(
+            //         padding: pagePadding,
+            //         itemCount: shot.docs.length,
+            //         itemBuilder: (_, i) {
+            //           final data = shot.docs[i].data();
+            //           data['id'] = shot.docs[i].id;
 
-//   String openResult(PurchaseSession session) {
-//     if (session == null ||
-//         session.data == null ||
-//         session.data['credit'] == null)
-//       return '';
-//     else
-//       return '실버 ${session.data['credit']['silver']}개, 골드 ${session.data['credit']['gold']}개, 다이아몬드 ${session.data['credit']['diamond']}개';
-//   }
+            //           final session =
+            //               PurchaseSession.fromSnapshot(shot.docs[i]);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: Column(
-//         children: [
-//           spaceMd,
-//           Text('보석상자 구매 내역'),
-//           spaceMd,
-//           FutureBuilder(
-//             future: purchase.getMyPurchases,
-//             builder: (_, snapshot) {
-//               if (snapshot.hasError) {
-//                 return Text('앗! 에러가 발생하였습니다.');
-//               }
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return Spinner();
-//               }
+            //           print(session);
 
-//               QuerySnapshot shot = snapshot.data;
-//               if (shot.size == 0) {
-//                 return Column(
-//                   crossAxisAlignment: CrossAxisAlignment.center,
-//                   children: [
-//                     spaceMd,
-//                     Container(
-//                       padding: EdgeInsets.all(md),
-//                       child: Text('구매한 보석 상자가 없습니다.'),
-//                       decoration: BoxDecoration(
-//                         color: Colors.orange[100],
-//                         borderRadius: BorderRadius.circular(50),
-//                       ),
-//                     ),
-//                     spaceMd,
-//                     TextButton(
-//                       child: Text('보석 상자 구매하러 가기'),
-//                       onPressed: () => app.open(RouteName.purchase),
-//                     )
-//                   ],
-//                 );
-//               }
+            //           return Column(
+            //             children: [
+            //               Divider(),
+            //               ListTile(
+            //                 leading: purchase.boxIcon(''),
+            //                 title: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     // Text(session.productDetails.id.tr),
+            //                     // Text(priceFormat(session)),
+            //                     // SizedBox(height: sm),
+            //                     // Text('결과'),
+            //                     // SizedBox(height: xs),
+            //                     // Text(openResult(session)),
+            //                     // SizedBox(height: sm),
+            //                   ],
+            //                 ),
+            //                 subtitle: Text('날짜: '
+            //                     // + time(data['beginAt']),
+            //                     ),
+            //               )
+            //             ],
+            //           );
+            //         },
+            //       ),
+            //     );
+            //   },
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
 
-//               return Expanded(
-//                 child: ListView.builder(
-//                   padding: pagePadding,
-//                   itemCount: shot.docs.length,
-//                   itemBuilder: (_, i) {
-//                     final data = shot.docs[i].data();
-//                     data['id'] = shot.docs[i].id;
+  time(int stamp) {
+    if (stamp == null) return '';
+    final dt = DateTime.fromMillisecondsSinceEpoch(stamp * 1000);
+    return DateFormat('yyyy-MM-dd hh:mm aaa').format(dt);
+  }
 
-//                     final session = PurchaseSession.fromSnapshot(shot.docs[i]);
+  boxIcon(PurchaseSession session) {
+    return purchase.boxIcon(session.productDetails.id);
+  }
 
-//                     return Column(
-//                       children: [
-//                         Divider(),
-//                         ListTile(
-//                           leading: boxIcon(session),
-//                           title: Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               Text(session.productDetails.id.tr),
-//                               Text(priceFormat(session)),
-//                               SizedBox(height: sm),
-//                               Text('결과'),
-//                               SizedBox(height: xs),
-//                               Text(openResult(session)),
-//                               SizedBox(height: sm),
-//                             ],
-//                           ),
-//                           subtitle: Text(
-//                             '날짜: ' + time(data['beginAt']),
-//                           ),
-//                         )
-//                       ],
-//                     );
-//                   },
-//                 ),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  String priceFormat(PurchaseSession session) {
+    return session.productDetails.price;
+  }
+
+  String openResult(PurchaseSession session) {
+    if (session == null ||
+        session.data == null ||
+        session.data['credit'] == null)
+      return '';
+    else
+      return '실버 ${session.data['credit']['silver']}개, 골드 ${session.data['credit']['gold']}개, 다이아몬드 ${session.data['credit']['diamond']}개';
+  }
+}

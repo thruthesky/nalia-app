@@ -5,6 +5,9 @@ import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/global.dart';
 
+/// Gallery
+///
+/// When user logs in/out, gallery changes to the user accordingly.
 class Gallery extends GetxController {
   static Gallery to = Get.find<Gallery>();
   static Gallery of = Get.find<Gallery>();
@@ -17,7 +20,8 @@ class Gallery extends GetxController {
   void onInit() {
     super.onInit();
 
-    api.authStateChanges.listen((user) async {
+    api.authChanges.listen((user) async {
+      if (user == null) return;
       try {
         post = await app.getGalleryPost();
         update();

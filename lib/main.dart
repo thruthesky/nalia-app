@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:dio/dio.dart';
+import 'dart:io';
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +15,7 @@ import 'package:nalia_app/screens/home/home.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
 import 'package:nalia_app/screens/menu/menu.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
+import 'package:nalia_app/screens/purchase/purchase.history.screen.dart';
 import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/global.dart';
@@ -48,8 +48,10 @@ class _MainScreenState extends State<MainScreen> {
     });
 
     app.firebaseReady.listen((ready) async {
-      print('Firebase ready: $ready');
+      // print('Firebase ready: $ready');
       if (ready == false) return;
+      // todo: purchase produces error on iOS.
+      if (Platform.isIOS) return;
       purchase.init(
         productIds: {
           'lucky_box',
@@ -73,9 +75,18 @@ class _MainScreenState extends State<MainScreen> {
 
     app.firebaseReady.listen((ready) {
       if (ready == false) return;
-      api.authStateChanges.listen((user) {
-        if (user == null) return;
-// Listening login user's chat room changes.
+      api.authChanges.listen((user) {
+        // When user is not logged in, or logged out, clear the chat room list.
+        if (user == null) {
+          if (myRoomList != null) {
+            myRoomList.leave();
+            myRoomList = null;
+          }
+          return;
+        }
+
+        // print('main.dart -> firebaseReady -> authChanges ->user: $user');
+        // Listening login user's chat room changes.
         // This must be here to listen new messages outside from chat screens.
         // Reset room list, when user just logs in/out.
         if (myRoomList == null) {
@@ -109,6 +120,9 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.userSearch, page: () => UserSearchScreen()),
         GetPage(name: RouteNames.gallery, page: () => GalleryScreen()),
         GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
+        GetPage(
+            name: RouteNames.purchaseHistory,
+            page: () => PurchaseHistoryScreen()),
         GetPage(name: RouteNames.menu, page: () => MenuScreen()),
         GetPage(name: RouteNames.chatRoom, page: () => ChatRoomScreen()),
         GetPage(

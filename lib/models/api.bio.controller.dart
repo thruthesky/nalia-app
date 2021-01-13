@@ -11,7 +11,7 @@ class Bio extends GetxController {
   void onInit() {
     super.onInit();
 
-    api.authStateChanges.listen((user) {
+    api.authChanges.listen((user) {
       if (user == null) {
         Bio.data = null;
       } else {

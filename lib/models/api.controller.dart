@@ -94,6 +94,7 @@ class API extends GetxController {
 
       /// Load user profile from localStorage.
       /// If the user has logged in previously, he will be auto logged in on next app running.
+      /// [user] will be null if the user has not logged in previously.
       user = _loadUserProfile();
       if (loggedIn)
         print('ApiUser logged in with cached profile: ${user.sessionId}');
@@ -103,12 +104,12 @@ class API extends GetxController {
         userProfile(sessionId);
       }
 
-      authStateChanges.add(user);
+      authChanges.add(user);
     });
   }
 
-  /// [authStateChanges] is posted on user login or logout. Not on profile reading or updating.
-  BehaviorSubject<ApiUser> authStateChanges = BehaviorSubject.seeded(null);
+  /// [authChanges] is posted on user login or logout. Not on profile reading or updating.
+  BehaviorSubject<ApiUser> authChanges = BehaviorSubject.seeded(null);
 
   Prefix.Dio dio = Prefix.Dio();
   final url = v3Url;
@@ -177,9 +178,9 @@ class API extends GetxController {
     data['user_pass'] = pass;
 
     final Map<String, dynamic> res = await request(data);
-    print('res: $res');
+    // print('res: $res');
     user = ApiUser.fromJson(res);
-    print('user: $user');
+    // print('user: $user');
 
     await _saveUserProfile(user);
 
@@ -198,7 +199,7 @@ class API extends GetxController {
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     await _saveUserProfile(user);
-    authStateChanges.add(user);
+    authChanges.add(user);
     update();
     return user;
   }
@@ -207,8 +208,10 @@ class API extends GetxController {
     await localStorage.write('user', user.toJson());
   }
 
+  /// Returns null if the user has not logged in.
   ApiUser _loadUserProfile() {
     final json = localStorage.read('user');
+    if (json == null) return null;
     return ApiUser.fromJson(json);
   }
 
@@ -223,21 +226,19 @@ class API extends GetxController {
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     await _saveUserProfile(user);
-    authStateChanges.add(user);
+    authChanges.add(user);
     update();
     return user;
   }
 
-  logout() {
+  logout() async {
+    await localStorage.remove('user');
     user = null;
-    authStateChanges.add(user);
+    authChanges.add(user);
   }
 
-  updateToken(String token) {
-    return request({'route': 'notification.updateToken', 'token': token});
-  }
-
-  updateUser(String key, String value) async {
+  /// Update user key/value on user meta (Not on wp_users table)
+  Future<ApiUser> updateUserMeta(String key, String value) async {
     final Map<String, dynamic> data = {
       'route': 'user.profileUpdate',
       key: value,
@@ -245,6 +246,7 @@ class API extends GetxController {
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     update();
+    return user;
   }
 
   userProfile(String sessionId) async {
@@ -498,21 +500,96 @@ class API extends GetxController {
   }
 
   recordFailurePurchase(Map<String, dynamic> data) {
-    data['route'] = 'inAppPurchase.recordFailure';
+    data['route'] = 'purchase.recordFailure';
     return request(data);
   }
 
   recordPendingPurchase(Map<String, dynamic> data) {
-    data['route'] = 'inAppPurchase.recordPending';
+    data['route'] = 'purchase.recordPending';
     return request(data);
   }
 
   recordSuccessPurchase(Map<String, dynamic> data) {
-    data['route'] = 'inAppPurchase.recordSuccess';
+    data['route'] = 'purchase.recordSuccess';
     return request(data);
   }
 
   getMyPurchases() {
-    return request({'route': 'inAppPurchase.myPurchase'});
+    return request({'route': 'purchase.myPurchase'});
+  }
+
+  updateToken(String token) {
+    return request({'route': 'notification.updateToken', 'token': token});
+  }
+
+  sendMessageToTokens(
+      {String token,
+      String title,
+      String body,
+      Map<String, dynamic> data,
+      String imageUrl}) {
+    Map<String, dynamic> req = {
+      'route': 'notification.sendMessageToTokens',
+      'token': token,
+      'title': title,
+      'body': body,
+      if (data != null) 'data': data,
+      'imageUrl': imageUrl,
+    };
+    return request(req);
+  }
+
+  sendMessageToTopic(
+      {String topic,
+      String title,
+      String body,
+      Map<String, dynamic> data,
+      String imageUrl}) {
+    Map<String, dynamic> req = {
+      'route': 'notification.sendMessageToTopic',
+      'topic': topic,
+      'title': title,
+      'body': body,
+      if (data != null) 'data': data,
+      'imageUrl': imageUrl,
+    };
+    return request(req);
+  }
+
+  sendMessageToUsers(
+      {List<String> users,
+      String subscription,
+      String title,
+      String body,
+      Map<String, dynamic> data,
+      String imageUrl}) {
+    Map<String, dynamic> req = {
+      'route': 'notification.sendMessageToUsers',
+      'users': users,
+      if (subscription != null) 'subscription': subscription,
+      'title': title,
+      'body': body,
+      if (data != null) 'data': data,
+      'imageUrl': imageUrl,
+    };
+    return request(req);
+  }
+
+  subscribeTopic(String topic, [dynamic tokens]) {
+    Map<String, dynamic> req = {
+      'route': 'notification.subscribeTopic',
+      'topic': topic,
+      if (tokens != null) 'tokens': tokens,
+    };
+    return request(req);
+  }
+
+  unsubscribeTopic(String topic, [dynamic tokens]) {
+    Map<String, dynamic> req = {
+      'route': 'notification.unsubscribeTopic',
+      'topic': topic,
+      if (tokens != null) 'tokens': tokens,
+    };
+    return request(req);
   }
 }

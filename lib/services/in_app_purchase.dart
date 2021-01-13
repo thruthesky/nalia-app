@@ -221,10 +221,12 @@ class FireflutterInAppPurchase {
           // `PurchaseStatus.purchased` or `PurchaseStatus.error`
           if (purchaseDetails.status == PurchaseStatus.pending) {
             print('=> pending on purchaseUpdatedStream');
+            print(purchaseDetails.toString());
             pending.add(purchaseDetails);
             _recordPending(purchaseDetails);
           } else if (purchaseDetails.status == PurchaseStatus.error) {
             print('=> error on purchaseUpdatedStream');
+            print(purchaseDetails.toString());
             error.add(purchaseDetails);
             _recordFailure(purchaseDetails);
             if (Platform.isIOS) {
@@ -232,6 +234,7 @@ class FireflutterInAppPurchase {
             }
           } else if (purchaseDetails.status == PurchaseStatus.purchased) {
             print('=> purchased on purchaseUpdatedStream');
+            print(purchaseDetails.toString());
             // for android & consumable product only.
             if (Platform.isAndroid) {
               if (!autoConsume &&
@@ -323,21 +326,25 @@ class FireflutterInAppPurchase {
           purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
       'purchaseDetails_skPaymentTransaction_transactionTimeStamp':
           purchaseDetails?.skPaymentTransaction?.transactionTimeStamp,
-      'purchaseDetails_verificationData_localVerificationData':
-          purchaseDetails?.verificationData?.localVerificationData,
-      'purchaseDetails_verificationData_serverVerificationData':
-          purchaseDetails?.verificationData?.serverVerificationData,
+      // 'purchaseDetails_verificationData_localVerificationData':
+      //     purchaseDetails?.verificationData?.localVerificationData.toString(),
+      // 'purchaseDetails_verificationData_serverVerificationData':
+      //     purchaseDetails?.verificationData?.serverVerificationData,
       'purchaseDetails_pendingCompletePurchase':
           purchaseDetails?.pendingCompletePurchase,
+      'productDetails_id': productDetails?.id,
       'productDetails_price': productDetails?.price,
-      'productDetails_skProduct_price': productDetails?.skProduct?.price,
+      'productDetails_skProduct_price':
+          productDetails?.skProduct?.price ?? productDetails?.skuDetail?.price,
       'productDetails_skProduct_priceLocale_currencyCode':
-          productDetails?.skProduct?.priceLocale?.currencyCode,
+          productDetails?.skProduct?.priceLocale?.currencyCode ??
+              productDetails?.skuDetail?.priceCurrencyCode,
       'productDetails_skProduct_priceLocale_currencySymbol':
           productDetails?.skProduct?.priceLocale?.currencySymbol,
       'productDetails_skProduct_productIdentifier':
           productDetails?.skProduct?.productIdentifier,
     };
+    print(data.toString());
     await api.recordSuccessPurchase(data);
   }
 

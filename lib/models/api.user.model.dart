@@ -1,6 +1,7 @@
 import 'package:age/age.dart';
 
 class ApiUser {
+  Map<String, dynamic> data;
   String nickname;
   String firstName;
   String lastName;
@@ -85,6 +86,7 @@ class ApiUser {
 
   ApiUser.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
+    data = json;
     nickname = json['nickname'];
     firstName = json['first_name'];
     lastName = json['last_name'];

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -106,7 +107,8 @@ class App {
     );
   }
 
-  bool get locationReady => locationServiceChanges.value == true && locationAppPermissionChanges.value == true;
+  bool get locationReady =>
+      locationServiceChanges.value == true && locationAppPermissionChanges.value == true;
 
   /// Upload an image.
   ///
@@ -280,6 +282,7 @@ class App {
 
   /// Get the login user's post of gallery. It will create one if none exists.
   Future<ApiPost> getGalleryPost() async {
+    if (api.notLoggedIn) return null;
     List<ApiPost> posts = await api.searchPost(category: 'gallery', limit: 1, author: api.id);
     if (posts.length == 0) {
       print('No gallery post. create one');
@@ -332,5 +335,44 @@ class App {
 
   open(String routeName, {Map<String, dynamic> arguments}) {
     Get.offAllNamed(routeName, arguments: arguments);
+  }
+
+  subscribed(String name) {
+    return api.user?.data['subscription_$name'] == 'Y';
+  }
+
+  subscribe(String name) async {
+    try {
+      final re = await api.updateUserMeta('subscription_$name', 'Y');
+      print(re.data['subscription_$name']);
+    } catch (e) {
+      error(e);
+    }
+  }
+
+  unsubscribe(String name) async {
+    try {
+      final re = await api.updateUserMeta('subscription_$name', 'N');
+      print(re.data['subscription_$name']);
+    } catch (e) {
+      error(e);
+    }
+  }
+
+  sendChatPushMessage(ChatRoom chat, String body) async {
+    try {
+      await api.sendMessageToUsers(
+        users: [chat.global.otherUserId],
+        subscription: 'subscription_' + chat.id,
+        title: 'chat message',
+        body: body,
+      );
+    } catch (e) {
+      if (e == ERROR_EMPTY_TOKENS) {
+        print('No tokens to sends. It is not a critical error');
+      } else {
+        error(e);
+      }
+    }
   }
 }
