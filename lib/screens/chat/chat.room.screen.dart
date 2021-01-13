@@ -33,7 +33,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   StreamSubscription keyboardSubscription;
 
   bool get atBottom {
-    return scrollController.offset > (scrollController.position.maxScrollExtent - 640);
+    return scrollController.offset >
+        (scrollController.position.maxScrollExtent - 640);
   }
 
   bool get atTop {
@@ -41,11 +42,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   }
 
   bool get scrollUp {
-    return scrollController.position.userScrollDirection == ScrollDirection.forward;
+    return scrollController.position.userScrollDirection ==
+        ScrollDirection.forward;
   }
 
   bool get scrollDown {
-    return scrollController.position.userScrollDirection == ScrollDirection.reverse;
+    return scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse;
   }
 
   String get text {
@@ -102,7 +105,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     // if there is no incoming chat room id, then, create one
     try {
       await app.checkUserProfile();
-      await chat.enter(id: args['roomId'], users: [args['userId']], hatch: false);
+      await chat.enter(
+          id: args['roomId'], users: [args['userId']], hatch: false);
     } catch (e) {
       app.error(e);
     }
@@ -115,7 +119,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     });
 
     // scroll to bottom only if needed when user open/hide keyboard.
-    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
       if (visible && atBottom) {
         scrollToBottom(ms: 10);
       }
@@ -168,7 +173,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       future: app.getBio(uid),
       builder: (_, snapshot) {
         if (snapshot.hasError) return SizedBox.shrink();
-        if (snapshot.connectionState == ConnectionState.waiting) return Spinner();
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Spinner();
         _otherUsername = Text(
           snapshot.data.name,
           style: TextStyle(fontSize: md),
@@ -209,7 +215,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               otherUsername,
-              IconButton(icon: Icon(Icons.notification_important), onPressed: () {}),
+              IconButton(
+                  icon: Icon(Icons.notification_important), onPressed: () {}),
             ],
           ),
         ),
@@ -224,7 +231,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         controller: scrollController,
                         itemCount: chat.messages.length,
                         itemBuilder: (_, i) {
-                          final message = ChatMessage.fromData(chat.messages[i]);
+                          final message =
+                              ChatMessage.fromData(chat.messages[i]);
                           return ListTile(
                             leading: message.isMine
                                 ? SizedBox.shrink()
@@ -236,12 +244,16 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 ? CacheImage(message.text)
                                 : Text(
                                     translateIfChatProtocol(message.text),
-                                    textAlign: message.isMine ? TextAlign.right : TextAlign.left,
+                                    textAlign: message.isMine
+                                        ? TextAlign.right
+                                        : TextAlign.left,
                                   ),
                             subtitle: Text(
                               'at ' + dateTime(message.createdAt),
                               style: TextStyle(fontSize: 8),
-                              textAlign: message.isMine ? TextAlign.right : TextAlign.left,
+                              textAlign: message.isMine
+                                  ? TextAlign.right
+                                  : TextAlign.left,
                             ),
                             trailing: message.isMine
                                 ? UserAvatar(
@@ -254,6 +266,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       ),
                     ),
                   ),
+                  if (progress > 0)
+                    LinearProgressIndicator(
+                      value: progress,
+                    ),
                   Padding(
                     padding: EdgeInsets.all(sm),
                     child: Row(
@@ -261,7 +277,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         /// Upload Icon Button
                         IconButton(
                           /// if progress is not 0, show loader.
-                          icon: progress != 0 ? Spinner() : Icon(Icons.camera_alt),
+                          icon: Icon(Icons.camera_alt),
                           onPressed: () async {
                             try {
                               /// upload to php backend
@@ -273,13 +289,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                         progress = 0;
                                       });
                                     } else {
-                                      progress = p;
+                                      progress = p / 100;
                                     }
                                   },
                                 ),
                               );
 
-                              /// send plain url to firebase with additional data to determine type.
+                              /// send url to firebase
                               await chat.sendMessage(
                                 text: file.thumbnailUrl,
                                 displayName: Bio.data.userId,
