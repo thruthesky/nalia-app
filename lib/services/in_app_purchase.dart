@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.purchaseHistory.dart';
@@ -174,6 +175,9 @@ class FireflutterInAppPurchase {
 
   _recordPending(PurchaseDetails purchaseDetails) async {
     ProductDetails productDetails = products[purchaseDetails.productID];
+    if (Platform.isIOS && purchaseDetails?.verificationData == null) {
+      // todo On iOS, this may be null. Call [InAppPurchaseConnection.refreshPurchaseVerificationData] to get a new [PurchaseVerificationData] object for further validation.
+    }
     final Map<String, dynamic> data = {
       'status': SessionStatus.pending,
       'productDetails_id': productDetails?.id,
@@ -187,6 +191,9 @@ class FireflutterInAppPurchase {
       'purchaseDetails_verificationData_serverVerificationData':
           purchaseDetails?.verificationData?.serverVerificationData,
     };
+    print('psending data:');
+    print(jsonEncode(data));
+
     await api.recordFailurePurchase(data);
   }
 
@@ -219,10 +226,10 @@ class FireflutterInAppPurchase {
           purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
       'purchaseDetails_skPaymentTransaction_transactionTimeStamp':
           purchaseDetails?.skPaymentTransaction?.transactionTimeStamp,
-      // 'purchaseDetails_verificationData_localVerificationData':
-      //     purchaseDetails?.verificationData?.localVerificationData.toString(),
-      // 'purchaseDetails_verificationData_serverVerificationData':
-      //     purchaseDetails?.verificationData?.serverVerificationData,
+      'purchaseDetails_verificationData_localVerificationData':
+          purchaseDetails?.verificationData?.localVerificationData.toString(),
+      'purchaseDetails_verificationData_serverVerificationData':
+          purchaseDetails?.verificationData?.serverVerificationData,
       'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
       'productDetails_skProduct_price': productDetails?.skProduct?.price != null
           ? productDetails?.skProduct?.price
@@ -235,6 +242,12 @@ class FireflutterInAppPurchase {
           productDetails?.skProduct?.priceLocale?.currencySymbol,
       'productDetails_skProduct_productIdentifier': productDetails?.skProduct?.productIdentifier,
     };
+
+    print('success data:');
+    print(purchaseDetails?.verificationData?.localVerificationData.toString());
+    print(purchaseDetails?.verificationData?.serverVerificationData.toString());
+    print(jsonEncode(data));
+
     await api.recordSuccessPurchase(data);
   }
 

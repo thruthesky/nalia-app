@@ -47,11 +47,23 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     Timer(Duration(milliseconds: 600), () async {
-      app.open(RouteNames.jewelry);
+      // app.open(RouteNames.jewelry);
       // app.open(RouteNames.userSearch);
       // app.open(RouteNames.gallery);
       // app.open(RouteNames.profile);
       // app.open(RouteNames.forumList, arguments: {'category': 'reminder'});
+
+      // String str = "abcdefghijklmnopqrstuvwxyz--0123456789--";
+      // for (int i = 0; i < 5; i++) {
+      //   str += str;
+      // }
+      // print(str.length);
+
+      // try {
+      //   await api.request({'route': 'app.str', 'str': str});
+      // } catch (e) {
+      //   print((e as DioError).message);
+      // }
     });
 
     app.firebaseReady.listen((ready) async {
