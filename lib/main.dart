@@ -18,6 +18,7 @@ import 'package:nalia_app/screens/jewelry/jewelry.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
 import 'package:nalia_app/screens/menu/menu.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
+import 'package:nalia_app/screens/purchase/purchase.history.screen.dart';
 import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/global.dart';
@@ -125,10 +126,12 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.userSearch, page: () => UserSearchScreen()),
         GetPage(name: RouteNames.gallery, page: () => GalleryScreen()),
         GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
+        GetPage(name: RouteNames.purchaseHistory, page: () => PurchaseHistoryScreen()),
         GetPage(name: RouteNames.menu, page: () => MenuScreen()),
         GetPage(name: RouteNames.chatRoom, page: () => ChatRoomScreen()),
         GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen()),
-        GetPage(name: RouteNames.jewelry, page: () => JewelryScreen())
+        GetPage(name: RouteNames.jewelry, page: () => JewelryScreen()),
+        GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
       ],
     );
   }

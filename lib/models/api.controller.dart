@@ -30,7 +30,8 @@ class Forum {
   bool get canLoad => loading == false && noMorePosts == false;
   bool get canList => postInEdit == null && posts.length > 0;
   final ItemScrollController listController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   Function render;
 
@@ -95,7 +96,8 @@ class API extends GetxController {
       /// If the user has logged in previously, he will be auto logged in on next app running.
       /// [user] will be null if the user has not logged in previously.
       user = _loadUserProfile();
-      if (loggedIn) print('ApiUser logged in with cached profile: ${user.sessionId}');
+      if (loggedIn)
+        print('ApiUser logged in with cached profile: ${user.sessionId}');
 
       /// If user has logged in with localStorage data, refresh the user data from backend.
       if (loggedIn) {
@@ -291,7 +293,9 @@ class API extends GetxController {
     final data = {
       'route': 'forum.editComment',
       'comment_post_ID': post.id,
-      if (comment != null && comment.commentId != null && comment.commentId != '')
+      if (comment != null &&
+          comment.commentId != null &&
+          comment.commentId != '')
         'comment_ID': comment.commentId,
       if (parent != null) 'comment_parent': parent.commentId,
       'comment_content': content ?? '',
@@ -309,7 +313,8 @@ class API extends GetxController {
     return ApiPost.fromJson(json);
   }
 
-  Future<Map<dynamic, dynamic>> setFeaturedImage(ApiPost post, ApiFile file) async {
+  Future<Map<dynamic, dynamic>> setFeaturedImage(
+      ApiPost post, ApiFile file) async {
     final json = await request({
       'route': 'forum.setFeaturedImage',
       'ID': post.id,
@@ -369,7 +374,8 @@ class API extends GetxController {
     return _posts;
   }
 
-  Future<ApiFile> uploadFile({@required File file, Function onProgress, String postType}) async {
+  Future<ApiFile> uploadFile(
+      {@required File file, Function onProgress, String postType}) async {
     /// [Prefix] 를 쓰는 이유는 Dio 의 FromData 와 Flutter 의 기본 HTTP 와 충돌하기 때문이다.
     final formData = Prefix.FormData.fromMap({
       /// `route` 와 `session_id` 등 추가 파라메타 값을 전달 할 수 있다.
@@ -448,7 +454,8 @@ class API extends GetxController {
     forum.render();
 
     List<ApiPost> _posts;
-    _posts = await searchPost(category: forum.category, paged: forum.pageNo, limit: forum.limit);
+    _posts = await searchPost(
+        category: forum.category, paged: forum.pageNo, limit: forum.limit);
 
     if (_posts.length == 0) {
       forum.noMorePosts = true;
@@ -496,22 +503,22 @@ class API extends GetxController {
   }
 
   recordFailurePurchase(Map<String, dynamic> data) {
-    data['route'] = 'inAppPurchase.recordFailure';
+    data['route'] = 'purchase.recordFailure';
     return request(data);
   }
 
   recordPendingPurchase(Map<String, dynamic> data) {
-    data['route'] = 'inAppPurchase.recordPending';
+    data['route'] = 'purchase.recordPending';
     return request(data);
   }
 
   recordSuccessPurchase(Map<String, dynamic> data) {
-    data['route'] = 'inAppPurchase.recordSuccess';
+    data['route'] = 'purchase.recordSuccess';
     return request(data);
   }
 
   getMyPurchases() {
-    return request({'route': 'inAppPurchase.myPurchase'});
+    return request({'route': 'purchase.myPurchase'});
   }
 
   updateToken(String token) {
@@ -519,7 +526,11 @@ class API extends GetxController {
   }
 
   sendMessageToTokens(
-      {String token, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+      {String token,
+      String title,
+      String body,
+      Map<String, dynamic> data,
+      String imageUrl}) {
     Map<String, dynamic> req = {
       'route': 'notification.sendMessageToTokens',
       'token': token,
@@ -532,7 +543,11 @@ class API extends GetxController {
   }
 
   sendMessageToTopic(
-      {String topic, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+      {String topic,
+      String title,
+      String body,
+      Map<String, dynamic> data,
+      String imageUrl}) {
     Map<String, dynamic> req = {
       'route': 'notification.sendMessageToTopic',
       'topic': topic,
