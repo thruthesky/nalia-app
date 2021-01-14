@@ -182,6 +182,10 @@ class FireflutterInAppPurchase {
       'productDetails_price': productDetails?.price,
       'purchaseDetails_productID': purchaseDetails?.productID,
       'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
+      'purchaseDetails_verificationData_localVerificationData':
+          purchaseDetails?.verificationData?.localVerificationData,
+      'purchaseDetails_verificationData_serverVerificationData':
+          purchaseDetails?.verificationData?.serverVerificationData,
     };
     await api.recordFailurePurchase(data);
   }
@@ -215,6 +219,10 @@ class FireflutterInAppPurchase {
           purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
       'purchaseDetails_skPaymentTransaction_transactionTimeStamp':
           purchaseDetails?.skPaymentTransaction?.transactionTimeStamp,
+      // 'purchaseDetails_verificationData_localVerificationData':
+      //     purchaseDetails?.verificationData?.localVerificationData.toString(),
+      // 'purchaseDetails_verificationData_serverVerificationData':
+      //     purchaseDetails?.verificationData?.serverVerificationData,
       'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
       'productDetails_skProduct_price': productDetails?.skProduct?.price != null
           ? productDetails?.skProduct?.price

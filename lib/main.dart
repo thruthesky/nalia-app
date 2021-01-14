@@ -107,6 +107,26 @@ class _MainScreenState extends State<MainScreen> {
         }
       });
     });
+
+    purchase.pending.listen((purchaseDetails) {
+      print("main: purchase.pending.listen((value) {");
+      print('main: PurchaseStatus.pending: Show some pending UI');
+      // print(purchaseDetails);
+      // print(purchaseDetails.productID);
+    });
+    purchase.error.listen((purchaseDetails) {
+      print("main: purchase.error.listen((value) {");
+      print(purchaseDetails);
+    });
+    purchase.success.listen((PurchaseSession session) async {
+      print("Purchase made. Success!");
+      try {
+        await app.openBox(session.sessionId);
+        app.open(RouteNames.openBox, arguments: {'sessionId': session.sessionId});
+      } catch (e) {
+        app.error(e);
+      }
+    });
   }
 
   @override
