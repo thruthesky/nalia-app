@@ -25,6 +25,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
         child: SingleChildScrollView(
+          padding: EdgeInsets.all(xs),
           child: Column(
             children: [
               StreamBuilder(

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:nalia_app/models/api.purchaseHistory.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/svg_collections.dart';
 import 'package:nalia_app/widgets/svg.dart';
@@ -21,114 +22,6 @@ class SessionStatus {
 
 const String MISSING_PRODUCTS = 'MISSING_PRODUCTS';
 const String PURCHASE_SESSION_NOT_FOUND = 'PURCHASE_SESSION_NOT_FOUND';
-
-class PurchaseDocumentProductDetails {
-  String id;
-  String price;
-  String title;
-  Map skProduct;
-  PurchaseDocumentProductDetails({
-    this.id,
-    this.price,
-    this.title,
-    this.skProduct,
-  });
-}
-
-class SkPaymentTransationPayment {
-  int quantity;
-  String productIdentifier;
-  SkPaymentTransationPayment(payment) {
-    if (payment == null) return;
-    this.quantity = payment['quantity'];
-    this.productIdentifier = payment['productIdentifier'];
-  }
-}
-
-class SkPaymentTransation {
-  SkPaymentTransationPayment payment;
-  SkPaymentTransation(payment)
-      : this.payment = SkPaymentTransationPayment(payment);
-}
-
-class PurchaseDocumentPurchaseDetails {
-  String purchaseID;
-  String productID;
-  SkPaymentTransation skPaymentTransaction;
-  PurchaseDocumentPurchaseDetails({
-    this.purchaseID,
-    this.productID,
-    skPaymentTransaction,
-  }) : this.skPaymentTransaction = SkPaymentTransation(skPaymentTransaction);
-}
-
-/// Purchase information
-///
-/// TODO complete adding the purchase properties from `/puchase/{doc-id}`
-class PurchaseSession {
-  /// [id] is the document id of Firestore
-  String id;
-
-  String status;
-
-  /// User's displayName, email, phoneNumber, photoURL, uid
-  String displayName;
-  String email;
-  String phoneNumber;
-  String photoURL;
-  String uid;
-
-  int stamp;
-
-  PurchaseDocumentProductDetails productDetails;
-  PurchaseDocumentPurchaseDetails purchaseDetails;
-
-  /// [data] hold the document data.
-  ///
-  /// If you put your costum data on the purchase document, you will be
-  /// able to access your data through this variable.
-  Map<String, dynamic> data;
-
-  ///
-  PurchaseSession(
-      {this.data,
-      this.id,
-      this.displayName,
-      this.email,
-      this.phoneNumber,
-      this.photoURL,
-      this.status,
-      this.uid,
-      this.productDetails,
-      this.purchaseDetails,
-      this.stamp});
-  factory PurchaseSession.fromSnapshot(snapshot) {
-    final data = snapshot.data();
-    data['id'] = snapshot.id;
-    return PurchaseSession(
-      data: data,
-      id: data['id'],
-      displayName: data['displayName'],
-      email: data['email'],
-      stamp: data['stamp'],
-      phoneNumber: data['phoneNumber'],
-      photoURL: data['photoURL'],
-      status: data['status'],
-      uid: data['uid'],
-      productDetails: PurchaseDocumentProductDetails(
-        id: data['productDetails']['id'],
-        price: data['productDetails']['price'],
-        title: data['productDetails']['title'],
-        skProduct: data['productDetails']['skProduct'],
-      ),
-      purchaseDetails: PurchaseDocumentPurchaseDetails(
-        productID: data['purchaseDetails']['productID'],
-        purchaseID: data['purchaseDetails']['purchaseID'],
-        skPaymentTransaction: data['purchaseDetails']['skPaymentTransaction'],
-      ),
-    );
-  }
-}
 
 /// In app purchase
 class FireflutterInAppPurchase {
@@ -237,8 +130,7 @@ class FireflutterInAppPurchase {
             print(purchaseDetails.toString());
             // for android & consumable product only.
             if (Platform.isAndroid) {
-              if (!autoConsume &&
-                  consumableIds.contains(purchaseDetails.productID)) {
+              if (!autoConsume && consumableIds.contains(purchaseDetails.productID)) {
                 await connection.consumePurchase(purchaseDetails);
               }
             }
@@ -265,16 +157,14 @@ class FireflutterInAppPurchase {
     final bool available = await connection.isAvailable();
 
     if (available) {
-      ProductDetailsResponse response =
-          await connection.queryProductDetails(_productIds);
+      ProductDetailsResponse response = await connection.queryProductDetails(_productIds);
 
       /// Check if any of given product id(s) are missing.
       if (response.notFoundIDs.isNotEmpty) {
         missingIds = response.notFoundIDs;
       }
 
-      response.productDetails
-          .forEach((product) => products[product.id] = product);
+      response.productDetails.forEach((product) => products[product.id] = product);
 
       productReady.add(products);
     } else {
@@ -291,8 +181,7 @@ class FireflutterInAppPurchase {
       'productDetails_description': productDetails?.description,
       'productDetails_price': productDetails?.price,
       'purchaseDetails_productID': purchaseDetails?.productID,
-      'purchaseDetails_pendingCompletePurchase':
-          purchaseDetails?.pendingCompletePurchase,
+      'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
       'purchaseDetails_verificationData_localVerificationData':
           purchaseDetails?.verificationData?.localVerificationData,
       'purchaseDetails_verificationData_serverVerificationData':
@@ -316,6 +205,10 @@ class FireflutterInAppPurchase {
     ProductDetails productDetails = products[purchaseDetails.productID];
     final Map<String, dynamic> data = {
       'status': SessionStatus.success,
+      'productDetails_id': productDetails?.id,
+      'productDetails_price': productDetails?.price,
+      'productDetails_title': productDetails?.title,
+      'productDetails_description': productDetails?.description,
       'purchaseDetails_transactionDate': purchaseDetails?.transactionDate,
       'purchaseDetails_purchaseID': purchaseDetails?.purchaseID,
       'purchaseDetails_skPaymentTransaction_payment_productIdentifier':
@@ -326,25 +219,22 @@ class FireflutterInAppPurchase {
           purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
       'purchaseDetails_skPaymentTransaction_transactionTimeStamp':
           purchaseDetails?.skPaymentTransaction?.transactionTimeStamp,
+      'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
+      'productDetails_skProduct_price': productDetails?.skProduct?.price != null
+          ? productDetails?.skProduct?.price
+          : productDetails?.skuDetail?.price,
+      'productDetails_skProduct_priceLocale_currencyCode':
+          productDetails?.skProduct?.priceLocale?.currencyCode != null
+              ? productDetails?.skProduct?.priceLocale?.currencyCode
+              : productDetails?.skuDetail?.priceCurrencyCode,
+      'productDetails_skProduct_priceLocale_currencySymbol':
+          productDetails?.skProduct?.priceLocale?.currencySymbol,
+      'productDetails_skProduct_productIdentifier': productDetails?.skProduct?.productIdentifier,
       // 'purchaseDetails_verificationData_localVerificationData':
       //     purchaseDetails?.verificationData?.localVerificationData.toString(),
       // 'purchaseDetails_verificationData_serverVerificationData':
       //     purchaseDetails?.verificationData?.serverVerificationData,
-      'purchaseDetails_pendingCompletePurchase':
-          purchaseDetails?.pendingCompletePurchase,
-      'productDetails_id': productDetails?.id,
-      'productDetails_price': productDetails?.price,
-      'productDetails_skProduct_price':
-          productDetails?.skProduct?.price ?? productDetails?.skuDetail?.price,
-      'productDetails_skProduct_priceLocale_currencyCode':
-          productDetails?.skProduct?.priceLocale?.currencyCode ??
-              productDetails?.skuDetail?.priceCurrencyCode,
-      'productDetails_skProduct_priceLocale_currencySymbol':
-          productDetails?.skProduct?.priceLocale?.currencySymbol,
-      'productDetails_skProduct_productIdentifier':
-          productDetails?.skProduct?.productIdentifier,
     };
-    print(data.toString());
     await api.recordSuccessPurchase(data);
   }
 
@@ -359,8 +249,13 @@ class FireflutterInAppPurchase {
   }
 
   /// Returns the Collection Query to get the login user's success purchases.
-  Future get getMyPurchases async {
-    return await api.getMyPurchases();
+  Future<List<PurchaseHistory>> get getMyPurchases async {
+    final List<dynamic> res = await api.getMyPurchases();
+    List<PurchaseHistory> purchaseHistory = [];
+    for (int i = 0; i < res.length; i++) {
+      purchaseHistory.add(PurchaseHistory.fromJson(res[i]));
+    }
+    return purchaseHistory;
   }
 
   boxIcon(String id) {
