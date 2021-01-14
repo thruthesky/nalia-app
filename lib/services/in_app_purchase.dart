@@ -182,10 +182,6 @@ class FireflutterInAppPurchase {
       'productDetails_price': productDetails?.price,
       'purchaseDetails_productID': purchaseDetails?.productID,
       'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
-      'purchaseDetails_verificationData_localVerificationData':
-          purchaseDetails?.verificationData?.localVerificationData,
-      'purchaseDetails_verificationData_serverVerificationData':
-          purchaseDetails?.verificationData?.serverVerificationData,
     };
     await api.recordFailurePurchase(data);
   }
@@ -230,10 +226,6 @@ class FireflutterInAppPurchase {
       'productDetails_skProduct_priceLocale_currencySymbol':
           productDetails?.skProduct?.priceLocale?.currencySymbol,
       'productDetails_skProduct_productIdentifier': productDetails?.skProduct?.productIdentifier,
-      // 'purchaseDetails_verificationData_localVerificationData':
-      //     purchaseDetails?.verificationData?.localVerificationData.toString(),
-      // 'purchaseDetails_verificationData_serverVerificationData':
-      //     purchaseDetails?.verificationData?.serverVerificationData,
     };
     await api.recordSuccessPurchase(data);
   }
