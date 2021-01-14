@@ -34,80 +34,86 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
             spaceMd,
             Text('Jewelry box purchase history'),
             spaceMd,
-            // FutureBuilder(
-            //   future: purchase.getMyPurchases,
-            //   builder: (_, snapshot) {
-            //     if (snapshot.hasError) {
-            //       return Text('Oh! An error has occurred.');
-            //     }
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return Spinner();
-            //     }
+            FutureBuilder(
+              future: purchase.getMyPurchases,
+              builder: (_, snapshot) {
+                print(snapshot);
+                if (snapshot.hasError) {
+                  return Text('Oh! An error has occurred.');
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Spinner();
+                }
 
-            //     QuerySnapshot shot = snapshot.data;
-            //     if (shot.size == 0) {
-            //       return Column(
-            //         crossAxisAlignment: CrossAxisAlignment.center,
-            //         children: [
-            //           spaceMd,
-            //           Container(
-            //             padding: EdgeInsets.all(md),
-            //             child: Text('There is no jewelry box purchased.'),
-            //             decoration: BoxDecoration(
-            //               color: Colors.orange[100],
-            //               borderRadius: BorderRadius.circular(50),
-            //             ),
-            //           ),
-            //           spaceMd,
-            //           TextButton(
-            //             child: Text('Go to buy a jewelry box'),
-            //             onPressed: () => app.open(RouteNames.purchase),
-            //           )
-            //         ],
-            //       );
-            //     }
+                List<dynamic> shot = snapshot.data;
 
-            //     return Expanded(
-            //       child: ListView.builder(
-            //         padding: pagePadding,
-            //         itemCount: shot.docs.length,
-            //         itemBuilder: (_, i) {
-            //           final data = shot.docs[i].data();
-            //           data['id'] = shot.docs[i].id;
+                print(shot);
 
-            //           final session =
-            //               PurchaseSession.fromSnapshot(shot.docs[i]);
+                // if (shot.size == 0) {
+                //   return Column(
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       spaceMd,
+                //       Container(
+                //         padding: EdgeInsets.all(md),
+                //         child: Text('There is no jewelry box purchased.'),
+                //         decoration: BoxDecoration(
+                //           color: Colors.orange[100],
+                //           borderRadius: BorderRadius.circular(50),
+                //         ),
+                //       ),
+                //       spaceMd,
+                //       TextButton(
+                //         child: Text('Go to buy a jewelry box'),
+                //         onPressed: () => app.open(RouteNames.purchase),
+                //       )
+                //     ],
+                //   );
+                // }
 
-            //           print(session);
+                return Text('Your history here');
 
-            //           return Column(
-            //             children: [
-            //               Divider(),
-            //               ListTile(
-            //                 leading: purchase.boxIcon(''),
-            //                 title: Column(
-            //                   crossAxisAlignment: CrossAxisAlignment.start,
-            //                   children: [
-            //                     // Text(session.productDetails.id.tr),
-            //                     // Text(priceFormat(session)),
-            //                     // SizedBox(height: sm),
-            //                     // Text('결과'),
-            //                     // SizedBox(height: xs),
-            //                     // Text(openResult(session)),
-            //                     // SizedBox(height: sm),
-            //                   ],
-            //                 ),
-            //                 subtitle: Text('날짜: '
-            //                     // + time(data['beginAt']),
-            //                     ),
-            //               )
-            //             ],
-            //           );
-            //         },
-            //       ),
-            //     );
-            //   },
-            // ),
+                // return Expanded(
+                //   child: ListView.builder(
+                //     padding: pagePadding,
+                //     itemCount: shot.docs.length,
+                //     itemBuilder: (_, i) {
+                //       final data = shot.docs[i].data();
+                //       data['id'] = shot.docs[i].id;
+
+                //       final session =
+                //           PurchaseSession.fromSnapshot(shot.docs[i]);
+
+                //       print(session);
+
+                //       return Column(
+                //         children: [
+                //           Divider(),
+                //           ListTile(
+                //             leading: purchase.boxIcon(''),
+                //             title: Column(
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 // Text(session.productDetails.id.tr),
+                //                 // Text(priceFormat(session)),
+                //                 // SizedBox(height: sm),
+                //                 // Text('결과'),
+                //                 // SizedBox(height: xs),
+                //                 // Text(openResult(session)),
+                //                 // SizedBox(height: sm),
+                //               ],
+                //             ),
+                //             subtitle: Text('날짜: '
+                //                 // + time(data['beginAt']),
+                //                 ),
+                //           )
+                //         ],
+                //       );
+                //     },
+                //   ),
+                // );
+              },
+            ),
           ],
         ),
       ),
