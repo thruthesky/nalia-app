@@ -1,9 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/services/global.dart';
 
 class UserCardController extends GetxController {
   static UserCardController get to => Get.find<UserCardController>();
+  static UserCardController get of => Get.find<UserCardController>();
+
+  final PageController pageController = PageController();
 
   // 한번에 20 장씩 사용자를 로드한다. TODO: 차후, 옵션으로 할 수 있도록 한다.
   // int _limit = 20;
@@ -11,8 +15,6 @@ class UserCardController extends GetxController {
   bool _inLoading = false;
   // int _fetchNo = 0;
   List<ApiBio> users = [];
-  bool reset = false;
-
   @override
   void onInit() {
     super.onInit();
@@ -83,8 +85,11 @@ class UserCardController extends GetxController {
   /// 예를 들어, 사용자 검색에서, 특정 사용자를 클릭하면, 사용자 카드 페이지로 이동하고, 그 사용자가
   /// 나오도록 할 때 사용 할 수 있다.
   insertUser(ApiBio user) {
-    // users.insert(0, user);
-    // reset = true;
-    // update();
+    users.insert(0, user);
+    update();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      pageController.jumpToPage(0);
+    });
   }
 }

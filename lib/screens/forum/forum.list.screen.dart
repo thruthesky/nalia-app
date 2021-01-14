@@ -41,8 +41,7 @@ class _ForumListScreenState extends State<ForumListScreen> {
 
     /// Loading next page
     forum.itemPositionsListener.itemPositions.addListener(() {
-      int lastVisibleIndex =
-          forum.itemPositionsListener.itemPositions.value.last.index;
+      int lastVisibleIndex = forum.itemPositionsListener.itemPositions.value.last.index;
       if (forum.loading) return;
       if (lastVisibleIndex > forum.posts.length - 4) {
         fetchPosts();
@@ -65,7 +64,7 @@ class _ForumListScreenState extends State<ForumListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(route: RouteNames.myJewelry),
+      appBar: CustomAppBar(route: RouteNames.jewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
         header: Row(

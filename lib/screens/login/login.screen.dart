@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(route: RouteNames.myJewelry),
+      appBar: CustomAppBar(route: RouteNames.jewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
         child: Column(

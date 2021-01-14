@@ -23,7 +23,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(route: RouteNames.myJewelry),
+      appBar: CustomAppBar(route: RouteNames.jewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
         child: SingleChildScrollView(

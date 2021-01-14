@@ -1,3 +1,5 @@
+import 'package:age/age.dart';
+
 class ApiBio {
   ApiBio({
     this.userId,
@@ -14,6 +16,7 @@ class ApiBio {
     this.hobby,
     this.dateMethod,
     this.profilePhotoUrl,
+    this.age,
   });
 
   String userId;
@@ -31,22 +34,48 @@ class ApiBio {
   String dateMethod;
   String profilePhotoUrl;
 
-  factory ApiBio.fromJson(Map<String, dynamic> json) => ApiBio(
-        userId: json["user_ID"],
-        name: json["name"],
-        createdAt: json["createdAt"],
-        updatedAt: json["updatedAt"],
-        birthdate: json["birthdate"],
-        gender: json["gender"],
-        height: json["height"],
-        weight: json["weight"],
-        city: json["city"],
-        drinking: json["drinking"],
-        smoking: json["smoking"],
-        hobby: json["hobby"],
-        dateMethod: json["dateMethod"],
-        profilePhotoUrl: json['profile_photo_url'],
-      );
+  String age;
+
+  factory ApiBio.fromJson(Map<String, dynamic> json) {
+    String age;
+    String birthdate = json["birthdate"];
+    if (birthdate == null || birthdate == '')
+      age = '0';
+    else {
+      final _yy = int.parse(birthdate.substring(0, 2));
+      final _mm = int.parse(birthdate.substring(2, 4));
+      final _dd = int.parse(birthdate.substring(4, 6));
+
+      DateTime birthday = DateTime(_yy < 20 ? 2000 + _yy : 1900 + _yy, _mm, _dd);
+
+      DateTime today = DateTime.now();
+
+      AgeDuration _age;
+
+      // Set the age of the user
+      _age = Age.dateDifference(fromDate: birthday, toDate: today, includeToDate: false);
+
+      age = _age.years.toString();
+    }
+
+    return ApiBio(
+      userId: json["user_ID"],
+      name: json["name"],
+      createdAt: json["createdAt"],
+      updatedAt: json["updatedAt"],
+      birthdate: json["birthdate"],
+      gender: json["gender"],
+      height: json["height"],
+      weight: json["weight"],
+      city: json["city"],
+      drinking: json["drinking"],
+      smoking: json["smoking"],
+      hobby: json["hobby"],
+      dateMethod: json["dateMethod"],
+      profilePhotoUrl: json['profile_photo_url'],
+      age: age,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "user_ID": userId,
@@ -63,6 +92,7 @@ class ApiBio {
         "hobby": hobby,
         "dateMethod": dateMethod,
         "user_profile_photo": profilePhotoUrl,
+        "age": age,
       };
   @override
   String toString() {

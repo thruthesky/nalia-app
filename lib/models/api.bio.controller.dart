@@ -35,4 +35,16 @@ class Bio extends GetxController {
     final re = await api.appGet('bio');
     return ApiBio.fromJson(re);
   }
+
+  Future<List<ApiBio>> search({int limit = 1500}) async {
+    final re = await api.request({
+      'route': 'bio.search',
+      'limit': limit,
+      'hasProfilePhoto': 'Y',
+      'orderby': 'RAND()',
+    });
+    final List<ApiBio> bios = [];
+    for (final b in re) bios.add(ApiBio.fromJson(b));
+    return bios;
+  }
 }

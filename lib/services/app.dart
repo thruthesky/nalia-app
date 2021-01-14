@@ -11,6 +11,7 @@ import 'package:location/location.dart';
 import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
+import 'package:nalia_app/models/api.nalia.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
@@ -32,12 +33,29 @@ class App {
   BehaviorSubject<bool> firebaseReady = BehaviorSubject.seeded(false);
   // PermissionStatus _permissionGranted;
 
-  /// [justGotDailyBonus] is to indiate that the user got bonus.
-  RxBool justGotDailyBonus = false.obs;
+  /// [dailyBonusAvaiable] is posted true when user can get/redeem their free daily bonus.
+  RxBool dailyBonusAvaiable = false.obs;
 
   PushNotification pushNotification;
   App() {
     initFirebase();
+
+    everyMinutes();
+    Timer(Duration(minutes: 1), everyMinutes);
+  }
+
+  everyMinutes() async {
+    api.authChanges.listen((user) async {
+      if (user == null) return;
+
+      try {
+        await NaliaController.to.getMyBonusJewelry();
+      } catch (e) {
+        if (e == ERROR_DAILY_BONUS_NOT_GENERATED) {
+          dailyBonusAvaiable.value = true;
+        }
+      }
+    });
   }
 
   initFirebase() async {

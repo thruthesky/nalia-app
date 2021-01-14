@@ -107,7 +107,7 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(route: RouteNames.myJewelry),
+      appBar: CustomAppBar(route: RouteNames.jewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
         header: Row(
