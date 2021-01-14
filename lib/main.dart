@@ -118,15 +118,15 @@ class _MainScreenState extends State<MainScreen> {
       print("main: purchase.error.listen((value) {");
       print(purchaseDetails);
     });
-    purchase.success.listen((PurchaseSession session) async {
-      print("Purchase made. Success!");
-      try {
-        await app.openBox(session.sessionId);
-        app.open(RouteNames.openBox, arguments: {'sessionId': session.sessionId});
-      } catch (e) {
-        app.error(e);
-      }
-    });
+    // purchase.success.listen((PurchaseSession session) async {
+    //   print("Purchase made. Success!");
+    //   try {
+    //     await app.openBox(session.sessionId);
+    //     app.open(RouteNames.openBox, arguments: {'sessionId': session.sessionId});
+    //   } catch (e) {
+    //     app.error(e);
+    //   }
+    // });
   }
 
   @override
