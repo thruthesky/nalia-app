@@ -14,6 +14,8 @@ class PurchaseHistory {
     this.productDetailsSkProductProductIdentifier,
     this.purchaseDetailsProductId,
     this.purchaseDetailsPendingCompletePurchase,
+    this.purchaseDetailsVerificationDataLocalVerificationData,
+    this.purchaseDetailsVerificationDataServerVerificationData,
     this.purchaseDetailsSkPaymentTransactionTransactionIdentifier,
     this.purchaseDetailsTransactionDate,
     this.purchaseDetailsPurchaseId,
@@ -37,6 +39,8 @@ class PurchaseHistory {
   String productDetailsSkProductProductIdentifier;
   String purchaseDetailsProductId;
   String purchaseDetailsPendingCompletePurchase;
+  String purchaseDetailsVerificationDataLocalVerificationData;
+  String purchaseDetailsVerificationDataServerVerificationData;
   String purchaseDetailsSkPaymentTransactionTransactionIdentifier;
   String purchaseDetailsTransactionDate;
   String purchaseDetailsPurchaseId;
@@ -64,6 +68,10 @@ class PurchaseHistory {
         purchaseDetailsProductId: json["purchaseDetails_productID"].toString(),
         purchaseDetailsPendingCompletePurchase:
             json["purchaseDetails_pendingCompletePurchase"].toString(),
+        purchaseDetailsVerificationDataLocalVerificationData:
+            json["purchaseDetails_verificationData_localVerificationData"].toString(),
+        purchaseDetailsVerificationDataServerVerificationData:
+            json["purchaseDetails_verificationData_serverVerificationData"].toString(),
         purchaseDetailsSkPaymentTransactionTransactionIdentifier:
             json["purchaseDetails_skPaymentTransaction_transactionIdentifier"].toString(),
         purchaseDetailsTransactionDate: json["purchaseDetails_transactionDate"].toString(),
@@ -94,6 +102,10 @@ class PurchaseHistory {
         "productDetails_skProduct_productIdentifier": productDetailsSkProductProductIdentifier,
         "purchaseDetails_productID": purchaseDetailsProductId,
         "purchaseDetails_pendingCompletePurchase": purchaseDetailsPendingCompletePurchase,
+        "purchaseDetails_verificationData_localVerificationData":
+            purchaseDetailsVerificationDataLocalVerificationData,
+        "purchaseDetails_verificationData_serverVerificationData":
+            purchaseDetailsVerificationDataServerVerificationData,
         "purchaseDetails_skPaymentTransaction_transactionIdentifier":
             purchaseDetailsSkPaymentTransactionTransactionIdentifier,
         "purchaseDetails_transactionDate": purchaseDetailsTransactionDate,
