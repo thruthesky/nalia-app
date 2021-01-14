@@ -69,19 +69,24 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
               ),
               IconButton(
                 icon: Obx(() {
-                  if (app.justGotDailyBonus.value) {
+                  if (app.dailyBonusAvaiable.value) {
                     return IconAnimator(
                       finish: Icon(FontAwesome5Solid.heartbeat, color: color),
                       children: [
-                        AnimationFrame(icon: FontAwesome5Solid.heartbeat, color: Colors.red, size: 28, duration: 500),
-                        AnimationFrame(icon: FontAwesome5Solid.heartbeat, color: color, duration: 500),
+                        AnimationFrame(
+                            icon: FontAwesome5Solid.heartbeat,
+                            color: Colors.red,
+                            size: 28,
+                            duration: 500),
+                        AnimationFrame(
+                            icon: FontAwesome5Solid.heartbeat, color: color, duration: 500),
                       ],
                     );
                   }
 
                   return Icon(FontAwesome5Solid.heartbeat, color: color);
                 }),
-                onPressed: () => app.open(RouteNames.myJewelry),
+                onPressed: () => app.open(RouteNames.jewelry),
                 splashRadius: 28.4,
               ),
               GestureDetector(

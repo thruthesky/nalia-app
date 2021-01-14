@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // print('_ProfileScreenState::build()');
     // print(bio);
     return Scaffold(
-      appBar: CustomAppBar(route: RouteNames.myJewelry),
+      appBar: CustomAppBar(route: RouteNames.jewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
         child: api.notLoggedIn

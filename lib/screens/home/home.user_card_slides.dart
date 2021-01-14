@@ -17,8 +17,6 @@ class HomeUserCardSlides extends StatefulWidget {
 
 class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
   // List<ApiUser> users = [];
-  final PageController pageController = PageController();
-
   /// [renderCount] 총 사용자 카드 카운트
   ///
   /// 사용자 카드를 맨 앞에 추가 할 때, 특정 사용자의 카드가 중복으로 추가된다. 이 때,
@@ -50,7 +48,7 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
             setState(() => user.profilePhotoUrl = url);
           },
           onReset: () {
-            pageController.jumpToPage(0);
+            UserCardController.of.pageController.jumpToPage(0);
           },
         ),
         if (index == 0 && renderCount == 1)
@@ -60,15 +58,17 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
                 loop: 1,
                 child: Container(
                   padding: EdgeInsets.all(24),
-                  decoration:
-                      BoxDecoration(color: Color(0xa0a0a0a0), borderRadius: BorderRadius.circular(12), boxShadow: [
-                    BoxShadow(
-                      blurRadius: 8,
-                      color: Color(0x55a0a0a0),
-                      spreadRadius: 5,
-                      offset: Offset(1.0, 1.0),
-                    )
-                  ]),
+                  decoration: BoxDecoration(
+                      color: Color(0xa0a0a0a0),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 8,
+                          color: Color(0x55a0a0a0),
+                          spreadRadius: 5,
+                          offset: Offset(1.0, 1.0),
+                        )
+                      ]),
                   child: Column(
                     children: [
                       SizedBox(
@@ -120,15 +120,9 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserCardController>(
-      init: UserCardController(),
       builder: (_) {
         if (_.users.length == 0) return Spinner();
 
-        // See UserCardController.insertUser()
-        if (_.reset) {
-          _.reset = false;
-          pageController.jumpToPage(0);
-        }
         return Stack(children: [
           PageView(
             allowImplicitScrolling: false,
@@ -142,7 +136,7 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
                 _.fetchUsers();
               }
             },
-            controller: pageController,
+            controller: _.pageController,
           ),
           HomeNewsScroller(),
         ]);

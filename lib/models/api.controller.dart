@@ -106,7 +106,9 @@ class API extends GetxController {
     });
   }
 
-  /// [authChanges] is posted on user login or logout. Not on profile reading or updating.
+  /// [authChanges] is posted on user login or logout. (Not on profile reading or updating)
+  ///
+  /// When user is logged in, the parameter will have value of `ApiUser`, or null.
   BehaviorSubject<ApiUser> authChanges = BehaviorSubject.seeded(null);
 
   Prefix.Dio dio = Prefix.Dio();
@@ -148,6 +150,7 @@ class API extends GetxController {
     if (res.data is String || res.data['code'] == null) {
       throw (res.data);
     } else if (res.data['code'] != 0) {
+      /// If there is error like "ERROR_", then it throws exception.
       throw res.data['code'];
     }
     return res.data['data'];
@@ -232,7 +235,7 @@ class API extends GetxController {
   logout() async {
     await localStorage.remove('user');
     user = null;
-    authChanges.add(user);
+    authChanges.add(null);
   }
 
   /// Update user key/value on user meta (Not on wp_users table)

@@ -7,11 +7,14 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/models/api.gallery.controller.dart';
+import 'package:nalia_app/models/api.nalia.controller.dart';
+import 'package:nalia_app/models/api.user_card.controller.dart';
 import 'package:nalia_app/screens/chat/chat.room.screen.dart';
 import 'package:nalia_app/screens/chat/chat.user_room_list.screen.dart';
 import 'package:nalia_app/screens/forum/forum.list.screen.dart';
 import 'package:nalia_app/screens/gallery/gallery.screen.dart';
 import 'package:nalia_app/screens/home/home.screen.dart';
+import 'package:nalia_app/screens/jewelry/jewelry.screen.dart';
 import 'package:nalia_app/screens/login/login.screen.dart';
 import 'package:nalia_app/screens/menu/menu.screen.dart';
 import 'package:nalia_app/screens/profile/profile.screen.dart';
@@ -35,11 +38,15 @@ class _MainScreenState extends State<MainScreen> {
   final API c = Get.put(api);
   final Gallery g = Get.put(Gallery());
   final Bio b = Get.put(Bio());
+  final UserCardController uc = Get.put(UserCardController());
+  final NaliaController nc = Get.put(NaliaController());
+
   @override
   void initState() {
     super.initState();
 
     Timer(Duration(milliseconds: 600), () async {
+      app.open(RouteNames.jewelry);
       // app.open(RouteNames.userSearch);
       // app.open(RouteNames.gallery);
       // app.open(RouteNames.profile);
@@ -120,7 +127,8 @@ class _MainScreenState extends State<MainScreen> {
         GetPage(name: RouteNames.purchase, page: () => PurchaseScreen()),
         GetPage(name: RouteNames.menu, page: () => MenuScreen()),
         GetPage(name: RouteNames.chatRoom, page: () => ChatRoomScreen()),
-        GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen())
+        GetPage(name: RouteNames.chatRoomList, page: () => ChatUserRoomListScreen()),
+        GetPage(name: RouteNames.jewelry, page: () => JewelryScreen())
       ],
     );
   }
