@@ -1,3 +1,6 @@
+import 'dart:ui';
+import 'dart:math' as Math;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,68 +54,7 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
             UserCardController.of.pageController.jumpToPage(0);
           },
         ),
-        if (index == 0 && renderCount == 1)
-          Positioned(
-            child: Center(
-              child: IconAnimator(
-                loop: 1,
-                child: Container(
-                  padding: EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                      color: Color(0xa0a0a0a0),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 8,
-                          color: Color(0x55a0a0a0),
-                          spreadRadius: 5,
-                          offset: Offset(1.0, 1.0),
-                        )
-                      ]),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: 84,
-                        height: 64,
-                        child: IconAnimator(
-                          loop: 2,
-                          children: [
-                            AnimationFrame(
-                              duration: 500,
-                              child: Align(
-                                child: SvgIcon(leftSwipeSvg, color: Colors.white, width: 64),
-                                alignment: Alignment.centerRight,
-                              ),
-                            ),
-                            AnimationFrame(
-                              duration: 1000,
-                              child: Align(
-                                child: SvgIcon(leftSwipeSvg, color: Colors.white, width: 64),
-                                alignment: Alignment.centerLeft,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 32),
-                      Text(
-                        '다음 사진을 보시려면,\n왼쪽으로 밀어주세요.',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-                finish: SizedBox.shrink(),
-                children: [
-                  AnimationFrame(duration: 1000, child: SizedBox.shrink()),
-                  AnimationFrame(duration: 5000),
-                ],
-              ),
-            ),
-            top: 180,
-            left: 0,
-            right: 0,
-          ),
+        if (index == 0 && renderCount == 1) SwipeGuide(),
       ],
     );
   }
@@ -141,6 +83,80 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
           HomeNewsScroller(),
         ]);
       },
+    );
+  }
+}
+
+class SwipeGuide extends StatelessWidget {
+  const SwipeGuide({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      child: Center(
+        child: IconAnimator(
+          loop: 1,
+          child: Container(
+            padding: EdgeInsets.all(24),
+            decoration: BoxDecoration(
+                color: Color(0xa0a0a0a0),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 8,
+                    color: Color(0x55a0a0a0),
+                    spreadRadius: 5,
+                    offset: Offset(1.0, 1.0),
+                  )
+                ]),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 84,
+                  height: 64,
+                  child: IconAnimator(
+                    loop: 20,
+                    children: [
+                      AnimationFrame(
+                        duration: 500,
+                        child: Align(
+                          child: Transform.rotate(
+                            angle: Math.pi / 2.2,
+                            child: SvgIcon(leftSwipeSvg, color: Colors.white, width: 64),
+                          ),
+                          alignment: Alignment.centerRight,
+                        ),
+                      ),
+                      AnimationFrame(
+                        duration: 1000,
+                        child: Align(
+                          child: SvgIcon(leftSwipeSvg, color: Colors.white, width: 64),
+                          alignment: Alignment.centerLeft,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 32),
+                Text(
+                  '다음 사진을 보시려면,\n왼쪽으로 밀어주세요.',
+                  style: TextStyle(color: Colors.white),
+                )
+              ],
+            ),
+          ),
+          finish: SizedBox.shrink(),
+          children: [
+            AnimationFrame(duration: 1000, child: SizedBox.shrink()),
+            AnimationFrame(duration: 5000),
+          ],
+        ),
+      ),
+      top: 180,
+      left: 0,
+      right: 0,
     );
   }
 }
