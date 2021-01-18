@@ -75,7 +75,7 @@ class FireflutterInAppPurchase {
   ///
   /// Attention, [init] should be called after Firebase initialization since
   /// it may access database for pending purchase from previous app session.
-  init({
+  Future init({
     @required Set<String> productIds,
     List<String> consumableIds,
     bool autoConsume = true,
@@ -85,7 +85,7 @@ class FireflutterInAppPurchase {
     this.consumableIds = consumableIds;
     this.autoConsume = autoConsume;
     _initIncomingPurchaseStream();
-    _initPayment();
+    return _initPayment();
   }
 
   /// Subscribe to any incoming(or pending) purchases
@@ -131,7 +131,8 @@ class FireflutterInAppPurchase {
             print(purchaseDetails.toString());
             // for android & consumable product only.
             if (Platform.isAndroid) {
-              if (!autoConsume && consumableIds.contains(purchaseDetails.productID)) {
+              if (!autoConsume &&
+                  consumableIds.contains(purchaseDetails.productID)) {
                 await connection.consumePurchase(purchaseDetails);
               }
             }
@@ -158,14 +159,16 @@ class FireflutterInAppPurchase {
     final bool available = await connection.isAvailable();
 
     if (available) {
-      ProductDetailsResponse response = await connection.queryProductDetails(_productIds);
+      ProductDetailsResponse response =
+          await connection.queryProductDetails(_productIds);
 
       /// Check if any of given product id(s) are missing.
       if (response.notFoundIDs.isNotEmpty) {
         missingIds = response.notFoundIDs;
       }
 
-      response.productDetails.forEach((product) => products[product.id] = product);
+      response.productDetails
+          .forEach((product) => products[product.id] = product);
 
       productReady.add(products);
     } else {
@@ -185,7 +188,8 @@ class FireflutterInAppPurchase {
       'productDetails_description': productDetails?.description,
       'productDetails_price': productDetails?.price,
       'purchaseDetails_productID': purchaseDetails?.productID,
-      'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
+      'purchaseDetails_pendingCompletePurchase':
+          purchaseDetails?.pendingCompletePurchase,
       'purchaseDetails_verificationData_localVerificationData':
           purchaseDetails?.verificationData?.localVerificationData,
       'purchaseDetails_verificationData_serverVerificationData':
@@ -230,7 +234,8 @@ class FireflutterInAppPurchase {
           purchaseDetails?.verificationData?.localVerificationData.toString(),
       'purchaseDetails_verificationData_serverVerificationData':
           purchaseDetails?.verificationData?.serverVerificationData,
-      'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
+      'purchaseDetails_pendingCompletePurchase':
+          purchaseDetails?.pendingCompletePurchase,
       'productDetails_skProduct_price': productDetails?.skProduct?.price != null
           ? productDetails?.skProduct?.price
           : productDetails?.skuDetail?.price,
@@ -240,13 +245,18 @@ class FireflutterInAppPurchase {
               : productDetails?.skuDetail?.priceCurrencyCode,
       'productDetails_skProduct_priceLocale_currencySymbol':
           productDetails?.skProduct?.priceLocale?.currencySymbol,
-      'productDetails_skProduct_productIdentifier': productDetails?.skProduct?.productIdentifier,
+      'productDetails_skProduct_productIdentifier':
+          productDetails?.skProduct?.productIdentifier,
     };
 
     print('success data:');
     print(purchaseDetails?.verificationData?.localVerificationData.toString());
     print(purchaseDetails?.verificationData?.serverVerificationData.toString());
     print(jsonEncode(data));
+    print('-----');
+    print(jsonEncode(purchaseDetails.toString()));
+
+    if (purchaseDetails.verificationData.source == IAPSource.AppStore) {}
 
     await api.recordSuccessPurchase(data);
   }

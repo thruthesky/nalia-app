@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:nalia_app/tests/in_app_purchase.test.dart';
 
 void main() {
   // Let the plugin know that this app supports pending purchases.
@@ -46,7 +48,13 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
+    iapService.init().then((x) {
+      app.open(RouteNames.purchase);
+    });
     Timer(Duration(milliseconds: 600), () async {
+      // InAppPurchaseTest().runIosVerification();
+
+      // app.open(RouteNames.purchase);
       // app.open(RouteNames.jewelry);
       // app.open(RouteNames.userSearch);
       // app.open(RouteNames.gallery);
@@ -70,15 +78,17 @@ class _MainScreenState extends State<MainScreen> {
       // print('Firebase ready: $ready');
       if (ready == false) return;
       // todo: purchase produces error on iOS.
-      if (Platform.isIOS) return;
-      purchase.init(
-        productIds: {
-          'lucky_box',
-          'jewelry_box',
-          'diamond_box',
-        },
-      );
-      print('products: ${purchase.products} : Simulator does not show products.');
+      // if (Platform.isIOS) return;
+      // await purchase.init(
+      //   productIds: {
+      //     'goldbox',
+      //     'lucky_box',
+      //     'jewelry_box',
+      //     'diamond_box',
+      //   },
+      // );
+      // print(
+      //     'products: ${purchase.products} : Simulator does not show products.');
     });
 
     // Dio dio = Dio();
@@ -120,16 +130,16 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
 
-    purchase.pending.listen((purchaseDetails) {
-      print("main: purchase.pending.listen((value) {");
-      print('main: PurchaseStatus.pending: Show some pending UI');
-      // print(purchaseDetails);
-      // print(purchaseDetails.productID);
-    });
-    purchase.error.listen((purchaseDetails) {
-      print("main: purchase.error.listen((value) {");
-      print(purchaseDetails);
-    });
+    // purchase.pending.listen((purchaseDetails) {
+    //   print("main: purchase.pending.listen((value) {");
+    //   print('main: PurchaseStatus.pending: Show some pending UI');
+    //   // print(purchaseDetails);
+    //   // print(purchaseDetails.productID);
+    // });
+    // purchase.error.listen((purchaseDetails) {
+    //   print("main: purchase.error.listen((value) {");
+    //   print(purchaseDetails);
+    // });
     // purchase.success.listen((PurchaseSession session) async {
     //   print("Purchase made. Success!");
     //   try {

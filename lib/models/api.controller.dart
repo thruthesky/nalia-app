@@ -142,7 +142,8 @@ class API extends GetxController {
 
   Future<dynamic> request(Map<String, dynamic> data) async {
     data = _addSessionId(data);
-    final res = await dio.get(url, queryParameters: data);
+    // final res = await dio.get(url, queryParameters: data);
+    final res = await dio.post(url, data: data);
     if (res.data == null) {
       throw ('Response.body is null. Backend might not an API server. Or, Backend URL is wrong.');
     }

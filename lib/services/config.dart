@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class Config {
-  static const appName = String.fromEnvironment('APP_NAME', defaultValue: 'App name missing');
+  static const appName =
+      String.fromEnvironment('APP_NAME', defaultValue: 'App name missing');
   static const device = String.fromEnvironment('DEVICE', defaultValue: '');
   static const os = String.fromEnvironment('OS', defaultValue: '');
 
@@ -13,7 +14,8 @@ class Config {
         // return 'http://192.168.0.5/wordpress/v3';
         return 'https://local.nalia.kr/v3';
       } else {
-        return 'http://192.168.0.5/wordpress/v3'; // Mr Song
+        return 'http://192.168.0.21/wordpress/v3'; // Mr. MackBook
+        // return 'http://192.168.0.5/wordpress/v3'; // Mr Song. iMac.
         // return 'http://192.168.100.17/wordpress55/v3'; // charles
         // return 'http://192.168.100.6/wordpress/v3'; // Ace
       }
@@ -22,6 +24,8 @@ class Config {
 
   static final String passCallbackUrl =
       "https://id.passlogin.com/oauth2/authorize?client_id=gvC47PHoY7kS3DfpGfff&redirect_uri=https%3A%2F%2Fapi.nalia.kr%2Fv3%2Fvar%2Fpass%2Fpass_login_callback.php&response_type=code&state=apple_banana_cherry&isHybrid=Y";
+
+  static final String galleryCategory = 'gallery';
 }
 
 String v3Url = Config.backendSiteUrl + '/index.php';

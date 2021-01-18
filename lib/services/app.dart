@@ -13,6 +13,7 @@ import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.nalia.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
+import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/helper.functions.dart';
@@ -126,7 +127,8 @@ class App {
   }
 
   bool get locationReady =>
-      locationServiceChanges.value == true && locationAppPermissionChanges.value == true;
+      locationServiceChanges.value == true &&
+      locationAppPermissionChanges.value == true;
 
   /// Upload an image.
   ///
@@ -171,7 +173,8 @@ class App {
     final pickedFile = await picker.getImage(source: re);
     if (pickedFile == null) throw ERROR_IMAGE_NOT_SELECTED;
 
-    String localFile = await getAbsoluteTemporaryFilePath(getRandomString() + '.jpeg');
+    String localFile =
+        await getAbsoluteTemporaryFilePath(getRandomString() + '.jpeg');
     File file = await FlutterImageCompress.compressAndGetFile(
       pickedFile.path, // source file
       localFile, // target file. Overwrite the source with compressed.
@@ -214,12 +217,14 @@ class App {
   /// ```dart
   /// toast('보석 보너스', '축하합니다. 오늘의 보석 보너스를 받으셨습니다.', duration: 20);
   /// ```
-  toast(String title, String message, {Function onTap, Widget icon, int duration = 10}) {
+  toast(String title, String message,
+      {Function onTap, Widget icon, int duration = 10}) {
     iconSnackbar(title, message, onTap: onTap, icon: icon, duration: duration);
   }
 
   /// Opens a warning snackbar
-  iconSnackbar(String title, String message, {Function onTap, Widget icon, int duration = 10}) {
+  iconSnackbar(String title, String message,
+      {Function onTap, Widget icon, int duration = 10}) {
     Get.snackbar(
       '',
       null,
@@ -269,7 +274,8 @@ class App {
   ///   }
   /// }();
   /// ```
-  Future<File> downloadImage({@required String url, Function onProgress}) async {
+  Future<File> downloadImage(
+      {@required String url, Function onProgress}) async {
     var tempDir = await getTemporaryDirectory();
     String savePath = tempDir.path + '/' + getFilenameFromPath(url);
 
@@ -301,16 +307,21 @@ class App {
   /// Get the login user's post of gallery. It will create one if none exists.
   Future<ApiPost> getGalleryPost() async {
     if (api.notLoggedIn) return null;
-    List<ApiPost> posts = await api.searchPost(category: 'gallery', limit: 1, author: api.id);
+    List<ApiPost> posts = await api.searchPost(
+        category: Config.galleryCategory, limit: 1, author: api.id);
     if (posts.length == 0) {
       print('No gallery post. create one');
-      await api.editPost(category: 'gallery', title: 'My gallery', content: 'My gallery photos');
-      posts = await api.searchPost(category: 'gallery', limit: 1);
+      await api.editPost(
+          category: Config.galleryCategory,
+          title: 'My gallery',
+          content: 'My gallery photos');
+      posts = await api.searchPost(category: Config.galleryCategory, limit: 1);
     }
     return posts.first;
   }
 
-  Future recommend({ApiBio user, String jewelry, String item, int count}) async {
+  Future recommend(
+      {ApiBio user, String jewelry, String item, int count}) async {
     return 0;
   }
 
@@ -320,7 +331,8 @@ class App {
     }
     // chatRoomEnter.add({'roomId': roomId, 'uid': uid});
     // homeStackChange(HomeStack.chatRoom);
-    app.open(RouteNames.chatRoom, arguments: {'roomId': roomId, 'userId': userId});
+    app.open(RouteNames.chatRoom,
+        arguments: {'roomId': roomId, 'userId': userId});
   }
 
   /// Return true if there is no problem on user's profile or throws an error.

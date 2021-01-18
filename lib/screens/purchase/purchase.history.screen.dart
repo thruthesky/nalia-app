@@ -34,81 +34,82 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
             spaceMd,
             Text('Jewelry box purchase history'),
             spaceMd,
-            FutureBuilder(
-              future: purchase.getMyPurchases,
-              builder: (_, snapshot) {
-                print(snapshot);
-                if (snapshot.hasError) {
-                  return Text('Oh! An error has occurred.');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Spinner();
-                }
+            // FutureBuilder(
+            //   future: purchase.getMyPurchases,
+            //   builder: (_, snapshot) {
+            //     print(snapshot);
+            //     if (snapshot.hasError) {
+            //       return Text('Oh! An error has occurred.');
+            //     }
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return Spinner();
+            //     }
 
-                List<PurchaseHistory> shot = snapshot.data;
+            //     List<PurchaseHistory> shot = snapshot.data;
 
-                if (shot.length == 0) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      spaceMd,
-                      Container(
-                        padding: EdgeInsets.all(md),
-                        child: Text('There is no jewelry box purchased.'),
-                        decoration: BoxDecoration(
-                          color: Colors.orange[100],
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      spaceMd,
-                      TextButton(
-                        child: Text('Go to buy a jewelry box'),
-                        onPressed: () => app.open(RouteNames.purchase),
-                      )
-                    ],
-                  );
-                }
+            //     if (shot.length == 0) {
+            //       return Column(
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           spaceMd,
+            //           Container(
+            //             padding: EdgeInsets.all(md),
+            //             child: Text('There is no jewelry box purchased.'),
+            //             decoration: BoxDecoration(
+            //               color: Colors.orange[100],
+            //               borderRadius: BorderRadius.circular(50),
+            //             ),
+            //           ),
+            //           spaceMd,
+            //           TextButton(
+            //             child: Text('Go to buy a jewelry box'),
+            //             onPressed: () => app.open(RouteNames.purchase),
+            //           )
+            //         ],
+            //       );
+            //     }
 
-                return Expanded(
-                  child: ListView.builder(
-                    padding: pagePadding,
-                    itemCount: shot.length,
-                    itemBuilder: (_, i) {
-                      final data = shot[i];
+            //     return Expanded(
+            //       child: ListView.builder(
+            //         padding: pagePadding,
+            //         itemCount: shot.length,
+            //         itemBuilder: (_, i) {
+            //           final data = shot[i];
 
-                      print(data);
+            //           print(data);
 
-                      return Column(
-                        children: [
-                          Divider(),
-                          ListTile(
-                            leading: purchase.boxIcon(data.productDetailsId),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data.productDetailsId),
-                                if (data.productDetailsTitle != '') Text(data.productDetailsTitle),
-                                if (data.productDetailsDescription != '')
-                                  Text(data.productDetailsDescription),
-                                Text(data.productDetailsPrice),
-                                SizedBox(height: sm),
-                                Text('result'),
-                                // SizedBox(height: xs),
-                                // Text(openResult(session)),
-                                // SizedBox(height: sm),
-                              ],
-                            ),
-                            subtitle: Text(
-                              'Date: ' + time(data.stamp),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+            //           return Column(
+            //             children: [
+            //               Divider(),
+            //               ListTile(
+            //                 leading: iapService.boxIcon(data.productDetailsId),
+            //                 title: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     Text(data.productDetailsId),
+            //                     if (data.productDetailsTitle != '')
+            //                       Text(data.productDetailsTitle),
+            //                     if (data.productDetailsDescription != '')
+            //                       Text(data.productDetailsDescription),
+            //                     Text(data.productDetailsPrice),
+            //                     SizedBox(height: sm),
+            //                     Text('result'),
+            //                     // SizedBox(height: xs),
+            //                     // Text(openResult(session)),
+            //                     // SizedBox(height: sm),
+            //                   ],
+            //                 ),
+            //                 subtitle: Text(
+            //                   'Date: ' + time(data.stamp),
+            //                 ),
+            //               )
+            //             ],
+            //           );
+            //         },
+            //       ),
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
