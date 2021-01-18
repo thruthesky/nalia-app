@@ -18,6 +18,7 @@ class InAppPurchaseService {
     'product2',
     'goldbox',
     'diamond_box',
+    'diamondbox',
     'lucky_box',
     'jewelry_box',
   };
@@ -94,10 +95,12 @@ class InAppPurchaseService {
         if (Platform.isIOS) {
           _connection.completePurchase(purchaseDetails);
         }
+        // await _connection.consumePurchase(purchaseDetails);
       } else if (purchaseDetails.status == PurchaseStatus.purchased) {
         print("==> if (purchaseDetails.status == PurchaseStatus.purchased)");
 
         _verifyPurchase(purchaseDetails);
+
         if (purchaseDetails.pendingCompletePurchase) {
           BillingResultWrapper brw =
               await InAppPurchaseConnection.instance.completePurchase(purchaseDetails);
@@ -112,7 +115,7 @@ class InAppPurchaseService {
   boxIcon(String id) {
     if (id == 'lucky_box') return Svg(heartBoxSvg, width: 38);
     if (id == 'goldbox') return Svg(goldSvg, width: 38);
-    if (id == 'diamond_box') return Svg(diamondSvg, width: 40);
+    if (id == 'diamond_box' || id == 'goldbox') return Svg(diamondSvg, width: 40);
   }
 
   buildProductList() {
@@ -148,7 +151,7 @@ class InAppPurchaseService {
 
   _verifyPurchase(PurchaseDetails purchaseDetails) {
     ProductDetails productDetails = products[purchaseDetails.productID];
-    final data = {
+    final Map<String, dynamic> data = {
       'user_ID': api.id,
       'productID': purchaseDetails.productID,
       'purchaseID': purchaseDetails.purchaseID,
@@ -160,14 +163,24 @@ class InAppPurchaseService {
       'serverVerificationData': purchaseDetails.verificationData.serverVerificationData,
     };
 
-    if (purchaseDetails.skPaymentTransaction != null) {}
-    //     'applicationUsername': purchaseDetails.skPaymentTransaction?.payment?.applicationUsername,
-    // 'productIdentifier': purchaseDetails.skPaymentTransaction?.payment?.productIdentifier,
-    // 'quantity': purchaseDetails.skPaymentTransaction?.payment?.quantity,
-    // 'transactionIdentifier': purchaseDetails.skPaymentTransaction?.transactionIdentifier,
-    // 'transactionTimeStamp': purchaseDetails.skPaymentTransaction?.transactionTimeStamp,
+    if (purchaseDetails.verificationData.source == IAPSource.AppStore) {
+      data['platform'] = 'ios';
+    } else if (purchaseDetails.verificationData.source == IAPSource.GooglePlay) {
+      data['platform'] = 'android';
+    }
+
+    // Android has no skPaymentTransaction
+    if (purchaseDetails.skPaymentTransaction != null) {
+      data['applicationUsername'] =
+          purchaseDetails.skPaymentTransaction?.payment?.applicationUsername;
+      data['productIdentifier'] = purchaseDetails.skPaymentTransaction?.payment?.productIdentifier;
+      data['quantity'] = purchaseDetails.skPaymentTransaction?.payment?.quantity;
+      data['transactionIdentifier'] = purchaseDetails.skPaymentTransaction?.transactionIdentifier;
+      data['transactionTimeStamp'] = purchaseDetails.skPaymentTransaction?.transactionTimeStamp;
+    }
 
     print('data: ');
+    print(data);
     print(jsonEncode(data));
     requestVerification(data);
   }
