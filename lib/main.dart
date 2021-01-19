@@ -24,6 +24,7 @@ import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:nalia_app/services/translations.dart';
 import 'package:nalia_app/tests/in_app_purchase.test.dart';
 
 void main() {
@@ -159,6 +160,7 @@ class _MainScreenState extends State<MainScreen> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      translations: AppTranslations(),
       initialRoute: RouteNames.home,
       getPages: [
         GetPage(name: RouteNames.home, page: () => HomeScreen()),
