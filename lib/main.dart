@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
+
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +8,7 @@ import 'package:nalia_app/models/api.bio.controller.dart';
 import 'package:nalia_app/models/api.controller.dart';
 import 'package:nalia_app/models/api.gallery.controller.dart';
 import 'package:nalia_app/models/api.nalia.controller.dart';
+import 'package:nalia_app/models/api.translation.dart';
 import 'package:nalia_app/models/api.user_card.controller.dart';
 import 'package:nalia_app/screens/chat/chat.room.screen.dart';
 import 'package:nalia_app/screens/chat/chat.user_room_list.screen.dart';
@@ -24,7 +24,6 @@ import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
-import 'package:nalia_app/tests/in_app_purchase.test.dart';
 
 void main() {
   // Let the plugin know that this app supports pending purchases.
@@ -49,9 +48,12 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     iapService.init().then((x) {
-      app.open(RouteNames.purchase);
+      // app.open(RouteNames.purchase);
     });
     Timer(Duration(milliseconds: 600), () async {
+      print('ui.window.locale.languageCode: ${Get.deviceLocale}');
+      app.open(RouteNames.menu);
+
       // InAppPurchaseTest().runIosVerification();
 
       // app.open(RouteNames.purchase);
@@ -159,6 +161,8 @@ class _MainScreenState extends State<MainScreen> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      locale: Locale(Get.deviceLocale.languageCode),
+      translations: AppTranslations(),
       initialRoute: RouteNames.home,
       getPages: [
         GetPage(name: RouteNames.home, page: () => HomeScreen()),

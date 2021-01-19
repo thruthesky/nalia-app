@@ -581,4 +581,8 @@ class API extends GetxController {
     };
     return request(req);
   }
+
+  Future translationList() {
+    return request({'route': 'translation.list', 'format': 'language-first'});
+  }
 }

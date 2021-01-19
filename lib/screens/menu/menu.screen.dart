@@ -29,6 +29,8 @@ class _MenuScreenState extends State<MenuScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Text('app-name'.tr),
+              Text('address'.tr),
               GetBuilder<API>(
                 builder: (_) {
                   return Text(
@@ -93,8 +95,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     onPressed: () async {
                       try {
                         final post = await PostTest().run();
-                        print(
-                            'post created: id: ${post.id}, no of images: ${post.files.length}');
+                        print('post created: id: ${post.id}, no of images: ${post.files.length}');
                         print(post.files[0].url);
                       } catch (e) {
                         app.error(e);
@@ -132,8 +133,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       onPressed: () async {
                         final tu = UserTest().data(i);
                         try {
-                          final u = await api.login(
-                              email: tu['user_email'], pass: tu['user_pass']);
+                          final u = await api.login(email: tu['user_email'], pass: tu['user_pass']);
                           print('Login success: $u');
                         } catch (e) {
                           app.error(e);
