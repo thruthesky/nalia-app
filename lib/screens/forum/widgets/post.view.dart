@@ -96,7 +96,8 @@ class _PostViewState extends State<PostView> {
                   print('TODO: DISLIKE');
                 },
               ),
-              if (post.isMine)
+              if (post.isMine) ...[
+                Spacer(),
                 TextButton(
                   child: Text('Edit'),
                   onPressed: () {
@@ -104,7 +105,6 @@ class _PostViewState extends State<PostView> {
                     forum.editPost(post);
                   },
                 ),
-              if (post.isMine)
                 TextButton(
                   child: Text('Delete'),
                   onPressed: () async {
@@ -120,6 +120,7 @@ class _PostViewState extends State<PostView> {
                     }
                   },
                 ),
+              ],
             ],
           ),
           CommentForm(

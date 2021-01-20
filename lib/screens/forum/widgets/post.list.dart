@@ -18,6 +18,7 @@ class _PostListState extends State<PostList> {
       child: Container(
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
+          /// remove text form focus when scrolled
           onPanDown: (_) {
             FocusScope.of(context).requestFocus(FocusNode());
           },
