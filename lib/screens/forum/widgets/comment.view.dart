@@ -109,94 +109,60 @@ class _CommentViewState extends State<CommentView> {
             ),
             PostViewFiles(postOrComment: widget.comment),
             Divider(),
-            Row(
-              children: [
-                TextButton(
-                  child: Text(widget.comment.mode == CommentMode.reply
-                      ? 'Cancel'
-                      : 'Reply'),
-                  onPressed: () {
-                    setState(() {
-                      widget.comment.mode =
-                          widget.comment.mode == CommentMode.reply
-                              ? CommentMode.none
-                              : CommentMode.reply;
-                    });
-                  },
+            Row(children: [
+              TextButton(
+                child: Text(widget.comment.mode == CommentMode.reply
+                    ? 'Cancel'
+                    : 'Reply'),
+                onPressed: () {
+                  setState(() {
+                    widget.comment.mode =
+                        widget.comment.mode == CommentMode.reply
+                            ? CommentMode.none
+                            : CommentMode.reply;
+                  });
+                },
+              ),
+              TextButton(
+                child: Text('Like'),
+                onPressed: () {
+                  // TODO: VOTE
+                  print('TODO: LIKE');
+                },
+              ),
+              TextButton(
+                child: Text('Dislike'),
+                onPressed: () {
+                  // TODO: VOTE
+                  print('TODO: DISLIKE');
+                },
+              ),
+              Spacer(),
+              if (widget.comment.isMine)
+                PopupMenuButton<String>(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                        child: Row(children: [
+                          Icon(Icons.edit, size: sm, color: Colors.greenAccent),
+                          SizedBox(width: xs),
+                          Text('Edit')
+                        ]),
+                        value: 'edit'),
+                    PopupMenuItem(
+                        child: Row(children: [
+                          Icon(Icons.delete, size: sm, color: Colors.redAccent),
+                          SizedBox(width: xs),
+                          Text('Delete')
+                        ]),
+                        value: 'delete')
+                  ],
+                  icon: Icon(Icons.more_vert),
+                  offset: Offset(10.0, 10.0),
+                  onSelected: onPopupMenuItemSelected,
                 ),
-                TextButton(
-                  child: Text('Like'),
-                  onPressed: () {
-                    // TODO: VOTE
-                    print('TODO: LIKE');
-                  },
-                ),
-                TextButton(
-                  child: Text('Dislike'),
-                  onPressed: () {
-                    // TODO: VOTE
-                    print('TODO: DISLIKE');
-                  },
-                ),
-                Spacer(),
-                // if (widget.comment.isMine)
-                //   TextButton(
-                //     child: Text('Edit'),
-                //     onPressed: () {
-                //       setState(() {
-                //         widget.comment.mode = CommentMode.edit;
-                //       });
-                //     },
-                //   ),
-                // if (widget.comment.isMine)
-                //   TextButton(
-                //     child: Text('Delete'),
-                //     onPressed: () async {
-                //       final re = await app.confirm(
-                //         'Delete',
-                //         'Do you want to delete the comment?',
-                //       );
-                //       if (re == false) return;
-                //       try {
-                //         final deleted = await api.deleteComment(
-                //             widget.comment, widget.post);
-                //         print('deleted: $deleted');
-                //         widget.forum.render();
-                //       } catch (e) {
-                //         app.error(e);
-                //       }
-                //     },
-                //   ),
-                if (widget.comment.isMine)
-                  PopupMenuButton<String>(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                          child: Row(
-                            children: [
-                              Icon(Icons.edit, size: sm, color: Colors.greenAccent),
-                              SizedBox(width: xs),
-                              Text('Edit')
-                            ],
-                          ),
-                          value: 'edit'),
-                      PopupMenuItem(
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete, size: sm, color: Colors.redAccent),
-                              SizedBox(width: xs),
-                              Text('Delete')
-                            ],
-                          ),
-                          value: 'delete')
-                    ],
-                    icon: Icon(Icons.more_vert),
-                    offset: Offset(10.0, 10.0),
-                    onSelected: onPopupMenuItemSelected,
-                  ),
-              ],
-            ),
+            ]),
           ],
           if (widget.comment.mode == CommentMode.reply)
             CommentForm(
