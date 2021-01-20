@@ -58,7 +58,7 @@ class _CommentViewState extends State<CommentView> {
       margin: EdgeInsets.only(top: sm, left: sm * (widget.comment.depth - 1)),
       padding: EdgeInsets.all(sm),
       decoration: BoxDecoration(
-        color: Colors.green[50],
+        color: Colors.blueGrey[50],
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: Column(
