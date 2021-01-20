@@ -17,6 +17,7 @@ class PostViewFiles extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: sm),
         Text(
           'Attached files',
           style: TextStyle(color: Colors.grey, fontSize: xsm),

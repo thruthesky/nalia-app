@@ -35,7 +35,7 @@ class _CommentFormState extends State<CommentForm> {
   /// (like when file is uploaded and it disappears on hot reload).
   ApiComment comment;
 
-  bool get canSubmit => content.text != '';
+  bool get canSubmit => content.text != '' || comment.files.isNotEmpty;
   double percentage = 0;
 
   @override

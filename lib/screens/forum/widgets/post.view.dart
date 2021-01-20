@@ -66,18 +66,17 @@ class _PostViewState extends State<PostView> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: sm),
-            child: Text('${post.postTitle}',
-                style: TextStyle(
-                  fontSize: md,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.w600,
-                )),
-          ),
+              padding: EdgeInsets.only(top: sm),
+              child: SelectableText('${post.postTitle}',
+                  style: TextStyle(
+                    fontSize: md,
+                    color: Colors.blueGrey,
+                    fontWeight: FontWeight.w600,
+                  ))),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: sm),
-            child: Text('${post.postContent}', style: TextStyle(fontSize: sm)),
-          ),
+              padding: EdgeInsets.symmetric(vertical: sm),
+              child: SelectableText('${post.postContent}',
+                  style: TextStyle(fontSize: sm))),
           PostViewFiles(postOrComment: post),
           Divider(),
           Row(

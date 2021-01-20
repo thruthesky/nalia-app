@@ -103,10 +103,11 @@ class _CommentViewState extends State<CommentView> {
           ),
           if (widget.comment.mode == CommentMode.none ||
               widget.comment.mode == CommentMode.reply) ...[
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: sm),
-              child: Text('${widget.comment.commentContent}'),
-            ),
+            if (widget.comment.commentContent.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: sm),
+                child: SelectableText('${widget.comment.commentContent}'),
+              ),
             PostViewFiles(postOrComment: widget.comment),
             Divider(),
             Row(children: [
