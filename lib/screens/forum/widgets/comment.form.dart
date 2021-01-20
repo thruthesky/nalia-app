@@ -36,7 +36,7 @@ class _CommentFormState extends State<CommentForm> {
   ApiComment comment;
 
   bool get canSubmit => content.text != '';
-  int percentage = 0;
+  double percentage = 0;
 
   @override
   void initState() {
@@ -48,14 +48,14 @@ class _CommentFormState extends State<CommentForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Input comment:'),
+          SizedBox(height: xs),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
+                alignment: Alignment.center,
                 icon: Icon(Icons.camera_alt),
                 onPressed: () async {
                   try {
@@ -76,39 +76,50 @@ class _CommentFormState extends State<CommentForm> {
               ),
               Expanded(
                 child: TextFormField(
-                  controller: content,
-                  onChanged: (v) => setState(() => null),
-                ),
+                    controller: content,
+                    onChanged: (v) => setState(() => null),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.symmetric(horizontal: xs),
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(25.0),
+                        ),
+                      ),
+                    )),
               ),
+              if (canSubmit)
+                IconButton(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.send),
+                  onPressed: () async {
+                    try {
+                      final editedComment = await api.editComment(
+                        content: content.text,
+                        parent: widget.parent,
+                        comment: comment,
+                        post: widget.post,
+                        files: comment.files,
+                      );
+
+                      widget.post.insertOrUpdateComment(editedComment);
+                      content.text = '';
+                      comment.files = [];
+                      if (widget.parent != null)
+                        widget.parent.mode = CommentMode.none;
+                      if (widget.comment != null)
+                        comment.mode = CommentMode.none;
+                      setState(() => null);
+                      widget.forum.render();
+                      print('editeComment..: $editedComment');
+                    } catch (e) {
+                      app.error(e);
+                    }
+                  },
+                ),
             ],
           ),
-          if (canSubmit)
-            RaisedButton(
-              child: Text('Submit'),
-              onPressed: () async {
-                try {
-                  final editedComment = await api.editComment(
-                    content: content.text,
-                    parent: widget.parent,
-                    comment: comment,
-                    post: widget.post,
-                    files: comment.files,
-                  );
-
-                  widget.post.insertOrUpdateComment(editedComment);
-                  content.text = '';
-                  comment.files = [];
-                  if (widget.parent != null)
-                    widget.parent.mode = CommentMode.none;
-                  if (widget.comment != null) comment.mode = CommentMode.none;
-                  setState(() => null);
-                  widget.forum.render();
-                  print('editeComment..: $editedComment');
-                } catch (e) {
-                  app.error(e);
-                }
-              },
-            ),
           FilesForm(postOrComment: comment),
         ],
       ),

@@ -41,7 +41,8 @@ class _ForumListScreenState extends State<ForumListScreen> {
 
     /// Loading next page
     forum.itemPositionsListener.itemPositions.addListener(() {
-      int lastVisibleIndex = forum.itemPositionsListener.itemPositions.value.last.index;
+      int lastVisibleIndex =
+          forum.itemPositionsListener.itemPositions.value.last.index;
       if (forum.loading) return;
       if (lastVisibleIndex > forum.posts.length - 4) {
         fetchPosts();
@@ -70,11 +71,23 @@ class _ForumListScreenState extends State<ForumListScreen> {
         header: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(forum.category),
-            TextButton(
-              child: Text('Create'),
-              onPressed: () => setState(() => forum.editPost(ApiPost())),
-            )
+            if (forum.postInEdit != null)
+              IconButton(
+                icon: Icon(Icons.arrow_back_rounded),
+                onPressed: () => setState(() => forum.editPost(null)),
+              ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: sm),
+              child: Text(forum.category.toUpperCase()),
+            ),
+            if (forum.postInEdit == null)
+              FlatButton(
+                child: Text(
+                  'Create',
+                  style: TextStyle(color: Colors.blueAccent),
+                ),
+                onPressed: () => setState(() => forum.editPost(ApiPost())),
+              )
           ],
         ),
         child: forum.postInEdit != null

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.file.model.dart';
+import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/widgets/cache_image.dart';
 
 class PostViewFiles extends StatelessWidget {
@@ -16,7 +17,10 @@ class PostViewFiles extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Uploaded files'),
+        Text(
+          'Attached files',
+          style: TextStyle(color: Colors.grey, fontSize: xsm),
+        ),
         Divider(),
         for (ApiFile file in postOrComment.files) CacheImage(file.url),
       ],
