@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/controllers/api.bio.controller.dart';
+import 'package:nalia_app/controllers/api.location.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 
 class UserCardController extends GetxController {
@@ -33,12 +34,7 @@ class UserCardController extends GetxController {
     }
 
     users = await Bio.to.search(limit: 1500);
-    // print('re: $re');
-    // print(jsonEncode(re[0]));
-    // for (int i = 0; i < re.length; i++) {
-    //   users.add(ApiBio.fromJson(re[i]));
-    //   // print('url: ${users[i].profilePhotoUrl}');
-    // }
+    print(users);
     update();
     // Query q = ff.publicCol;
 
@@ -85,7 +81,7 @@ class UserCardController extends GetxController {
   /// 예를 들어, 사용자 검색에서, 특정 사용자를 클릭하면, 사용자 카드 페이지로 이동하고, 그 사용자가
   /// 나오도록 할 때 사용 할 수 있다.
   insertUser(ApiBio user) {
-    users.insert(0, user);
+    LocationController.of.users.insert(0, user);
     update();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

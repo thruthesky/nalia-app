@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:location/location.dart';
+import 'package:nalia_app/controllers/api.bio.controller.dart';
+import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:rxdart/subjects.dart';
 
 class LocationController extends GetxController {
   static LocationController to = Get.find<LocationController>();
+  static LocationController of = Get.find<LocationController>();
 
   Location location = Location();
   bool serviceEnabled = false;
@@ -18,11 +21,18 @@ class LocationController extends GetxController {
   /// 이 이벤트가 false 값으로 전달되는 경우, serviceEnabled 또는 permissionGranted 를 참고해서,
   /// 서비스가 Enable 되지 않았는지 또는 앱 권한이 없는지 확인 할 수 있다.
   BehaviorSubject<bool> locationServiceChanges = BehaviorSubject.seeded(false);
+
+  List<ApiBio> users = [];
   @override
   void onInit() {
     super.onInit();
 
     checkLocation();
+    locationServiceChanges.listen((re) async {
+      if (re) {
+        users = await Bio.to.search(limit: 1500);
+      }
+    });
   }
 
   /// You can call [checkLocation] whenever you need to check if the service and permission are given.
