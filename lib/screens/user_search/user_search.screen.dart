@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.bio.controller.dart';
+import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.bio.search.model.dart';
-import 'package:nalia_app/models/api.user_card.controller.dart';
+import 'package:nalia_app/controllers/api.user_card.controller.dart';
 import 'package:nalia_app/screens/user_search/user_search.options.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';

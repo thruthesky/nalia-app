@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.comment.model.dart';
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/comment.form.dart';
 import 'package:nalia_app/screens/forum/widgets/files.view.dart';
@@ -61,12 +61,10 @@ class _CommentViewState extends State<CommentView> {
                   RaisedButton(
                     child: Text('Delete'),
                     onPressed: () async {
-                      final re = await app.confirm(
-                          'Delete', 'Do you want to delete the comment?');
+                      final re = await app.confirm('Delete', 'Do you want to delete the comment?');
                       if (re == false) return;
                       try {
-                        final deleted = await api.deleteComment(
-                            widget.comment, widget.post);
+                        final deleted = await api.deleteComment(widget.comment, widget.post);
                         print('deleted: $deleted');
                         widget.forum.render();
                       } catch (e) {

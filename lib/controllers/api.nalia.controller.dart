@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:nalia_app/models/api.daily_bonus.model.dart';
 import 'package:nalia_app/services/global.dart';
@@ -9,7 +11,14 @@ class NaliaController extends GetxController {
     final data = await api.request({
       'route': 'nalia.getMyBonusJewelry',
     });
+    return DailyBonus.fromJson(data);
+  }
 
+  Future<DailyBonus> getMyCreditJewelry() async {
+    final data = await api.request({
+      'route': 'nalia.getMyCreditJewelry',
+    });
+    print(jsonEncode(data));
     return DailyBonus.fromJson(data);
   }
 

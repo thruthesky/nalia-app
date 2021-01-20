@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.comment.model.dart';
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/files.form.dart';
 import 'package:nalia_app/services/defines.dart';
@@ -60,8 +60,7 @@ class _CommentFormState extends State<CommentForm> {
                 onPressed: () async {
                   try {
                     final file = await app.imageUpload(
-                        quality: 95,
-                        onProgress: (p) => setState(() => percentage = p));
+                        quality: 95, onProgress: (p) => setState(() => percentage = p));
                     print('file upload success: $file');
                     percentage = 0;
                     comment.files.add(file);
@@ -98,8 +97,7 @@ class _CommentFormState extends State<CommentForm> {
                   widget.post.insertOrUpdateComment(editedComment);
                   content.text = '';
                   comment.files = [];
-                  if (widget.parent != null)
-                    widget.parent.mode = CommentMode.none;
+                  if (widget.parent != null) widget.parent.mode = CommentMode.none;
                   if (widget.comment != null) comment.mode = CommentMode.none;
                   setState(() => null);
                   widget.forum.render();

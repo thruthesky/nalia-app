@@ -1,7 +1,6 @@
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/services/app.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:nalia_app/services/in_app_purchase.dart';
 import 'package:nalia_app/services/in_app_purchase.service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firechat/firechat.dart';

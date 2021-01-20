@@ -3,7 +3,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:nalia_app/models/api.file.model.dart';
-import 'package:nalia_app/models/api.gallery.controller.dart';
+import 'package:nalia_app/controllers/api.gallery.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/route_names.dart';

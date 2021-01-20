@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/post.form.dart';
 import 'package:nalia_app/screens/forum/widgets/post.list.dart';

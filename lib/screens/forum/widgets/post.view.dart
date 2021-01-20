@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.comment.model.dart';
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/comment.form.dart';
 import 'package:nalia_app/screens/forum/widgets/comment.list.dart';
@@ -55,8 +55,7 @@ class _PostViewState extends State<PostView> {
                   child: Text('Delete'),
                   onPressed: () async {
                     try {
-                      final re = await app.confirm(
-                          'Delete', 'Do you want to delete the post?');
+                      final re = await app.confirm('Delete', 'Do you want to delete the post?');
                       if (re == false) return;
                       final deletedId = await api.deletePost(post, forum);
                       print('deletedId: $deletedId');

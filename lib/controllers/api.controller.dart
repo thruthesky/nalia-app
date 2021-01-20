@@ -225,6 +225,7 @@ class API extends GetxController {
     data['route'] = 'user.login';
     data['user_email'] = email;
     data['user_pass'] = pass;
+    data['session_id'] = '';
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     await _saveUserProfile(user);

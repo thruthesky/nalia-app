@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/svg_collections.dart';
 import 'package:nalia_app/widgets/svg.dart';
@@ -14,13 +12,8 @@ import 'package:nalia_app/widgets/svg.dart';
 class InAppPurchaseService {
   // Set literals require Dart 2.2. Alternatively, use `Set<String> _kIds = <String>['product1', 'product2'].toSet()`.
   final Set<String> _kIds = {
-    'product1',
-    'product2',
     'goldbox',
-    'diamond_box',
     'diamondbox',
-    'lucky_box',
-    'jewelry_box',
   };
   final InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
 
@@ -104,7 +97,8 @@ class InAppPurchaseService {
         if (purchaseDetails.pendingCompletePurchase) {
           BillingResultWrapper brw =
               await InAppPurchaseConnection.instance.completePurchase(purchaseDetails);
-          if (brw == BillingResponse.error || brw == BillingResponse.serviceUnavailable) {
+          if (brw.responseCode == BillingResponse.error ||
+              brw.responseCode == BillingResponse.serviceUnavailable) {
             // TODO: retry to get BillingResultWrapper
           }
         }
@@ -113,9 +107,8 @@ class InAppPurchaseService {
   }
 
   boxIcon(String id) {
-    if (id == 'lucky_box') return Svg(heartBoxSvg, width: 38);
     if (id == 'goldbox') return Svg(goldSvg, width: 38);
-    if (id == 'diamond_box' || id == 'goldbox') return Svg(diamondSvg, width: 40);
+    if (id == 'diamondbox' || id == 'goldbox') return Svg(diamondSvg, width: 40);
   }
 
   buildProductList() {

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:nalia_app/models/api.bio.controller.dart';
+import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/global.dart';

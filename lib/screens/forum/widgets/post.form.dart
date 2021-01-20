@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/files.form.dart';
 import 'package:nalia_app/services/defines.dart';
@@ -48,14 +48,11 @@ class _PostFormState extends State<PostForm> {
                 Row(
                   children: [
                     RaisedButton(
-                      child: Text(
-                          'Photo' + (percentage > 0 ? "$percentage%" : "")),
+                      child: Text('Photo' + (percentage > 0 ? "$percentage%" : "")),
                       onPressed: () async {
                         try {
                           final file = await app.imageUpload(
-                              quality: 95,
-                              onProgress: (p) =>
-                                  setState(() => percentage = p));
+                              quality: 95, onProgress: (p) => setState(() => percentage = p));
                           print('file upload success: $file');
                           percentage = 0;
                           post.files.add(file);

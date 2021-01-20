@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.bio.controller.dart';
+import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';

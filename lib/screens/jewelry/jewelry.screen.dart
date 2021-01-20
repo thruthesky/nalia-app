@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.daily_bonus.model.dart';
-import 'package:nalia_app/models/api.nalia.controller.dart';
+import 'package:nalia_app/controllers/api.nalia.controller.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
@@ -58,13 +60,21 @@ class _DisplayDailyBonusState extends State<DisplayDailyBonus> {
     () async {
       try {
         bonus = await NaliaController.to.getMyBonusJewelry();
-        print(bonus);
         setState(() => null);
       } catch (e) {
         if (e == ERROR_DAILY_BONUS_NOT_GENERATED) {
           /// fine. user can generate bonus.
         }
         print(e);
+      }
+
+      try {
+        final re = await NaliaController.to.getMyCreditJewelry();
+        print('credit:');
+        print(jsonEncode(re));
+      } catch (e) {
+        print(e);
+        app.error(e);
       }
     }();
   }

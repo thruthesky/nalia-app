@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icon_animator/icon_animator.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
-import 'package:nalia_app/models/api.user_card.controller.dart';
+import 'package:nalia_app/controllers/api.user_card.controller.dart';
 import 'package:nalia_app/screens/home/home.news_scroller.dart';
 import 'package:nalia_app/screens/home/home.user_card.bottom_menu.dart';
 import 'package:nalia_app/services/svg_icons.dart';
@@ -69,8 +69,7 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
           PageView(
             allowImplicitScrolling: false,
             children: [
-              for (int i = 0; i < _.users.length; i++)
-                renderView(_.users.elementAt(i), i),
+              for (int i = 0; i < _.users.length; i++) renderView(_.users.elementAt(i), i),
             ],
             onPageChanged: (int page) {
               // 사용자 카드가 끝에서 다섯 장 남았을 때, 다음 배치를 로드한다.
@@ -125,8 +124,7 @@ class SwipeGuide extends StatelessWidget {
                         child: Align(
                           child: Transform.rotate(
                             angle: Math.pi / 2.2,
-                            child: SvgIcon(leftSwipeSvg,
-                                color: Colors.white, width: 64),
+                            child: SvgIcon(leftSwipeSvg, color: Colors.white, width: 64),
                           ),
                           alignment: Alignment.centerRight,
                         ),
@@ -134,8 +132,7 @@ class SwipeGuide extends StatelessWidget {
                       AnimationFrame(
                         duration: 1000,
                         child: Align(
-                          child: SvgIcon(leftSwipeSvg,
-                              color: Colors.white, width: 64),
+                          child: SvgIcon(leftSwipeSvg, color: Colors.white, width: 64),
                           alignment: Alignment.centerLeft,
                         ),
                       ),

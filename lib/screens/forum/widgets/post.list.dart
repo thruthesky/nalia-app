@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/screens/forum/widgets/post.view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 

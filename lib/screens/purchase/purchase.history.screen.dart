@@ -2,11 +2,9 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.purchaseHistory.dart';
 import 'package:nalia_app/services/defines.dart';
-import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
-import 'package:nalia_app/widgets/spinner.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
   @override
