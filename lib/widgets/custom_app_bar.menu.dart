@@ -171,13 +171,14 @@ class _AppIndicatorState extends State<AppIndicator> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Obx(() {
-              if (app.locationReady) {
-                return NoneIndicator();
-              } else {
-                return ErrorIndicator();
-              }
-            }),
+            ErrorIndicator(),
+            // Obx(() {
+            //   if (app.locationReady) {
+            //     return NoneIndicator();
+            //   } else {
+            //     return ErrorIndicator();
+            //   }
+            // }),
             spaceXxs,
             GreenIndicator(),
             spaceXxs,

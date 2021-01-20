@@ -36,9 +36,17 @@ class Bio extends GetxController {
     return ApiBio.fromJson(re);
   }
 
-  Future<List<ApiBio>> search({int limit = 1500}) async {
+  Future<List<ApiBio>> search({
+    double latitude,
+    double longitude,
+    double km,
+    int limit = 1500,
+  }) async {
     final re = await api.request({
       'route': 'bio.search',
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'latitude': longitude,
+      if (km != null) 'latitude': km,
       'limit': limit,
       'hasProfilePhoto': 'Y',
       'orderby': 'RAND()',

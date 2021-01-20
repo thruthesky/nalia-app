@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -99,7 +98,7 @@ class InAppPurchaseService {
               await InAppPurchaseConnection.instance.completePurchase(purchaseDetails);
           if (brw.responseCode == BillingResponse.error ||
               brw.responseCode == BillingResponse.serviceUnavailable) {
-            // TODO: retry to get BillingResultWrapper
+            // TODO:  on iOS, the reponse may not be properly retrieved. Retry to get BillingResultWrapper
           }
         }
       }
@@ -115,29 +114,34 @@ class InAppPurchaseService {
     final ListTile productHeader = ListTile(title: Text('Products for Sale'));
     List<ListTile> productList = <ListTile>[];
 
-    productList.addAll(products.entries.map((entry) {
-      ProductDetails productDetails = entry.value;
-      return ListTile(
-          leading: boxIcon(productDetails.id),
-          title: Text(
-            productDetails.title,
-          ),
-          subtitle: Text(
-            productDetails.description,
-          ),
-          trailing: TextButton(
-            child: Text(productDetails.price),
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.green[800],
-              primary: Colors.white,
-            ),
-            onPressed: () {
-              _connection.buyConsumable(
-                purchaseParam: PurchaseParam(productDetails: productDetails, sandboxTesting: false),
-              );
-            },
-          ));
-    }));
+    productList.addAll(
+      products.entries.map(
+        (entry) {
+          ProductDetails productDetails = entry.value;
+          return ListTile(
+              leading: boxIcon(productDetails.id),
+              title: Text(
+                productDetails.title,
+              ),
+              subtitle: Text(
+                productDetails.description,
+              ),
+              trailing: TextButton(
+                child: Text(productDetails.price),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green[800],
+                  primary: Colors.white,
+                ),
+                onPressed: () {
+                  _connection.buyConsumable(
+                    purchaseParam:
+                        PurchaseParam(productDetails: productDetails, sandboxTesting: false),
+                  );
+                },
+              ));
+        },
+      ),
+    );
 
     return Card(child: Column(children: <Widget>[productHeader, Divider()] + productList));
   }
@@ -172,9 +176,9 @@ class InAppPurchaseService {
       data['transactionTimeStamp'] = purchaseDetails.skPaymentTransaction?.transactionTimeStamp;
     }
 
-    print('data: ');
-    print(data);
-    print(jsonEncode(data));
+    // print('data: ');
+    // print(data);
+    // print(jsonEncode(data));
     requestVerification(data);
   }
 

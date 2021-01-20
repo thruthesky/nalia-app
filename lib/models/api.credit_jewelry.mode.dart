@@ -1,9 +1,5 @@
-import 'dart:convert';
-
-String apiCreditJewelryToJson(ApiCreditJewelry data) => json.encode(data.toJson());
-
-class ApiCreditJewelry {
-  ApiCreditJewelry({
+class CreditJewelry {
+  CreditJewelry({
     this.userId,
     this.diamond,
     this.gold,
@@ -15,7 +11,7 @@ class ApiCreditJewelry {
   String gold;
   String silver;
 
-  factory ApiCreditJewelry.fromJson(Map<String, dynamic> json) => ApiCreditJewelry(
+  factory CreditJewelry.fromJson(Map<String, dynamic> json) => CreditJewelry(
         userId: json["user_ID"],
         diamond: json["diamond"],
         gold: json["gold"],

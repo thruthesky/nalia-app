@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:nalia_app/models/api.credit_jewelry.mode.dart';
 import 'package:nalia_app/models/api.daily_bonus.model.dart';
 import 'package:nalia_app/controllers/api.nalia.controller.dart';
 import 'package:nalia_app/services/defines.dart';
@@ -52,6 +51,7 @@ class DisplayDailyBonus extends StatefulWidget {
 
 class _DisplayDailyBonusState extends State<DisplayDailyBonus> {
   DailyBonus bonus;
+  CreditJewelry credit;
 
   @override
   void initState() {
@@ -69,11 +69,9 @@ class _DisplayDailyBonusState extends State<DisplayDailyBonus> {
       }
 
       try {
-        final re = await NaliaController.to.getMyCreditJewelry();
-        print('credit:');
-        print(jsonEncode(re));
+        credit = await NaliaController.to.getMyCreditJewelry();
+        setState(() => null);
       } catch (e) {
-        print(e);
         app.error(e);
       }
     }();
@@ -109,6 +107,9 @@ class _DisplayDailyBonusState extends State<DisplayDailyBonus> {
                 "Silver: ${bonus.silver},"
                 "Gold: ${bonus.gold},"
                 "Diamond: ${bonus.diamond} "),
+          if (credit != null)
+            Text(
+                "Credit Jewelry: Diamond: ${credit.diamond}, Gold: ${credit.gold}, Silver: ${credit.silver}"),
         ],
       ),
     );

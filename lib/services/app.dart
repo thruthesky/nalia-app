@@ -28,10 +28,11 @@ import 'package:path_provider/path_provider.dart';
 
 class App {
   Location location = Location();
-  bool locationServiceEnabled = false;
   RxBool locationServiceChanges = false.obs;
   RxBool locationAppPermissionChanges = false.obs;
+
   BehaviorSubject<bool> firebaseReady = BehaviorSubject.seeded(false);
+
   // PermissionStatus _permissionGranted;
 
   /// [dailyBonusAvaiable] is posted true when user can get/redeem their free daily bonus.
@@ -126,8 +127,8 @@ class App {
     );
   }
 
-  bool get locationReady =>
-      locationServiceChanges.value == true && locationAppPermissionChanges.value == true;
+  // bool get locationReady =>
+  //     locationServiceChanges.value == true && locationAppPermissionChanges.value == true;
 
   /// Upload an image.
   ///
