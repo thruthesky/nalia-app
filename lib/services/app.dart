@@ -7,7 +7,6 @@ import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:location/location.dart';
 import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.file.model.dart';
@@ -27,10 +26,6 @@ import 'package:rxdart/subjects.dart';
 import 'package:path_provider/path_provider.dart';
 
 class App {
-  Location location = Location();
-  RxBool locationServiceChanges = false.obs;
-  RxBool locationAppPermissionChanges = false.obs;
-
   BehaviorSubject<bool> firebaseReady = BehaviorSubject.seeded(false);
 
   // PermissionStatus _permissionGranted;
