@@ -22,7 +22,7 @@ class _PostFormState extends State<PostForm> {
 
   InputDecoration _inputDecoration = InputDecoration(
     filled: true,
-    contentPadding: EdgeInsets.symmetric(horizontal: xs),
+    contentPadding: EdgeInsets.all(sm),
     border: OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         const Radius.circular(10.0),

@@ -82,6 +82,20 @@ class _PostViewState extends State<PostView> {
           Divider(),
           Row(
             children: [
+              TextButton(
+                child: Text('Like'),
+                onPressed: () {
+                  // TODO: VOTE
+                  print('TODO: LIKE');
+                },
+              ),
+              TextButton(
+                child: Text('Dislike'),
+                onPressed: () {
+                  // TODO: VOTE
+                  print('TODO: DISLIKE');
+                },
+              ),
               if (post.isMine)
                 TextButton(
                   child: Text('Edit'),
@@ -95,7 +109,8 @@ class _PostViewState extends State<PostView> {
                   child: Text('Delete'),
                   onPressed: () async {
                     try {
-                      final re = await app.confirm('Delete', 'Do you want to delete the post?');
+                      final re = await app.confirm(
+                          'Delete', 'Do you want to delete the post?');
                       if (re == false) return;
                       final deletedId = await api.deletePost(post, forum);
                       print('deletedId: $deletedId');

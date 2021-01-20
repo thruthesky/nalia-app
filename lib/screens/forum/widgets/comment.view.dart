@@ -24,6 +24,33 @@ class CommentView extends StatefulWidget {
 }
 
 class _CommentViewState extends State<CommentView> {
+  /// when user is done selecting from the popup menu.
+  onPopupMenuItemSelected(selected) async {
+    /// Edit
+    if (selected == 'edit') {
+      setState(() {
+        widget.comment.mode = CommentMode.edit;
+      });
+    }
+
+    /// Delete
+    if (selected == 'delete') {
+      bool conf = await app.confirm(
+        'Confirm',
+        'Delete Comment?',
+      );
+      if (conf == false) return;
+
+      try {
+        final deleted = await api.deleteComment(widget.comment, widget.post);
+        print('deleted: $deleted');
+        widget.forum.render();
+      } catch (e) {
+        app.error(e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,11 +120,17 @@ class _CommentViewState extends State<CommentView> {
                 ),
                 TextButton(
                   child: Text('Like'),
-                  onPressed: () {},
+                  onPressed: () {
+                    // TODO: VOTE
+                    print('TODO: LIKE');
+                  },
                 ),
                 TextButton(
                   child: Text('Dislike'),
-                  onPressed: () {},
+                  onPressed: () {
+                    // TODO: VOTE
+                    print('TODO: DISLIKE');
+                  },
                 ),
                 Spacer(),
                 // if (widget.comment.isMine)
@@ -136,32 +169,7 @@ class _CommentViewState extends State<CommentView> {
                     ],
                     icon: Icon(Icons.more_vert),
                     offset: Offset(10.0, 10.0),
-                    onSelected: (selected) async {
-                      /// Edit
-                      if (selected == 'edit') {
-                        setState(() {
-                          widget.comment.mode = CommentMode.edit;
-                        });
-                      }
-
-                      /// Delete
-                      if (selected == 'delete') {
-                        bool conf = await app.confirm(
-                          'Confirm',
-                          'Delete Comment?',
-                        );
-                        if (conf == false) return;
-
-                        try {
-                          final deleted = await api.deleteComment(
-                              widget.comment, widget.post);
-                          print('deleted: $deleted');
-                          widget.forum.render();
-                        } catch (e) {
-                          app.error(e);
-                        }
-                      }
-                    },
+                    onSelected: onPopupMenuItemSelected,
                   ),
               ],
             ),
