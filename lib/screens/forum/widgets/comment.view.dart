@@ -169,9 +169,27 @@ class _CommentViewState extends State<CommentView> {
                 //   ),
                 if (widget.comment.isMine)
                   PopupMenuButton<String>(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
                     itemBuilder: (context) => [
-                      PopupMenuItem(child: Text('Edit'), value: 'edit'),
-                      PopupMenuItem(child: Text('Delete'), value: 'delete')
+                      PopupMenuItem(
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit, size: sm, color: Colors.greenAccent),
+                              SizedBox(width: xs),
+                              Text('Edit')
+                            ],
+                          ),
+                          value: 'edit'),
+                      PopupMenuItem(
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, size: sm, color: Colors.redAccent),
+                              SizedBox(width: xs),
+                              Text('Delete')
+                            ],
+                          ),
+                          value: 'delete')
                     ],
                     icon: Icon(Icons.more_vert),
                     offset: Offset(10.0, 10.0),

@@ -70,9 +70,20 @@ class _ForumListScreenState extends State<ForumListScreen> {
             ),
             if (forum.postInEdit == null)
               FlatButton(
-                child: Text(
-                  'Create',
-                  style: TextStyle(color: Colors.blueAccent),
+                splashColor: Colors.transparent,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.add,
+                      size: md,
+                      color: Colors.blueAccent,
+                    ),
+                    SizedBox(width: xs),
+                    Text(
+                      'Create Post',
+                      style: TextStyle(color: Colors.blueAccent),
+                    )
+                  ],
                 ),
                 onPressed: () => setState(() => forum.editPost(ApiPost())),
               )
