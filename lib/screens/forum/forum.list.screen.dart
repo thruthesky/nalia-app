@@ -23,34 +23,23 @@ class _ForumListScreenState extends State<ForumListScreen> {
   void initState() {
     super.initState();
 
-    // Initialize forum
-
-    // forum = Forum(...);
-    // api.addForun(forum);
     forum = Forum(
       category: Get.arguments['category'],
       render: () => setState(() => null),
     );
     api.attachForum(forum);
 
-    // forum = api.initForum(
-    //   category: Get.arguments['category'],
-    //   render: () => setState(() => null),
-    // );
     fetchPosts();
 
     /// Loading next page
     forum.itemPositionsListener.itemPositions.addListener(() {
-      int lastVisibleIndex = forum.itemPositionsListener.itemPositions.value.last.index;
+      int lastVisibleIndex =
+          forum.itemPositionsListener.itemPositions.value.last.index;
       if (forum.loading) return;
       if (lastVisibleIndex > forum.posts.length - 4) {
         fetchPosts();
       }
     });
-
-    // app.firebaseReady.listen((ready) {
-    //   print('Firebase ready: $ready');
-    // });
   }
 
   fetchPosts() async {
@@ -70,11 +59,34 @@ class _ForumListScreenState extends State<ForumListScreen> {
         header: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(forum.category),
-            TextButton(
-              child: Text('Create'),
-              onPressed: () => setState(() => forum.editPost(ApiPost())),
-            )
+            if (forum.postInEdit != null)
+              IconButton(
+                icon: Icon(Icons.arrow_back_rounded),
+                onPressed: () => setState(() => forum.editPost(null)),
+              ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: sm),
+              child: Text(forum.category.toUpperCase()),
+            ),
+            if (forum.postInEdit == null)
+              FlatButton(
+                splashColor: Colors.transparent,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.add,
+                      size: md,
+                      color: Colors.blueAccent,
+                    ),
+                    SizedBox(width: xs),
+                    Text(
+                      'Create Post',
+                      style: TextStyle(color: Colors.blueAccent),
+                    )
+                  ],
+                ),
+                onPressed: () => setState(() => forum.editPost(ApiPost())),
+              )
           ],
         ),
         child: forum.postInEdit != null

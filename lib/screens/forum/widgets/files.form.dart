@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.file.model.dart';
+import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/widgets/cache_image.dart';
 
@@ -23,6 +24,7 @@ class _FilesFormState extends State<FilesForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: xs),
         Text('Uploaded files'),
         Divider(),
         GridView.count(
