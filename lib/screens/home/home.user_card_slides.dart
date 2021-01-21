@@ -63,7 +63,7 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
   Widget build(BuildContext context) {
     return GetBuilder<UserCardController>(
       builder: (_) {
-        if (_.users.length == 0) return Spinner();
+        if (_.users == null || _.users.length == 0) return Spinner();
 
         return Stack(children: [
           PageView(
@@ -73,10 +73,10 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
             ],
             onPageChanged: (int page) {
               // 사용자 카드가 끝에서 다섯 장 남았을 때, 다음 배치를 로드한다.
-              final bool shouldLoad = _.users.length < (page + 5);
-              if (shouldLoad) {
-                _.fetchUsers();
-              }
+              // final bool shouldLoad = _.users.length < (page + 5);
+              // if (shouldLoad) {
+              //   _.fetchUsers();
+              // }
             },
             controller: _.pageController,
           ),

@@ -15,7 +15,7 @@ class Bio extends GetxController {
       if (user == null) {
         Bio.data = null;
       } else {
-        getBio().then((bio) {
+        getMyBioRecord().then((bio) {
           Bio.data = bio;
           ready = true;
           update();
@@ -31,28 +31,8 @@ class Bio extends GetxController {
     return data;
   }
 
-  Future<ApiBio> getBio() async {
+  Future<ApiBio> getMyBioRecord() async {
     final re = await api.appGet('bio');
     return ApiBio.fromJson(re);
-  }
-
-  Future<List<ApiBio>> search({
-    double latitude,
-    double longitude,
-    double km,
-    int limit = 1500,
-  }) async {
-    final re = await api.request({
-      'route': 'bio.search',
-      if (latitude != null) 'latitude': latitude,
-      if (longitude != null) 'latitude': longitude,
-      if (km != null) 'latitude': km,
-      'limit': limit,
-      'hasProfilePhoto': 'Y',
-      'orderby': 'RAND()',
-    });
-    final List<ApiBio> bios = [];
-    for (final b in re) bios.add(ApiBio.fromJson(b));
-    return bios;
   }
 }

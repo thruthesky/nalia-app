@@ -7,6 +7,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/controllers/api.gallery.controller.dart';
+import 'package:nalia_app/controllers/api.location.controller.dart';
 import 'package:nalia_app/controllers/api.nalia.controller.dart';
 import 'package:nalia_app/models/api.translation.dart';
 import 'package:nalia_app/controllers/api.user_card.controller.dart';
@@ -40,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   final API c = Get.put(api);
   final Gallery g = Get.put(Gallery());
   final Bio b = Get.put(Bio());
+  final LocationController lc = Get.put(LocationController());
   final UserCardController uc = Get.put(UserCardController());
   final NaliaController nc = Get.put(NaliaController());
 
@@ -51,8 +53,8 @@ class _MainScreenState extends State<MainScreen> {
       // app.open(RouteNames.purchase);
     });
     Timer(Duration(milliseconds: 600), () async {
-      print('ui.window.locale.languageCode: ${Get.deviceLocale}');
-      app.open(RouteNames.menu);
+      // print('ui.window.locale.languageCode: ${Get.deviceLocale}');
+      // app.open(RouteNames.menu);
 
       // InAppPurchaseTest().runIosVerification();
 

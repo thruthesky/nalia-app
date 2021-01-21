@@ -190,7 +190,8 @@ class _HomeUserCardBottomMenuState extends State<HomeUserCardBottomMenu> {
           true, // When press or pan update the chart, create a pointer in approximated value (The default is true)
       showCircles: true, // Show the circle in every value of chart
       customDraw: (Canvas canvas,
-          Size size) {}, // You can draw anything in your chart, this callback is called when is generating the chart
+          Size
+              size) {}, // You can draw anything in your chart, this callback is called when is generating the chart
       circleRadiusValue: 0, // The radius value of circle
     );
   }
@@ -255,14 +256,15 @@ class _HomeUserCardBottomMenuState extends State<HomeUserCardBottomMenu> {
                                 style: TextStyle(fontSize: md, color: Colors.white),
                               ),
                               TextSpan(
-                                text: '80 세',
+                                text: ' ${user.age} 세',
                                 // text: ' ' + app.age(user.birthday).toString() + '세',
                                 style: TextStyle(fontSize: sm, color: Colors.white),
                               ),
-                              TextSpan(
-                                text: ' 13 Km 거리',
-                                style: TextStyle(fontSize: xsm, color: Colors.white),
-                              ),
+                              if (user.distance != null)
+                                TextSpan(
+                                  text: ' ${user.distance} Km 거리',
+                                  style: TextStyle(fontSize: xsm, color: Colors.white),
+                                ),
                             ],
                           ),
                         ),

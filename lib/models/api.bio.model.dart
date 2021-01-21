@@ -17,6 +17,7 @@ class ApiBio {
     this.dateMethod,
     this.profilePhotoUrl,
     this.age,
+    this.distance,
   });
 
   String userId;
@@ -35,6 +36,7 @@ class ApiBio {
   String profilePhotoUrl;
 
   String age;
+  String distance;
 
   factory ApiBio.fromJson(Map<String, dynamic> json) {
     String age;
@@ -58,6 +60,16 @@ class ApiBio {
       age = _age.years.toString();
     }
 
+    String dis;
+    if (json['distance'] != null && json['distance'] != '') {
+      final distance = double.parse(json['distance']);
+      if (distance < 10) {
+        dis = distance.round().toStringAsFixed(1);
+      } else {
+        dis = distance.round().toString();
+      }
+    }
+
     return ApiBio(
       userId: json["user_ID"],
       name: json["name"],
@@ -74,6 +86,7 @@ class ApiBio {
       dateMethod: json["dateMethod"],
       profilePhotoUrl: json['profile_photo_url'],
       age: age,
+      distance: dis,
     );
   }
 
@@ -93,6 +106,7 @@ class ApiBio {
         "dateMethod": dateMethod,
         "user_profile_photo": profilePhotoUrl,
         "age": age,
+        "distance": distance,
       };
   @override
   String toString() {

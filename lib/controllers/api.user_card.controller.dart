@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/controllers/api.location.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
+import 'package:nalia_app/services/global.dart';
 
 class UserCardController extends GetxController {
   static UserCardController get to => Get.find<UserCardController>();
@@ -19,8 +19,12 @@ class UserCardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    fetchUsers();
+    LocationController.of.locationServiceChanges.listen((re) async {
+      if (re == null) return;
+      print("ready: ${LocationController.of.ready}");
+      // 여기에 코드가 오면, Location 이 사용 가능한지 아닌지 확인된상태이다.
+      await fetchUsers();
+    });
   }
 
   fetchUsers() async {
@@ -33,8 +37,9 @@ class UserCardController extends GetxController {
       return;
     }
 
-    users = await Bio.to.search(limit: 1500);
-    print(users);
+    users = await search();
+    print('-----> Search result: users:');
+    // print(users);
     update();
     // Query q = ff.publicCol;
 
@@ -66,7 +71,7 @@ class UserCardController extends GetxController {
     //     }
     //   });
 
-    update();
+    // update();
     // if (snapshot.size < _limit) {
     //   _noMoreUsers = true;
     // }
@@ -81,11 +86,42 @@ class UserCardController extends GetxController {
   /// 예를 들어, 사용자 검색에서, 특정 사용자를 클릭하면, 사용자 카드 페이지로 이동하고, 그 사용자가
   /// 나오도록 할 때 사용 할 수 있다.
   insertUser(ApiBio user) {
-    LocationController.of.users.insert(0, user);
+    users.insert(0, user);
     update();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       pageController.jumpToPage(0);
     });
+  }
+
+  /// 사용자 검색
+  ///
+  /// bio 테이블에서 사용자 정보 추출. 위치 정보가 있으면, 현재 사용자 주위의 사용자만 검색
+  Future<List<ApiBio>> search() async {
+    double latitude;
+    double longitude;
+    double km;
+
+    if (LocationController.of.ready) {
+      latitude = LocationController.of.myLocation.latitude;
+      longitude = LocationController.of.myLocation.longitude;
+
+      // TOOD: 옵션처리
+      km = 500.0;
+    }
+
+    final req = {
+      'route': 'bio.search',
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (km != null) 'km': km,
+      'limit': 1500,
+      'hasProfilePhoto': 'Y',
+      'orderby': 'RAND()',
+    };
+    print('req: $req');
+    final re = await api.request(req);
+    final List<ApiBio> bios = [];
+    for (final b in re) bios.add(ApiBio.fromJson(b));
+    return bios;
   }
 }

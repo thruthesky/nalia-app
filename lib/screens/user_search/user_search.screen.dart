@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.bio.search.model.dart';
 import 'package:nalia_app/controllers/api.user_card.controller.dart';
@@ -22,7 +21,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
 
   fetchUsers() async {
     try {
-      users = await Bio.to.search();
+      users = await UserCardController.to.search();
       print(users.length);
       setState(() {});
     } catch (e) {
