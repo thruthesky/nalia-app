@@ -143,11 +143,7 @@ class API extends GetxController {
   Future<dynamic> request(Map<String, dynamic> data) async {
     print('data (before adding session id ): $data');
     data = _addSessionId(data);
-<<<<<<< HEAD
     print('data (after adding session id ): $data');
-=======
-    print('data: $data');
->>>>>>> 57b0a9a80c4c8ed76b0157ea81c0ca71ecbe7380
     // final res = await dio.get(url, queryParameters: data);
     final res = await dio.post(url, data: data);
     if (res.data == null) {
@@ -262,8 +258,7 @@ class API extends GetxController {
 
   userProfile(String sessionId) async {
     if (sessionId == null) return;
-    final Map<String, dynamic> res =
-        await request({'route': 'user.profile', 'session_id': sessionId});
+    final Map<String, dynamic> res = await request({'route': 'user.profile', 'session_id': sessionId});
     user = ApiUser.fromJson(res);
     update();
     return user;
@@ -362,8 +357,7 @@ class API extends GetxController {
     return data['comment_ID'];
   }
 
-  Future<List<ApiPost>> searchPost(
-      {String category, int limit = 20, int paged = 1, String author}) async {
+  Future<List<ApiPost>> searchPost({String category, int limit = 20, int paged = 1, String author}) async {
     final Map<String, dynamic> data = {};
     data['route'] = 'forum.search';
     data['category_name'] = category;
@@ -528,8 +522,7 @@ class API extends GetxController {
     return request({'route': 'notification.updateToken', 'token': token});
   }
 
-  sendMessageToTokens(
-      {String token, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+  sendMessageToTokens({String token, String title, String body, Map<String, dynamic> data, String imageUrl}) {
     Map<String, dynamic> req = {
       'route': 'notification.sendMessageToTokens',
       'token': token,
@@ -541,8 +534,7 @@ class API extends GetxController {
     return request(req);
   }
 
-  sendMessageToTopic(
-      {String topic, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+  sendMessageToTopic({String topic, String title, String body, Map<String, dynamic> data, String imageUrl}) {
     Map<String, dynamic> req = {
       'route': 'notification.sendMessageToTopic',
       'topic': topic,

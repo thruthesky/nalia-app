@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:location/location.dart';
-import 'package:nalia_app/services/global.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LocationController extends GetxController {

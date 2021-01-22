@@ -108,6 +108,24 @@
     },
 
     {
+      "name": "iMac - Prod - Simulator",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "APP_NAME=Simulator iPhone 12 Max Pro",
+        "--dart-define",
+        "DEVICE=simulator",
+        "--dart-define",
+        "OS=ios",
+        "--dart-define",
+        "v3Url=http://api.nalia.kr/v3"
+      ],
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "9864013F-EB88-4C76-8BC4-079D9BFD735C"
+    },
+
+    {
       "name": "iMac Emulator Pixel 3a API 30",
       "program": "lib/main.dart",
       "args": [
