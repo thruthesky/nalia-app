@@ -67,7 +67,15 @@ class App {
     }
   }
 
-  void error(dynamic e, [String message]) {
+  /// 프로필이 모두 업데이트 안되었을 때, 이곳으로 온다.
+  onErrorProfileReady() async {
+    final re = await confirm('note'.tr, ERROR_PROFILE_READY.tr);
+    if (re) {
+      open(RouteNames.profile);
+    }
+  }
+
+  error(dynamic e, [String message]) {
     print('=> error(e): ');
     print(e);
     print('=> e.runtimeType: ${e.runtimeType}');
@@ -82,6 +90,8 @@ class App {
     } else if (e is String) {
       /// Is error string? If error string begins with `ERROR_`, then it might be PHP error or client error.
       if (e.indexOf('ERROR_') == 0) {
+        if (e == ERROR_PROFILE_READY) return onErrorProfileReady();
+        // 콜론(:) 다음에 추가적인 에러 메시지가 있을 수 있다.
         if (e.indexOf(':') > 0) {
           List<String> arr = e.split(':');
           msg = arr[0].tr + ' : ' + arr[1];
@@ -92,12 +102,15 @@ class App {
         msg = e;
       }
     } else if (e is DioError) {
+      print("Got dio error on error(e)");
       print(e.error);
       msg = e.message;
     } else if (e is FirebaseException) {
+      print("Got firebase error on error(e)");
       msg = "Firebase Exception: ${e.code}, ${e.message}";
     } else {
       /// other errors.
+      print("Got unknown error on error(e)");
       msg = "Unknown error";
     }
 
@@ -179,6 +192,9 @@ class App {
     return await api.uploadFile(file: file, onProgress: onProgress);
   }
 
+  /// 예/아니오를 선택하게 하는 다이얼로그를 표시한다.
+  ///
+  /// 예를 선택하면 true, 아니오를 선택하면 false 를 리턴한다.
   Future<bool> confirm(String title, String message) async {
     return await showDialog(
       context: Get.context,
@@ -298,27 +314,50 @@ class App {
   /// Get the login user's post of gallery. It will create one if none exists.
   Future<ApiPost> getGalleryPost() async {
     if (api.notLoggedIn) return null;
-    List<ApiPost> posts =
-        await api.searchPost(category: Config.galleryCategory, limit: 1, author: api.id);
+    List<ApiPost> posts = await api.searchPost(category: Config.galleryCategory, limit: 1, author: api.id);
     if (posts.length == 0) {
       print('No gallery post. create one');
-      await api.editPost(
-          category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
+      await api.editPost(category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
       posts = await api.searchPost(category: Config.galleryCategory, limit: 1);
     }
     return posts.first;
   }
 
+  /// 보석 전송(추천)
+  ///
+  /// * 주의: 이 함수에서 에러 처리를 다 한다. 상단에서는 async/await 없이 이 함수를 호출하기만 하면 된다.
+  ///
   Future recommend({ApiBio user, String jewelry, String item, int count}) async {
+    try {
+      await checkUserProfile();
+      final res = await NaliaController.to.giveJewelry(
+        userId: user.userId,
+        jewelry: jewelry,
+        count: count,
+        item: item,
+      );
+      print(res);
+    } catch (e) {
+      if (e == ERROR_NOT_ENOUGH_JEWELRY) {
+        app.error((e as String).trArgs([jewelry.tr]));
+      } else {
+        app.error(e);
+      }
+    }
+
     return 0;
   }
 
-  openChatRoom({String roomId, String userId}) {
+  openChatRoom({String roomId, String userId}) async {
     if (api.id == userId) {
       return app.alert('cannot chat to yourself'.tr);
     }
-    // chatRoomEnter.add({'roomId': roomId, 'uid': uid});
-    // homeStackChange(HomeStack.chatRoom);
+    try {
+      await checkUserProfile();
+    } catch (e) {
+      error(e);
+      return;
+    }
     app.open(RouteNames.chatRoom, arguments: {'roomId': roomId, 'userId': userId});
   }
 

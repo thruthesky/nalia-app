@@ -38,7 +38,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   );
                 },
               ),
-              Text('endpoint: $v3Url'),
+              Text('endpoint: $apiUrl'),
               Wrap(
                 children: [
                   RaisedButton(

@@ -41,7 +41,7 @@ class ApiBio {
   factory ApiBio.fromJson(Map<String, dynamic> json) {
     String age;
     String birthdate = json["birthdate"];
-    if (birthdate == null || birthdate == '')
+    if (birthdate == null || birthdate == '' || birthdate == '0')
       age = '0';
     else {
       final _yy = int.parse(birthdate.substring(0, 2));
@@ -77,8 +77,8 @@ class ApiBio {
       updatedAt: json["updatedAt"],
       birthdate: json["birthdate"],
       gender: json["gender"],
-      height: json["height"],
-      weight: json["weight"],
+      height: json["height"] == '0' ? '' : json["height"],
+      weight: json["weight"] == '0' ? '' : json["weight"],
       city: json["city"],
       drinking: json["drinking"],
       smoking: json["smoking"],

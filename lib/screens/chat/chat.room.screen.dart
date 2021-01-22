@@ -102,6 +102,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
     // if there is no incoming chat room id, then, create one
     try {
+      // 사용자 프로필 점검은 채팅 화면에 들어오기 전에 검사되어야 한다. 여기서는 만약을 대비해서 검사를 한번 더 한다.
       await app.checkUserProfile();
       await chat.enter(id: args['roomId'], users: [args['userId']], hatch: false);
     } catch (e) {

@@ -10,23 +10,6 @@
       "type": "dart",
       "program": "lib/main.dart"
     },
-
-    {
-      "name": "Emulator Pixel 3a API 30",
-      "program": "lib/main.dart",
-      "args": [
-        "--dart-define",
-        "APP_NAME=iPhone11ProMax",
-        "--dart-define",
-        "DEVICE=emulator",
-        "--dart-define",
-        "OS=android"
-      ],
-      "request": "launch",
-      "type": "dart",
-      "deviceId": "emulator-5554"
-    },
-
     {
       "name": "iPhone11ProMax",
       "program": "lib/main.dart",
@@ -75,20 +58,21 @@
     },
 
     {
-      "name": "Simulator-iMac",
+      "name": "Galaxy S6",
       "program": "lib/main.dart",
       "args": [
         "--dart-define",
-        "APP_NAME=Simulator iPhone 12 Max Pro",
+        "APP_NAME=Galaxy S6",
         "--dart-define",
-        "DEVICE=simulator",
+        "DEVICE=device",
         "--dart-define",
-        "OS=ios"
+        "OS=android"
       ],
       "request": "launch",
       "type": "dart",
-      "deviceId": "9864013F-EB88-4C76-8BC4-079D9BFD735C"
+      "deviceId": "ce0416042837120404"
     },
+
     {
       "name": "Simulator(MacBook)",
       "program": "lib/main.dart",
@@ -106,7 +90,43 @@
     },
 
     {
-      "name": "SM J737S",
+      "name": "iMac Simulator",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "APP_NAME=Simulator iPhone 12 Max Pro",
+        "--dart-define",
+        "DEVICE=simulator",
+        "--dart-define",
+        "OS=ios",
+        "--dart-define",
+        "v3Url=http://192.168.0.5/wordpress/v3"
+      ],
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "9864013F-EB88-4C76-8BC4-079D9BFD735C"
+    },
+
+    {
+      "name": "iMac Emulator Pixel 3a API 30",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "APP_NAME=iPhone11ProMax",
+        "--dart-define",
+        "DEVICE=emulator",
+        "--dart-define",
+        "OS=android",
+        "--dart-define",
+        "v3Url=http://192.168.0.5/wordpress/v3"
+      ],
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "emulator-5554"
+    },
+
+    {
+      "name": "iMac SM J737S",
       "program": "lib/main.dart",
       "args": [
         "--dart-define",
@@ -114,27 +134,13 @@
         "--dart-define",
         "DEVICE=device",
         "--dart-define",
-        "OS=android"
+        "OS=android",
+        "--dart-define",
+        "v3Url=http://192.168.0.5/wordpress/v3"
       ],
       "request": "launch",
       "type": "dart",
       "deviceId": "5200960c4e1e5577"
-    },
-
-    {
-      "name": "Galaxy S6",
-      "program": "lib/main.dart",
-      "args": [
-        "--dart-define",
-        "APP_NAME=Galaxy S6",
-        "--dart-define",
-        "DEVICE=device",
-        "--dart-define",
-        "OS=android"
-      ],
-      "request": "launch",
-      "type": "dart",
-      "deviceId": "ce0416042837120404"
     }
   ]
 }

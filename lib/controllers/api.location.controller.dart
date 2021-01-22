@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:location/location.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:nalia_app/services/global.dart';
+import 'package:rxdart/rxdart.dart';
 
 class LocationController extends GetxController {
   static LocationController to = Get.find<LocationController>();
@@ -38,6 +39,7 @@ class LocationController extends GetxController {
     super.onInit();
 
     checkLocation();
+    listenLocationChange();
   }
 
   /// 필요한 경우 언제든지 [checkLocation]을 호출해서, Location 기능이 사용가능한지 확인을 해 볼 수 있다.
@@ -73,5 +75,29 @@ class LocationController extends GetxController {
     // location.permissionGranted 와 같이 참조 가능
     locationServiceChanges.add(ready);
     return ready;
+  }
+
+  listenLocationChange() async {
+    /// [interval] 은 Android 에서만 동작한다. iOS 는 동작 안 함.
+    location.changeSettings(accuracy: LocationAccuracy.high, interval: 1000, distanceFilter: 0.3);
+
+    ///그래서, iOS 에서는 rxdart 로 1초에 한번씩 업데이트하도록 한다.
+    location.onLocationChanged.throttleTime(Duration(milliseconds: 1000)).listen(
+      (LocationData data) async {
+        final params = {
+          'route': 'updateLocationData',
+          'latitude': data.latitude,
+          'longitude': data.longitude,
+          'accuracy': data.accuracy,
+          'altitude': data.altitude,
+          'speed': data.speed,
+          'heading': data.heading,
+          'time': data.time,
+        };
+        print(params);
+        // TODO: 로케이션 업데이트
+        // await api.request(params);
+      },
+    );
   }
 }

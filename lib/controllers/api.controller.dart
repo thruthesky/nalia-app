@@ -112,7 +112,7 @@ class API extends GetxController {
   BehaviorSubject<ApiUser> authChanges = BehaviorSubject.seeded(null);
 
   Prefix.Dio dio = Prefix.Dio();
-  final url = v3Url;
+  final url = apiUrl;
   GetStorage localStorage;
 
   ApiUser user;
@@ -141,8 +141,9 @@ class API extends GetxController {
   }
 
   Future<dynamic> request(Map<String, dynamic> data) async {
+    print('data (before adding session id ): $data');
     data = _addSessionId(data);
-    print('data: $data');
+    print('data (after adding session id ): $data');
     // final res = await dio.get(url, queryParameters: data);
     final res = await dio.post(url, data: data);
     if (res.data == null) {
@@ -153,6 +154,8 @@ class API extends GetxController {
       throw (res.data);
     } else if (res.data['code'] != 0) {
       /// If there is error like "ERROR_", then it throws exception.
+      print('ERROR: code: ${res.data['code']}, data:');
+      print(data);
       throw res.data['code'];
     }
     return res.data['data'];

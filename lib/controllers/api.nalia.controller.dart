@@ -28,11 +28,16 @@ class NaliaController extends GetxController {
     return DailyBonus.fromJson(data);
   }
 
-  Future<DailyBonus> giveJewelry() async {
+  Future<DailyBonus> giveJewelry({String userId, String jewelry, String item, int count}) async {
     final data = await api.request({
       'route': 'nalia.giveJewelry',
+      'user_ID': userId,
+      'jewelry': jewelry,
+      'item': item,
+      'count': count,
     });
 
+    print('req: $data');
     return DailyBonus.fromJson(data);
   }
 }

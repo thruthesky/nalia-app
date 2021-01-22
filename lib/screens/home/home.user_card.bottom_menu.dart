@@ -118,23 +118,29 @@ class _HomeUserCardBottomMenuState extends State<HomeUserCardBottomMenu> {
         color: Colors.yellow[200],
         size: md - 1,
       ),
-      onPressed: () async {
-        print('bag:');
-        try {
-          final res = await app.recommend(
-            user: user,
-            jewelry: GOLD,
-            item: BAG,
-          );
-          print(res);
-        } catch (e) {
-          if (e == ERROR_NOT_ENOUGH_JEWELRY) {
-            app.error((e as String).trArgs([GOLD.tr]));
-          } else {
-            app.error(e);
-          }
-        }
-      },
+      onPressed: () => app.recommend(
+        user: user,
+        jewelry: GOLD,
+        item: BAG,
+        count: 3,
+      ),
+
+      // print('bag:');
+      // try {
+      //   final res = await app.recommend(
+      //     user: user,
+      //     jewelry: GOLD,
+      //     item: BAG,
+      //   );
+      //   print(res);
+      // } catch (e) {
+      //   if (e == ERROR_NOT_ENOUGH_JEWELRY) {
+      //     app.error((e as String).trArgs([GOLD.tr]));
+      //   } else {
+      //     app.error(e);
+      //   }
+      // }
+      // },
     );
   }
 

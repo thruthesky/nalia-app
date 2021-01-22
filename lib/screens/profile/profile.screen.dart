@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/login_first.dart';
+import 'package:nalia_app/widgets/spinner.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             : SingleChildScrollView(
                 child: GetBuilder<Bio>(
                   builder: (model) {
-                    if (model.ready == false) return SizedBox.shrink();
+                    if (model.ready == false) return Spinner();
                     ApiBio bio = Bio.data;
                     return Container(
                       padding: EdgeInsets.only(left: md, right: md),

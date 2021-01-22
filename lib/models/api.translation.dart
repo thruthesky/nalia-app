@@ -11,12 +11,30 @@ import 'package:nalia_app/services/global.dart';
 /// rendered on screen, the app needs to re-render ( by setState method or any other means )
 Map<String, Map<String, String>> translations = {
   "en": {
+    'Ooh': 'Ooh ...',
     "app-name": "Nalia",
+    'yes': 'Yes',
+    'no': 'No',
+    'note': 'Notification',
     "home": "Home",
+    "ERROR_NOT_ENOUGH_JEWELRY": "You don't have enought %s.",
+    'diamond': 'Diamond',
+    "gold": "Gold",
+    'silver': 'Silver',
+    'ERROR_PROFILE_READY': 'You have not fill up your profile.\nDo you want to update your profile?',
   },
   "ko": {
+    'Ooh': '앗!',
     "app-name": "나리야",
+    'yes': '예',
+    'no': '아니오',
+    'note': '알림',
     "home": "홈",
+    "ERROR_NOT_ENOUGH_JEWELRY": "%s가 모자랍니다.",
+    'diamond': '다이아몬드',
+    "gold": "골드",
+    'silver': '실버',
+    'ERROR_PROFILE_READY': '프로필 정보가 올바로 입력되지 않았습니다.\n프로필을 수정하시겠습니까?',
   }
 };
 
