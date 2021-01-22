@@ -143,7 +143,11 @@ class API extends GetxController {
   Future<dynamic> request(Map<String, dynamic> data) async {
     print('data (before adding session id ): $data');
     data = _addSessionId(data);
+<<<<<<< HEAD
     print('data (after adding session id ): $data');
+=======
+    print('data: $data');
+>>>>>>> 57b0a9a80c4c8ed76b0157ea81c0ca71ecbe7380
     // final res = await dio.get(url, queryParameters: data);
     final res = await dio.post(url, data: data);
     if (res.data == null) {
