@@ -106,11 +106,11 @@
     },
 
     {
-      "name": "Galaxy Tab A",
+      "name": "SM J737S",
       "program": "lib/main.dart",
       "args": [
         "--dart-define",
-        "APP_NAME=Galaxy Tab A",
+        "APP_NAME=SM J737S",
         "--dart-define",
         "DEVICE=device",
         "--dart-define",
@@ -118,7 +118,23 @@
       ],
       "request": "launch",
       "type": "dart",
-      "deviceId": "ROWM705A3NJ"
+      "deviceId": "5200960c4e1e5577"
+    },
+
+    {
+      "name": "Galaxy S6",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "APP_NAME=Galaxy S6",
+        "--dart-define",
+        "DEVICE=device",
+        "--dart-define",
+        "OS=android"
+      ],
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "ce0416042837120404"
     }
   ]
 }

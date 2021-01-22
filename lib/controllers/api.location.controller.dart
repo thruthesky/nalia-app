@@ -63,6 +63,8 @@ class LocationController extends GetxController {
       permissionGranted = true;
     } else {
       permissionGranted = false;
+      locationServiceChanges.add(ready);
+      return false;
     }
 
     // 나의 위치를 한번 읽는다.

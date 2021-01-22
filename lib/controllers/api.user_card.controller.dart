@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/controllers/api.location.controller.dart';
@@ -10,33 +12,28 @@ class UserCardController extends GetxController {
 
   final PageController pageController = PageController();
 
-  // 한번에 20 장씩 사용자를 로드한다. TODO: 차후, 옵션으로 할 수 있도록 한다.
-  // int _limit = 20;
-  bool _noMoreUsers = false;
-  bool _inLoading = false;
-  // int _fetchNo = 0;
   List<ApiBio> users = [];
+  Timer _timer;
   @override
   void onInit() {
     super.onInit();
+    // 문제. 앱 부팅시, Location 기능 확인이 느린편이며, async 방식으로 확인을 하는데, 앱이 부팅되고 한참 후에 확인(Enable 또는 Disable)가능하다.
+    // 또한, 권한 획득을 위해서 다이얼로그를 보여주는데, 그 다이얼로그에서 사용자가 선택을 하기 전까지는 확인 루틴이 멈추게 된다.
+    // 즉, 처음 앱 부팅 후, Location 가능 확인 작업이 매우 느리거나 알 수 없는 상태에 빠지며, 특히 Android 에서 .getLocation() 으로 현재 사용자 위치 값을 가져오는 것이 매우 느리다.
+    // 이와 같이 느린 경우, 사용자에게는 초기 정보를 보여주기 위해서, 먼저 서버에 한번 접속을 해야하는데, 너무 많은 정보를 가져오려는 경우 부담된다.
+    // 해결책으로는 Location 이 확인되지 않으면, 최소한의 정보만 가져오는 것이다. 예를 들면, 회원 정보 100개 가아닌 10개만 먼저 가져오는 것이다.
+    // 하지만 이로 인해 화면 blinking 이 발생한다. 따라서, 최선의 방법은 한번만 가져오는 것이다.
+    _timer = Timer(Duration(milliseconds: 100), fetchUsers);
     LocationController.of.locationServiceChanges.listen((re) async {
       if (re == null) return;
-      print("ready: ${LocationController.of.ready}");
       // 여기에 코드가 오면, Location 이 사용 가능한지 아닌지 확인된상태이다.
+      _timer.cancel();
       await fetchUsers();
     });
   }
 
   fetchUsers() async {
-    if (_noMoreUsers) {
-      print('noMoreUsers: ');
-      return;
-    }
-    if (_inLoading) {
-      print('inLoading:');
-      return;
-    }
-
+    print("-----> location ready: ${LocationController.of.ready}");
     users = await search();
     print('-----> Search result: users:');
     // print(users);

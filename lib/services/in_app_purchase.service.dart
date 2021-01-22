@@ -10,10 +10,7 @@ import 'package:nalia_app/widgets/svg.dart';
 
 class InAppPurchaseService {
   // Set literals require Dart 2.2. Alternatively, use `Set<String> _kIds = <String>['product1', 'product2'].toSet()`.
-  final Set<String> _kIds = {
-    'goldbox',
-    'diamondbox',
-  };
+  final Set<String> _kIds = {'goldbox', 'diamondbox', 'lucky_box'};
   final InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
 
   /// Subscription for purchase updated streem. This should be the app's life
