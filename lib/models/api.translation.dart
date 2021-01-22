@@ -54,6 +54,10 @@ class AppTranslations extends Translations {
     api.translationList().then(updateTranslations);
   }
   updateTranslations(data) {
+    if (data != null &&
+        data['translations'] != null &&
+        data['translations'] is List &&
+        data['translations'].length == 0) return;
     for (String ln in data['translations'].keys) {
       for (String code in data['translations'][ln].keys) {
         String value = data['translations'][ln][code];

@@ -118,7 +118,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "v3Url=http://api.nalia.kr/v3"
+        "v3Url=https://api.nalia.kr/v3"
       ],
       "request": "launch",
       "type": "dart",

@@ -145,6 +145,14 @@ class API extends GetxController {
     data = _addSessionId(data);
     print('data (after adding session id ): $data');
     // final res = await dio.get(url, queryParameters: data);
+
+    Map<String, dynamic> params = {};
+    data.forEach((k, v) {
+      if (v is int || v is double) v = v.toString();
+      params[k] = v;
+    });
+    String queryString = Uri(queryParameters: params).query;
+    print("$url?$queryString");
     final res = await dio.post(url, data: data);
     if (res.data == null) {
       throw ('Response.body is null. Backend might not an API server. Or, Backend URL is wrong.');

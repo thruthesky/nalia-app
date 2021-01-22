@@ -111,7 +111,7 @@ class UserCardController extends GetxController {
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
       if (km != null) 'km': km,
-      'limit': 1500,
+      'limit': 1500.toString(),
       'hasProfilePhoto': 'Y',
       'orderby': 'RAND()',
     };
