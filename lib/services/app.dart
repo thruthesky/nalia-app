@@ -76,7 +76,7 @@ class App {
   }
 
   error(dynamic e, [String message]) {
-    print('=> error(e): ');
+    print('=> app.error(e): ');
     print(e);
     print('=> e.runtimeType: ${e.runtimeType}');
 
@@ -314,10 +314,12 @@ class App {
   /// Get the login user's post of gallery. It will create one if none exists.
   Future<ApiPost> getGalleryPost() async {
     if (api.notLoggedIn) return null;
-    List<ApiPost> posts = await api.searchPost(category: Config.galleryCategory, limit: 1, author: api.id);
+    List<ApiPost> posts =
+        await api.searchPost(category: Config.galleryCategory, limit: 1, author: api.id);
     if (posts.length == 0) {
       print('No gallery post. create one');
-      await api.editPost(category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
+      await api.editPost(
+          category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
       posts = await api.searchPost(category: Config.galleryCategory, limit: 1);
     }
     return posts.first;

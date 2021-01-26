@@ -70,7 +70,7 @@ class UserTest {
         await api.deletePost(gallery);
         gallery = await app.getGalleryPost();
         // print('user_ID: ${gallery.postAuthor}');
-        File file = await app.downloadImage(url: Config.backendSiteUrl + '/tmp/img/${i + 1}.jpg');
+        File file = await app.downloadImage(url: Config.backendThemeUrl + '/tmp/img/${i + 1}.jpg');
         // print('file:');
         // print(file);
         ApiFile uploadedFile = await api.uploadFile(file: file, onProgress: (p) => null);
@@ -88,7 +88,8 @@ class UserTest {
         for (int j = 0; j < n; j++) {
           if (j == i) continue;
 
-          File file = await app.downloadImage(url: Config.backendSiteUrl + '/tmp/img/${j + 1}.jpg');
+          File file =
+              await app.downloadImage(url: Config.backendThemeUrl + '/tmp/img/${j + 1}.jpg');
           ApiFile uploadedFile = await api.uploadFile(file: file, onProgress: (p) => null);
           uploadedPost.files.add(uploadedFile);
         }

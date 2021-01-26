@@ -74,7 +74,7 @@
     },
 
     {
-      "name": "Simulator(MacBook)",
+      "name": "MacBook - Simulator",
       "program": "lib/main.dart",
       "args": [
         "--dart-define",
@@ -82,7 +82,9 @@
         "--dart-define",
         "DEVICE=simulator",
         "--dart-define",
-        "OS=ios"
+        "OS=ios",
+        "--dart-define",
+        "backendThemeUrl=http://192.168.0.21/sonub/wp-content/themes/wigo"
       ],
       "request": "launch",
       "type": "dart",
@@ -100,7 +102,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "v3Url=http://192.168.0.5/wordpress/v3"
+        "backendThemeUrl=http://192.168.0.5/wordpress/v3"
       ],
       "request": "launch",
       "type": "dart",
@@ -118,7 +120,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "v3Url=https://api.nalia.kr/v3"
+        "backendThemeUrl=https://api.nalia.kr/v3"
       ],
       "request": "launch",
       "type": "dart",
@@ -136,7 +138,7 @@
         "--dart-define",
         "OS=android",
         "--dart-define",
-        "v3Url=http://192.168.0.5/wordpress/v3"
+        "backendThemeUrl=http://192.168.0.5/wordpress/v3"
       ],
       "request": "launch",
       "type": "dart",
@@ -154,7 +156,7 @@
         "--dart-define",
         "OS=android",
         "--dart-define",
-        "v3Url=http://192.168.0.5/wordpress/v3"
+        "backendThemeUrl=http://192.168.0.5/wordpress/v3"
       ],
       "request": "launch",
       "type": "dart",
