@@ -13,7 +13,7 @@ GetStorage localStorage;
 BehaviorSubject<bool> localStorageReady = BehaviorSubject.seeded(false);
 
 ///
-final api = API();
+final API api = API();
 
 /// [chat] is the chat room instance.
 ///

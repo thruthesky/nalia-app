@@ -16,10 +16,16 @@ import 'package:nalia_app/services/helper.functions.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
+import 'package:firebase_database/firebase_database.dart';
 
+/// Bio table name on backend server datagbase.
 const String BIO_TABLE = 'api_bio';
+
+/// Error codes
 const String ERROR_EMPTY_RESPONSE = 'ERROR_EMPTY_RESPONSE';
 
+/// Forum model
+///
 /// [Forum] is a data model for a forum category.
 ///
 /// Note that forum data model must not connect to backend directly by using API controller. Instead, the API controller
@@ -87,9 +93,12 @@ class Forum {
   }
 }
 
+/// API GetX Controller
+///
+/// TODO: publish it as package.
+///
 /// [API] is the Api class for commuting backend.
 /// It extends `GetxController` to update when user information changes.
-///
 class API extends GetxController {
   ApiUser user;
 
@@ -133,9 +142,16 @@ class API extends GetxController {
   /// ```
   BehaviorSubject<bool> locationChanges = BehaviorSubject.seeded(null);
 
+  PublishSubject translationChanges = PublishSubject();
+
   @override
   void onInit() {
     super.onInit();
+
+    database.reference().child('notifications/translation').onValue.listen((event) {
+      loadTranslations();
+    });
+    loadTranslations();
 
     checkLocation();
     listenLocationChange();
@@ -175,6 +191,8 @@ class API extends GetxController {
       }
     });
   }
+
+  FirebaseDatabase get database => FirebaseDatabase.instance;
 
   String get id => user?.id;
   String get sessionId => user?.sessionId;
@@ -217,7 +235,6 @@ class API extends GetxController {
     // final res = await dio.get(url, queryParameters: data);
 
     // _printDebugUrl(data);
-
     final res = await dio.post(url, data: data);
     // print('dio.post(url, data:data) --> result: $res');
     if (res.data == null) {
@@ -712,31 +729,39 @@ class API extends GetxController {
     return locationReady;
   }
 
-  /// 내 위치가 모니터링한다.
+  /// 내 위치가 변경되는지 모니터링한다.
   ///
-  /// 내 위치가 변경되면 서버에 업데이트를 한다.
+  /// 내 위치가 변경되면 서버 api_bio 테이블에 내 위치를 업데이트를 한다.
   listenLocationChange() async {
     /// [interval] 은 Android 에서만 동작한다. iOS 는 동작 안 함.
     location.changeSettings(accuracy: LocationAccuracy.high, interval: 1000, distanceFilter: 0.3);
 
     ///그래서, iOS 에서는 rxdart 로 12초에 한번씩 업데이트하도록 한다.
-    location.onLocationChanged.throttleTime(Duration(milliseconds: 12345)).listen(
-      (LocationData data) async {
-        myLocation = data;
-        final params = {
-          'route': 'bio.updateLocation',
-          'latitude': data.latitude,
-          'longitude': data.longitude,
-          'accuracy': data.accuracy,
-          'altitude': data.altitude,
-          'speed': data.speed,
-          'heading': data.heading,
-          'time': data.time,
-        };
-        print("api.location.controller.dart::listenLocationChange() $params");
-        // TODO: 로케이션 업데이트
-        await request(params);
-      },
-    );
+    location.onLocationChanged.throttleTime(Duration(milliseconds: 12345)).listen((LocationData data) async {
+      if (notLoggedIn) return;
+      myLocation = data;
+      final params = {
+        'route': 'app.updates',
+        'table': BIO_TABLE,
+        'latitude': data.latitude,
+        'longitude': data.longitude,
+        'accuracy': data.accuracy,
+        'altitude': data.altitude,
+        'speed': data.speed,
+        'heading': data.heading,
+        'time': data.time,
+      };
+      // print("api.location.controller.dart::listenLocationChange() $params");
+      await request(params);
+    });
+  }
+
+  /// todo: [loadTranslations] may be called twice at start up. One from [onInit], the other from [onFirebaseReady].
+  /// todo: make it one time call.
+  loadTranslations() async {
+    final res = await request({'route': 'translation.list', 'format': 'language-first'});
+    print('loadTranslations() res: $res');
+
+    translationChanges.add(res);
   }
 }

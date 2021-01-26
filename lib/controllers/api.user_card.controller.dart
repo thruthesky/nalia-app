@@ -38,7 +38,7 @@ class UserCardController extends GetxController {
     final _users = await search();
     print('-----> Got search result: users:');
     // 내 주위 사람이 없다면, location on 상태에서 검색에서
-    if (_users.length == 0) {
+    if (_users.length < 2) {
       return;
     }
     users = _users;

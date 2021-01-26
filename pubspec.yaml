@@ -14,9 +14,10 @@ dependencies:
 
   cupertino_icons: ^1.0.0
 
-  firebase_core: "0.6.0"
-  cloud_firestore: "^0.15.0"
-  firebase_messaging: "^8.0.0-dev.11"
+  firebase_core: "0.7.0"
+  cloud_firestore: "^0.16.0"
+  firebase_database: "^6.0.0"
+  firebase_messaging: "^8.0.0-dev.14"
 
   crypto: ^2.1.5
 
@@ -71,6 +72,9 @@ dependencies:
 
   firechat:
     path: packages/firechat
+
+  withcenter:
+    path: packages/withcenter
 
 dev_dependencies:
   flutter_test:

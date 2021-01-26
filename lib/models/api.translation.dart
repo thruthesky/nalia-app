@@ -39,12 +39,26 @@ Map<String, Map<String, String>> translations = {
 };
 
 /// Update translation document data from Firestore into `GetX locale format`.
-updateTranslations(Map<dynamic, dynamic> data) {
-  data.forEach((ln, texts) {
-    for (var name in texts.keys) {
-      translations[ln][name] = texts[name];
+// updateTranslations(Map<dynamic, dynamic> data) {
+//   data.forEach((ln, texts) {
+//     for (var name in texts.keys) {
+//       translations[ln][name] = texts[name];
+//     }
+//   });
+// }
+
+updateTranslations(data) {
+  if (data != null &&
+      data['translations'] != null &&
+      data['translations'] is List &&
+      data['translations'].length == 0) return;
+  for (String ln in data['translations'].keys) {
+    for (String code in data['translations'][ln].keys) {
+      String value = data['translations'][ln][code];
+      if (translations[ln] == null) translations[ln] = {};
+      translations[ln][code] = value;
     }
-  });
+  }
 }
 
 /// GetX locale text translations.
@@ -52,19 +66,6 @@ class AppTranslations extends Translations {
   AppTranslations() {
     print('AppTranslations()');
     api.translationList().then(updateTranslations);
-  }
-  updateTranslations(data) {
-    if (data != null &&
-        data['translations'] != null &&
-        data['translations'] is List &&
-        data['translations'].length == 0) return;
-    for (String ln in data['translations'].keys) {
-      for (String code in data['translations'][ln].keys) {
-        String value = data['translations'][ln][code];
-        if (translations[ln] == null) translations[ln] = {};
-        translations[ln][code] = value;
-      }
-    }
   }
 
   @override

@@ -84,7 +84,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "backendThemeUrl=http://192.168.0.21/sonub/wp-content/themes/wigo"
+        "backendThemeUrl=http://192.168.0.21/sonub/wp-content/themes/withcenter-backend-v3"
       ],
       "request": "launch",
       "type": "dart",
@@ -102,7 +102,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "backendThemeUrl=https://local.sonub.com/wp-content/themes/wigo"
+        "backendThemeUrl=https://local.sonub.com/wp-content/themes/withcenter-backend-v3"
       ],
       "request": "launch",
       "type": "dart",
@@ -120,7 +120,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "backendThemeUrl=https://sonub.com/wp-content/themes/wigo"
+        "backendThemeUrl=https://sonub.com/wp-content/themes/withcenter-backend-v3"
       ],
       "request": "launch",
       "type": "dart",
@@ -138,7 +138,7 @@
         "--dart-define",
         "OS=android",
         "--dart-define",
-        "backendThemeUrl=http://192.168.0.5/sonub/wp-content/themes/wigo"
+        "backendThemeUrl=http://192.168.0.5/sonub/wp-content/themes/withcenter-backend-v3"
       ],
       "request": "launch",
       "type": "dart",
@@ -156,7 +156,7 @@
         "--dart-define",
         "OS=android",
         "--dart-define",
-        "backendThemeUrl=http://192.168.0.5/sonub/wp-content/themes/wigo"
+        "backendThemeUrl=http://192.168.0.5/sonub/wp-content/themes/withcenter-backend-v3"
       ],
       "request": "launch",
       "type": "dart",

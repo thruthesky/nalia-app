@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -74,35 +75,9 @@ class _MainScreenState extends State<MainScreen> {
       // }
     });
 
-    app.firebaseReady.listen((ready) async {
-      // print('Firebase ready: $ready');
-      if (ready == false) return;
-      // todo: purchase produces error on iOS.
-      // if (Platform.isIOS) return;
-      // await purchase.init(
-      //   productIds: {
-      //     'goldbox',
-      //     'lucky_box',
-      //     'jewelry_box',
-      //     'diamond_box',
-      //   },
-      // );
-      // print(
-      //     'products: ${purchase.products} : Simulator does not show products.');
-    });
-
-    // Dio dio = Dio();
-    // () async {
-    //   final res = await dio
-    //       // .get('http://192.168.0.5/wordpress/v3/index.php?route=app.version');
-    //       .get(
-    //           'http://192.168.100.17/wordpress55/v3/index.php?route=app.version');
-
-    //   print('res: ${res.data}');
-    // }();
-
     app.firebaseReady.listen((ready) {
       if (ready == false) return;
+
       api.authChanges.listen((user) {
         // When user is not logged in, or logged out, clear the chat room list.
         if (user == null) {
@@ -130,25 +105,10 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
 
-    // purchase.pending.listen((purchaseDetails) {
-    //   print("main: purchase.pending.listen((value) {");
-    //   print('main: PurchaseStatus.pending: Show some pending UI');
-    //   // print(purchaseDetails);
-    //   // print(purchaseDetails.productID);
-    // });
-    // purchase.error.listen((purchaseDetails) {
-    //   print("main: purchase.error.listen((value) {");
-    //   print(purchaseDetails);
-    // });
-    // purchase.success.listen((PurchaseSession session) async {
-    //   print("Purchase made. Success!");
-    //   try {
-    //     await app.openBox(session.sessionId);
-    //     app.open(RouteNames.openBox, arguments: {'sessionId': session.sessionId});
-    //   } catch (e) {
-    //     app.error(e);
-    //   }
-    // });
+    api.translationChanges.listen((res) {
+      updateTranslations(res);
+      setState(() {});
+    });
   }
 
   @override
