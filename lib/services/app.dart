@@ -105,6 +105,18 @@ class App {
       print("Got dio error on error(e)");
       print(e.error);
       msg = e.message;
+
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        print(e.response.data);
+        print(e.response.headers);
+        print(e.response.request);
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
     } else if (e is FirebaseException) {
       print("Got firebase error on error(e)");
       msg = "Firebase Exception: ${e.code}, ${e.message}";
@@ -314,12 +326,10 @@ class App {
   /// Get the login user's post of gallery. It will create one if none exists.
   Future<ApiPost> getGalleryPost() async {
     if (api.notLoggedIn) return null;
-    List<ApiPost> posts =
-        await api.searchPost(category: Config.galleryCategory, limit: 1, author: api.id);
+    List<ApiPost> posts = await api.searchPost(category: Config.galleryCategory, limit: 1, author: api.id);
     if (posts.length == 0) {
       print('No gallery post. create one');
-      await api.editPost(
-          category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
+      await api.editPost(category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
       posts = await api.searchPost(category: Config.galleryCategory, limit: 1);
     }
     return posts.first;

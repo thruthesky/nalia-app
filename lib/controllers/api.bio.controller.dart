@@ -32,14 +32,14 @@ class Bio extends GetxController {
   }
 
   Future<ApiBio> updateBio(String code, String value) async {
-    final re = await api.appUpdate('bio', code, value);
+    final re = await api.appUpdate(BIO_TABLE, code, value);
     data = ApiBio.fromJson(re);
     update();
     return data;
   }
 
   Future<ApiBio> getMyBioRecord() async {
-    final re = await api.appGet('bio');
+    final re = await api.appGet(BIO_TABLE);
     return ApiBio.fromJson(re);
   }
 }

@@ -102,7 +102,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "backendThemeUrl=http://192.168.0.5/wordpress/v3"
+        "backendThemeUrl=https://local.sonub.com/wp-content/themes/wigo"
       ],
       "request": "launch",
       "type": "dart",
@@ -138,7 +138,7 @@
         "--dart-define",
         "OS=android",
         "--dart-define",
-        "backendThemeUrl=http://192.168.0.5/wordpress/v3"
+        "backendThemeUrl=http://192.168.0.5/sonub/wp-content/themes/wigo"
       ],
       "request": "launch",
       "type": "dart",
@@ -156,7 +156,7 @@
         "--dart-define",
         "OS=android",
         "--dart-define",
-        "backendThemeUrl=http://192.168.0.5/wordpress/v3"
+        "backendThemeUrl=http://192.168.0.5/sonub/wp-content/themes/wigo"
       ],
       "request": "launch",
       "type": "dart",

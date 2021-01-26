@@ -54,16 +54,16 @@ class UserTest {
         final temp = UserTest().data(i);
         api.logout();
         await api.loginOrRegister(email: temp['user_email'], pass: temp['user_pass'], data: temp);
-        await api.appUpdate('bio', 'name', temp['name']);
-        await api.appUpdate('bio', 'gender', temp['gender']);
-        await api.appUpdate('bio', 'birthdate', temp['birthdate']);
-        await api.appUpdate('bio', 'height', temp['height']);
-        await api.appUpdate('bio', 'weight', temp['weight']);
-        await api.appUpdate('bio', 'hobby', temp['hobby']);
-        await api.appUpdate('bio', 'city', temp['city']);
-        await api.appUpdate('bio', 'dateMethod', temp['dateMethod']);
-        await api.appUpdate('bio', 'latitude', temp['latitude']);
-        await api.appUpdate('bio', 'longitude', temp['longitude']);
+        await api.appUpdate(BIO_TABLE, 'name', temp['name']);
+        await api.appUpdate(BIO_TABLE, 'gender', temp['gender']);
+        await api.appUpdate(BIO_TABLE, 'birthdate', temp['birthdate']);
+        await api.appUpdate(BIO_TABLE, 'height', temp['height']);
+        await api.appUpdate(BIO_TABLE, 'weight', temp['weight']);
+        await api.appUpdate(BIO_TABLE, 'hobby', temp['hobby']);
+        await api.appUpdate(BIO_TABLE, 'city', temp['city']);
+        await api.appUpdate(BIO_TABLE, 'dateMethod', temp['dateMethod']);
+        await api.appUpdate(BIO_TABLE, 'latitude', temp['latitude']);
+        await api.appUpdate(BIO_TABLE, 'longitude', temp['longitude']);
 
         /// Setting primary photo. 대표 사진 추가.
         ApiPost gallery = await app.getGalleryPost();
@@ -88,8 +88,7 @@ class UserTest {
         for (int j = 0; j < n; j++) {
           if (j == i) continue;
 
-          File file =
-              await app.downloadImage(url: Config.backendThemeUrl + '/tmp/img/${j + 1}.jpg');
+          File file = await app.downloadImage(url: Config.backendThemeUrl + '/tmp/img/${j + 1}.jpg');
           ApiFile uploadedFile = await api.uploadFile(file: file, onProgress: (p) => null);
           uploadedPost.files.add(uploadedFile);
         }

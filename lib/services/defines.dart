@@ -29,6 +29,8 @@ const String RING = 'ring';
 
 const double HEADER_HEIGHT = 44.0;
 
+const String BIO_TABLE = 'api_bio';
+
 const List<int> HeightGroups = [
   145,
   150,

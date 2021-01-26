@@ -151,9 +151,12 @@ class API extends GetxController {
       if (v is int || v is double) v = v.toString();
       params[k] = v;
     });
+
     String queryString = Uri(queryParameters: params).query;
-    print("$url?$queryString");
+    print("url: $url?$queryString");
+
     final res = await dio.post(url, data: data);
+    print('dio.post(url, data:data) --> result: $res');
     if (res.data == null) {
       throw ('Response.body is null. Backend might not an API server. Or, Backend URL is wrong.');
     }
@@ -190,6 +193,7 @@ class API extends GetxController {
     data['route'] = 'user.register';
     data['user_email'] = email;
     data['user_pass'] = pass;
+    data['session_id'] = '';
 
     final Map<String, dynamic> res = await request(data);
     // print('res: $res');
@@ -210,6 +214,7 @@ class API extends GetxController {
     data['route'] = 'user.loginOrRegister';
     data['user_email'] = email;
     data['user_pass'] = pass;
+    data['session_id'] = '';
     final Map<String, dynamic> res = await request(data);
     user = ApiUser.fromJson(res);
     await _saveUserProfile(user);
@@ -266,8 +271,7 @@ class API extends GetxController {
 
   userProfile(String sessionId) async {
     if (sessionId == null) return;
-    final Map<String, dynamic> res =
-        await request({'route': 'user.profile', 'session_id': sessionId});
+    final Map<String, dynamic> res = await request({'route': 'user.profile', 'session_id': sessionId});
     user = ApiUser.fromJson(res);
     update();
     return user;
@@ -366,8 +370,7 @@ class API extends GetxController {
     return data['comment_ID'];
   }
 
-  Future<List<ApiPost>> searchPost(
-      {String category, int limit = 20, int paged = 1, String author}) async {
+  Future<List<ApiPost>> searchPost({String category, int limit = 20, int paged = 1, String author}) async {
     final Map<String, dynamic> data = {};
     data['route'] = 'forum.search';
     data['category_name'] = category;
@@ -505,6 +508,8 @@ class API extends GetxController {
   }
 
   /// Get login user's record of a table.
+  ///
+  /// Possible errors: ERROR_APP_GET_NO_RECORD
   Future appGet(String table) {
     return request({'route': 'app.get', 'table': table});
   }
@@ -532,8 +537,7 @@ class API extends GetxController {
     return request({'route': 'notification.updateToken', 'token': token});
   }
 
-  sendMessageToTokens(
-      {String token, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+  sendMessageToTokens({String token, String title, String body, Map<String, dynamic> data, String imageUrl}) {
     Map<String, dynamic> req = {
       'route': 'notification.sendMessageToTokens',
       'token': token,
@@ -545,8 +549,7 @@ class API extends GetxController {
     return request(req);
   }
 
-  sendMessageToTopic(
-      {String topic, String title, String body, Map<String, dynamic> data, String imageUrl}) {
+  sendMessageToTopic({String topic, String title, String body, Map<String, dynamic> data, String imageUrl}) {
     Map<String, dynamic> req = {
       'route': 'notification.sendMessageToTopic',
       'topic': topic,
