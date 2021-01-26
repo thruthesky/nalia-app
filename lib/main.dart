@@ -48,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     print('withcenterApi: $withcenterApi');
-    withcenterApi.setApiUrl(apiUrl);
+    withcenterApi.init(apiUrl: apiUrl);
     withcenterApi.version().then((res) => print('withcenterApi.version(): $res'));
 
     iapService.init().then((x) {
