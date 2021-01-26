@@ -37,7 +37,7 @@ class NaliaController extends GetxController {
       'count': count,
     });
 
-    print('req: $data');
+    // print('req: $data');
     return DailyBonus.fromJson(data);
   }
 }

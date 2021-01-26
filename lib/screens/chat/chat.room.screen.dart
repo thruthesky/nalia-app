@@ -131,8 +131,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     try {
       await chat.sendMessage(
         text: text,
-        displayName: Bio.data.userId,
-        photoURL: Bio.data.profilePhotoUrl,
+        displayName: api.bioData.userId,
+        photoURL: api.bioData.profilePhotoUrl,
       );
       textController.text = '';
       await app.sendChatPushMessage(chat, text);
@@ -306,8 +306,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               /// send url to firebase
                               await chat.sendMessage(
                                 text: file.thumbnailUrl,
-                                displayName: Bio.data.userId,
-                                photoURL: Bio.data.profilePhotoUrl,
+                                displayName: api.bioData.userId,
+                                photoURL: api.bioData.profilePhotoUrl,
                               );
                               // TODO: for uploading an image, push message text should be 'User *** send you a photo'
                               // TODO: And the photo will be attached as imageUrl of the push message.

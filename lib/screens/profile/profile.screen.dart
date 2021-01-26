@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:nalia_app/controllers/api.bio.controller.dart';
+import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/services/debouncer.dart';
@@ -39,10 +40,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: api.notLoggedIn
             ? LoginFirst()
             : SingleChildScrollView(
-                child: GetBuilder<Bio>(
-                  builder: (model) {
-                    if (model.ready == false) return Spinner();
-                    ApiBio bio = Bio.data;
+                child: GetBuilder<API>(
+                  builder: (_) {
+                    if (_.bioData == null) return Spinner();
                     return Container(
                       padding: EdgeInsets.only(left: md, right: md),
                       child: Column(
@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           spaceXs,
                           Text(
-                              '이름: ${api.fullName}\n전화: ${api.user.phoneNo}\n생일: ${bio.birthdate}\n성별: ${bio.gender.tr} '),
+                              '이름: ${api.fullName}\n전화: ${api.user.phoneNo}\n생일: ${api.bioData.birthdate}\n성별: ${api.bioData.gender.tr} '),
                           spaceXs,
                           Divider(),
                           spaceXs,
@@ -103,7 +103,7 @@ class _DateMethodState extends State<DateMethod> {
     super.initState();
 
     dateMethodSub = dateMethod.debounceTime(Duration(milliseconds: 500)).distinct().listen((v) {
-      Get.find<Bio>().updateBio('dateMethod', v);
+      api.updateBio('dateMethod', v);
     });
   }
 
@@ -122,10 +122,10 @@ class _DateMethodState extends State<DateMethod> {
         Text('date method hint'.tr, style: hintStyle),
         Text('date method example'.tr, style: hintStyle),
         spaceXs,
-        GetBuilder<Bio>(
+        GetBuilder<API>(
           builder: (_) {
             return TextFormField(
-              initialValue: Bio.data?.dateMethod ?? '',
+              initialValue: _.bioData?.dateMethod ?? '',
               onChanged: (v) => dateMethod.add(v),
             );
           },
@@ -148,10 +148,10 @@ class Height extends StatelessWidget {
         children: [
           spaceMd,
           Text('height'.tr, style: hintStyle),
-          GetBuilder<Bio>(
+          GetBuilder<API>(
             builder: (_) {
               return DropdownButton<String>(
-                value: Bio.data?.height ?? '',
+                value: _.bioData?.height ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('height', v);
@@ -196,10 +196,10 @@ class Weight extends StatelessWidget {
         children: [
           spaceMd,
           Text('weight'.tr, style: hintStyle),
-          GetBuilder<Bio>(
+          GetBuilder<API>(
             builder: (_) {
               return DropdownButton<String>(
-                value: Bio.data?.weight ?? '',
+                value: _.bioData?.weight ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('weight', v);
@@ -243,10 +243,10 @@ class City extends StatelessWidget {
         children: [
           spaceMd,
           Text('city'.tr, style: hintStyle),
-          GetBuilder<Bio>(
+          GetBuilder<API>(
             builder: (_) {
               return DropdownButton<String>(
-                value: Bio.data?.city ?? '',
+                value: _.bioData?.city ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('city', v);
@@ -290,10 +290,10 @@ class Hobby extends StatelessWidget {
         children: [
           spaceMd,
           Text('hobby'.tr, style: hintStyle),
-          GetBuilder<Bio>(
+          GetBuilder<API>(
             builder: (_) {
               return DropdownButton<String>(
-                value: Bio.data?.hobby ?? '',
+                value: _.bioData?.hobby ?? '',
                 onChanged: (v) async {
                   try {
                     await _.updateBio('hobby', v);
@@ -337,11 +337,11 @@ class Drinking extends StatelessWidget {
         children: [
           spaceMd,
           Text('drink'.tr, style: hintStyle),
-          GetBuilder<Bio>(
+          GetBuilder<API>(
             builder: (_) {
               return SwitchListTile(
                 title: Text('drinking_yn'.tr),
-                value: Bio.data?.drinking == 'Y' ? true : false,
+                value: _.bioData?.drinking == 'Y' ? true : false,
                 onChanged: (bool value) async {
                   try {
                     await _.updateBio('drinking', value ? 'Y' : 'N');
@@ -368,11 +368,11 @@ class Smoking extends StatelessWidget {
         children: [
           spaceMd,
           Text('smoke'.tr, style: hintStyle),
-          GetBuilder<Bio>(
+          GetBuilder<API>(
             builder: (_) {
               return SwitchListTile(
                 title: Text('smoking_yn'.tr),
-                value: Bio.data?.smoking == 'Y' ? true : false,
+                value: _.bioData?.smoking == 'Y' ? true : false,
                 onChanged: (bool value) async {
                   try {
                     await _.updateBio('smoking', value ? 'Y' : 'N');

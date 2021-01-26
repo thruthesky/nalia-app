@@ -385,10 +385,10 @@ class App {
   }
 
   bool get profileReady =>
-      Bio.data.profilePhotoUrl != null &&
-      Bio.data.profilePhotoUrl != '' &&
-      Bio.data.name != null &&
-      Bio.data.name != '';
+      api.bioData.profilePhotoUrl != null &&
+      api.bioData.profilePhotoUrl != '' &&
+      api.bioData.name != null &&
+      api.bioData.name != '';
 
   bool get profileComplete => api.profileComplete;
 

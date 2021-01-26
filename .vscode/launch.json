@@ -120,7 +120,7 @@
         "--dart-define",
         "OS=ios",
         "--dart-define",
-        "backendThemeUrl=https://api.nalia.kr/v3"
+        "backendThemeUrl=https://sonub.com/wp-content/themes/wigo"
       ],
       "request": "launch",
       "type": "dart",

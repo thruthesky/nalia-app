@@ -115,7 +115,7 @@ class UserCardController extends GetxController {
       'hasProfilePhoto': 'Y',
       'orderby': 'RAND()',
     };
-    print('req: $req');
+    // print('req: $req');
     final re = await api.request(req);
     final List<ApiBio> bios = [];
     for (final b in re) bios.add(ApiBio.fromJson(b));

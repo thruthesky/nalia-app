@@ -13,6 +13,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:nalia_app/services/helper.functions.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:nalia_app/models/api.bio.model.dart';
+
+const String BIO_TABLE = 'api_bio';
+const String ERROR_EMPTY_RESPONSE = 'ERROR_EMPTY_RESPONSE';
 
 /// [Forum] is a data model for a forum category.
 ///
@@ -85,6 +89,8 @@ class Forum {
 /// It extends `GetxController` to update when user information changes.
 ///
 class API extends GetxController {
+  ApiBio bioData;
+
   @override
   void onInit() {
     super.onInit();
@@ -95,7 +101,7 @@ class API extends GetxController {
       /// If the user has logged in previously, he will be auto logged in on next app running.
       /// [user] will be null if the user has not logged in previously.
       user = _loadUserProfile();
-      if (loggedIn) print('ApiUser logged in with cached profile: ${user.sessionId}');
+      // if (loggedIn) print('ApiUser logged in with cached profile: ${user.sessionId}');
 
       /// If user has logged in with localStorage data, refresh the user data from backend.
       if (loggedIn) {
@@ -104,12 +110,33 @@ class API extends GetxController {
 
       authChanges.add(user);
     });
+
+    authChanges.listen((user) async {
+      if (user == null) {
+        bioData = null;
+      } else {
+        try {
+          bioData = await getMyBioRecord();
+          update();
+        } catch (e) {
+          if (e == ERROR_EMPTY_RESPONSE) {
+            bioData = ApiBio.fromJson({});
+            print("bio data: $bioData");
+          } else {
+            error.add(e);
+          }
+        }
+      }
+    });
   }
 
   /// [authChanges] is posted on user login or logout. (Not on profile reading or updating)
   ///
   /// When user is logged in, the parameter will have value of `ApiUser`, or null.
   BehaviorSubject<ApiUser> authChanges = BehaviorSubject.seeded(null);
+
+  /// [errror] is posted on any error.
+  PublishSubject<dynamic> error = PublishSubject();
 
   Prefix.Dio dio = Prefix.Dio();
   final url = apiUrl;
@@ -140,12 +167,7 @@ class API extends GetxController {
     return data;
   }
 
-  Future<dynamic> request(Map<String, dynamic> data) async {
-    print('data (before adding session id ): $data');
-    data = _addSessionId(data);
-    print('data (after adding session id ): $data');
-    // final res = await dio.get(url, queryParameters: data);
-
+  _printDebugUrl(data) {
     Map<String, dynamic> params = {};
     data.forEach((k, v) {
       if (v is int || v is double) v = v.toString();
@@ -154,9 +176,16 @@ class API extends GetxController {
 
     String queryString = Uri(queryParameters: params).query;
     print("url: $url?$queryString");
+  }
+
+  Future<dynamic> request(Map<String, dynamic> data) async {
+    data = _addSessionId(data);
+    // final res = await dio.get(url, queryParameters: data);
+
+    // _printDebugUrl(data);
 
     final res = await dio.post(url, data: data);
-    print('dio.post(url, data:data) --> result: $res');
+    // print('dio.post(url, data:data) --> result: $res');
     if (res.data == null) {
       throw ('Response.body is null. Backend might not an API server. Or, Backend URL is wrong.');
     }
@@ -600,5 +629,17 @@ class API extends GetxController {
 
   Future translationList() {
     return request({'route': 'translation.list', 'format': 'language-first'});
+  }
+
+  Future<ApiBio> updateBio(String code, String value) async {
+    final re = await appUpdate(BIO_TABLE, code, value);
+    bioData = ApiBio.fromJson(re);
+    update();
+    return bioData;
+  }
+
+  Future<ApiBio> getMyBioRecord() async {
+    final re = await appGet(BIO_TABLE);
+    return ApiBio.fromJson(re);
   }
 }

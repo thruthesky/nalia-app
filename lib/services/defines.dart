@@ -16,7 +16,6 @@ const String ERROR_LOGIN_FIRST = 'ERROR_LOGIN_FIRST';
 const String ERROR_EMPTY_TOKENS = 'ERROR_EMPTY_TOKENS';
 const String ERROR_DAILY_BONUS_NOT_GENERATED = 'ERROR_DAILY_BONUS_NOT_GENERATED';
 const String ERROR_DAILY_BONUS_GENERATED_ALREADY = 'ERROR_DAILY_BONUS_GENERATED_ALREADY';
-const String ERROR_EMPTY_RESPONSE = 'ERROR_EMPTY_RESPONSE';
 
 const String JEWELRY = 'jewelry';
 const String DIAMOND = 'diamond';
@@ -28,8 +27,6 @@ const String WATCH = 'watch';
 const String RING = 'ring';
 
 const double HEADER_HEIGHT = 44.0;
-
-const String BIO_TABLE = 'api_bio';
 
 const List<int> HeightGroups = [
   145,
