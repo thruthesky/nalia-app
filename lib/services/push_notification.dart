@@ -37,7 +37,7 @@ class PushNotification {
         sound: true,
       );
 
-      print('--> push_notification.dart User granted permission: ${settings.authorizationStatus}');
+      // print('--> push_notification.dart User granted permission: ${settings.authorizationStatus}');
 
       switch (settings.authorizationStatus) {
         case AuthorizationStatus.authorized:

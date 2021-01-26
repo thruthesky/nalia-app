@@ -26,11 +26,6 @@ class _HomeUserCardSlidesState extends State<HomeUserCardSlides> {
   /// 맨 처음 표시되는 사용자 카드에만 도움말 표시를 할 때, 사용된다.
   int renderCount = 0;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   renderView(ApiBio user, int index) {
     // print("user.profilePhotoUrl: ${user.profilePhotoUrl}");
     renderCount++;
@@ -100,17 +95,15 @@ class SwipeGuide extends StatelessWidget {
           loop: 1,
           child: Container(
             padding: EdgeInsets.all(24),
-            decoration: BoxDecoration(
-                color: Color(0xa0a0a0a0),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 8,
-                    color: Color(0x55a0a0a0),
-                    spreadRadius: 5,
-                    offset: Offset(1.0, 1.0),
-                  )
-                ]),
+            decoration:
+                BoxDecoration(color: Color(0xa0a0a0a0), borderRadius: BorderRadius.circular(12), boxShadow: [
+              BoxShadow(
+                blurRadius: 8,
+                color: Color(0x55a0a0a0),
+                spreadRadius: 5,
+                offset: Offset(1.0, 1.0),
+              )
+            ]),
             child: Column(
               children: [
                 SizedBox(

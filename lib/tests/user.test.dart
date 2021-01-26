@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:intl/intl.dart';
 import 'package:faker/faker.dart';
-import 'package:nalia_app/controllers/api.bio.controller.dart';
 import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/models/api.post.model.dart';
