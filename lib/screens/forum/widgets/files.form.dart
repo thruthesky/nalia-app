@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/widgets/cache_image.dart';
+import 'package:withcenter/withcenter.dart';
 
 class FilesForm extends StatefulWidget {
   const FilesForm({
@@ -19,8 +19,7 @@ class FilesForm extends StatefulWidget {
 class _FilesFormState extends State<FilesForm> {
   @override
   Widget build(BuildContext context) {
-    if (widget.postOrComment == null || widget.postOrComment.files.length == 0)
-      return SizedBox.shrink();
+    if (widget.postOrComment == null || widget.postOrComment.files.length == 0) return SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -64,7 +63,7 @@ class _FilesFormState extends State<FilesForm> {
                         print('delete: $re');
                         if (re) {
                           try {
-                            final id = await api.deleteFile(
+                            final id = await withcenterApi.deleteFile(
                               file.id,
                               postOrComment: widget.postOrComment,
                             );

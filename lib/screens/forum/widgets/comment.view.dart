@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.comment.model.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/comment.form.dart';
 import 'package:nalia_app/screens/forum/widgets/files.view.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
+import 'package:withcenter/withcenter.dart';
 
 class CommentView extends StatefulWidget {
   const CommentView({
@@ -42,7 +40,7 @@ class _CommentViewState extends State<CommentView> {
       if (conf == false) return;
 
       try {
-        final deleted = await api.deleteComment(widget.comment, widget.post);
+        final deleted = await withcenterApi.deleteComment(widget.comment, widget.post);
         print('deleted: $deleted');
         widget.forum.render();
       } catch (e) {
@@ -101,8 +99,7 @@ class _CommentViewState extends State<CommentView> {
               ]
             ],
           ),
-          if (widget.comment.mode == CommentMode.none ||
-              widget.comment.mode == CommentMode.reply) ...[
+          if (widget.comment.mode == CommentMode.none || widget.comment.mode == CommentMode.reply) ...[
             if (widget.comment.commentContent.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: sm),
@@ -112,15 +109,11 @@ class _CommentViewState extends State<CommentView> {
             Divider(),
             Row(children: [
               TextButton(
-                child: Text(widget.comment.mode == CommentMode.reply
-                    ? 'Cancel'
-                    : 'Reply'),
+                child: Text(widget.comment.mode == CommentMode.reply ? 'Cancel' : 'Reply'),
                 onPressed: () {
                   setState(() {
                     widget.comment.mode =
-                        widget.comment.mode == CommentMode.reply
-                            ? CommentMode.none
-                            : CommentMode.reply;
+                        widget.comment.mode == CommentMode.reply ? CommentMode.none : CommentMode.reply;
                   });
                 },
               ),
@@ -141,8 +134,7 @@ class _CommentViewState extends State<CommentView> {
               Spacer(),
               if (widget.comment.isMine)
                 PopupMenuButton<String>(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
                   itemBuilder: (context) => [
                     PopupMenuItem(
                         child: Row(children: [

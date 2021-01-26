@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:nalia_app/models/api.purchaseHistory.dart';
-import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/svg_collections.dart';
 import 'package:nalia_app/widgets/svg.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:withcenter/withcenter.dart';
 
 // const List<String> _kProductIds = <String>[
 //   _kConsumableId,
@@ -131,8 +131,7 @@ class FireflutterInAppPurchase {
             print(purchaseDetails.toString());
             // for android & consumable product only.
             if (Platform.isAndroid) {
-              if (!autoConsume &&
-                  consumableIds.contains(purchaseDetails.productID)) {
+              if (!autoConsume && consumableIds.contains(purchaseDetails.productID)) {
                 await connection.consumePurchase(purchaseDetails);
               }
             }
@@ -159,16 +158,14 @@ class FireflutterInAppPurchase {
     final bool available = await connection.isAvailable();
 
     if (available) {
-      ProductDetailsResponse response =
-          await connection.queryProductDetails(_productIds);
+      ProductDetailsResponse response = await connection.queryProductDetails(_productIds);
 
       /// Check if any of given product id(s) are missing.
       if (response.notFoundIDs.isNotEmpty) {
         missingIds = response.notFoundIDs;
       }
 
-      response.productDetails
-          .forEach((product) => products[product.id] = product);
+      response.productDetails.forEach((product) => products[product.id] = product);
 
       productReady.add(products);
     } else {
@@ -188,8 +185,7 @@ class FireflutterInAppPurchase {
       'productDetails_description': productDetails?.description,
       'productDetails_price': productDetails?.price,
       'purchaseDetails_productID': purchaseDetails?.productID,
-      'purchaseDetails_pendingCompletePurchase':
-          purchaseDetails?.pendingCompletePurchase,
+      'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
       'purchaseDetails_verificationData_localVerificationData':
           purchaseDetails?.verificationData?.localVerificationData,
       'purchaseDetails_verificationData_serverVerificationData':
@@ -198,7 +194,7 @@ class FireflutterInAppPurchase {
     print('psending data:');
     print(jsonEncode(data));
 
-    await api.recordFailurePurchase(data);
+    await withcenterApi.recordFailurePurchase(data);
   }
 
   _recordFailure(PurchaseDetails purchaseDetails) async {
@@ -209,7 +205,7 @@ class FireflutterInAppPurchase {
       'purchaseDetails_skPaymentTransaction_transactionIdentifier':
           purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
     };
-    await api.recordFailurePurchase(data);
+    await withcenterApi.recordFailurePurchase(data);
   }
 
   _recordSuccess(PurchaseDetails purchaseDetails) async {
@@ -234,8 +230,7 @@ class FireflutterInAppPurchase {
           purchaseDetails?.verificationData?.localVerificationData.toString(),
       'purchaseDetails_verificationData_serverVerificationData':
           purchaseDetails?.verificationData?.serverVerificationData,
-      'purchaseDetails_pendingCompletePurchase':
-          purchaseDetails?.pendingCompletePurchase,
+      'purchaseDetails_pendingCompletePurchase': purchaseDetails?.pendingCompletePurchase,
       'productDetails_skProduct_price': productDetails?.skProduct?.price != null
           ? productDetails?.skProduct?.price
           : productDetails?.skuDetail?.price,
@@ -245,8 +240,7 @@ class FireflutterInAppPurchase {
               : productDetails?.skuDetail?.priceCurrencyCode,
       'productDetails_skProduct_priceLocale_currencySymbol':
           productDetails?.skProduct?.priceLocale?.currencySymbol,
-      'productDetails_skProduct_productIdentifier':
-          productDetails?.skProduct?.productIdentifier,
+      'productDetails_skProduct_productIdentifier': productDetails?.skProduct?.productIdentifier,
     };
 
     print('success data:');
@@ -258,7 +252,7 @@ class FireflutterInAppPurchase {
 
     if (purchaseDetails.verificationData.source == IAPSource.AppStore) {}
 
-    await api.recordSuccessPurchase(data);
+    await withcenterApi.recordSuccessPurchase(data);
   }
 
   Future buyConsumable(ProductDetails product) async {
@@ -273,7 +267,7 @@ class FireflutterInAppPurchase {
 
   /// Returns the Collection Query to get the login user's success purchases.
   Future<List<PurchaseHistory>> get getMyPurchases async {
-    final List<dynamic> res = await api.getMyPurchases();
+    final List<dynamic> res = await withcenterApi.getMyPurchases();
     List<PurchaseHistory> purchaseHistory = [];
     for (int i = 0; i < res.length; i++) {
       purchaseHistory.add(PurchaseHistory.fromJson(res[i]));

@@ -1,15 +1,13 @@
 import 'dart:async';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/controllers/api.gallery.controller.dart';
 import 'package:nalia_app/controllers/api.nalia.controller.dart';
-import 'package:nalia_app/models/api.translation.dart';
 import 'package:nalia_app/controllers/api.user_card.controller.dart';
+import 'package:nalia_app/models/api.translation.dart';
 import 'package:nalia_app/screens/chat/chat.room.screen.dart';
 import 'package:nalia_app/screens/chat/chat.user_room_list.screen.dart';
 import 'package:nalia_app/screens/forum/forum.list.screen.dart';
@@ -22,8 +20,10 @@ import 'package:nalia_app/screens/profile/profile.screen.dart';
 import 'package:nalia_app/screens/purchase/purchase.history.screen.dart';
 import 'package:nalia_app/screens/purchase/purchase.screen.dart';
 import 'package:nalia_app/screens/user_search/user_search.screen.dart';
+import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:withcenter/withcenter.dart';
 
 void main() {
   // Let the plugin know that this app supports pending purchases.
@@ -37,7 +37,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final API c = Get.put(api);
+  // final API c = Get.put(api);
+  final WithcenterApi wa = Get.put(withcenterApi);
   final Gallery g = Get.put(Gallery());
   final UserCardController uc = Get.put(UserCardController());
   final NaliaController nc = Get.put(NaliaController());
@@ -45,6 +46,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+
+    print('withcenterApi: $withcenterApi');
+    withcenterApi.setApiUrl(apiUrl);
+    withcenterApi.version().then((res) => print('withcenterApi.version(): $res'));
 
     iapService.init().then((x) {
       // app.open(RouteNames.purchase);
@@ -69,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
       // print(str.length);
 
       // try {
-      //   await api.request({'route': 'app.str', 'str': str});
+      //   await withcenterApi.request({'route': 'app.str', 'str': str});
       // } catch (e) {
       //   print((e as DioError).message);
       // }
@@ -78,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
     app.firebaseReady.listen((ready) {
       if (ready == false) return;
 
-      api.authChanges.listen((user) {
+      withcenterApi.authChanges.listen((user) {
         // When user is not logged in, or logged out, clear the chat room list.
         if (user == null) {
           if (myRoomList != null) {
@@ -94,7 +99,7 @@ class _MainScreenState extends State<MainScreen> {
         // Reset room list, when user just logs in/out.
         if (myRoomList == null) {
           myRoomList = ChatMyRoomList(
-            loginUserId: api.id,
+            loginUserId: withcenterApi.id,
             render: () {
               // When there are changes(events) on my chat room list,
               // notify to listeners.
@@ -105,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
 
-    api.translationChanges.listen((res) {
+    withcenterApi.translationChanges.listen((res) {
       updateTranslations(res);
       setState(() {});
     });

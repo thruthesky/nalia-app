@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:firechat/firechat.dart';
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.bio.model.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
-import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/helper.functions.dart';
@@ -19,6 +16,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
+import 'package:withcenter/withcenter.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   @override
@@ -82,7 +80,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
     // Create a `ChatRoom` instance and save it to global variable.
     chat = ChatRoom(
-      loginUserId: api.id,
+      loginUserId: withcenterApi.id,
       render: () {
         setState(() {});
         if (chat.messages.isNotEmpty) {
@@ -130,8 +128,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     try {
       await chat.sendMessage(
         text: text,
-        displayName: api.bioData.userId,
-        photoURL: api.bioData.profilePhotoUrl,
+        displayName: withcenterApi.bioData.userId,
+        photoURL: withcenterApi.bioData.profilePhotoUrl,
       );
       textController.text = '';
       await app.sendChatPushMessage(chat, text);
@@ -212,7 +210,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               otherUsername,
-              GetBuilder<API>(
+              GetBuilder<WithcenterApi>(
                 builder: (_) {
                   return app.subscribed(chat.id)
                       ? IconButton(
@@ -305,8 +303,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               /// send url to firebase
                               await chat.sendMessage(
                                 text: file.thumbnailUrl,
-                                displayName: api.bioData.userId,
-                                photoURL: api.bioData.profilePhotoUrl,
+                                displayName: withcenterApi.bioData.userId,
+                                photoURL: withcenterApi.bioData.profilePhotoUrl,
                               );
                               // TODO: for uploading an image, push message text should be 'User *** send you a photo'
                               // TODO: And the photo will be attached as imageUrl of the push message.

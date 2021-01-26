@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/widgets/cache_image.dart';
+import 'package:withcenter/withcenter.dart';
 
 class PostViewFiles extends StatelessWidget {
   const PostViewFiles({

@@ -3,12 +3,10 @@ import 'dart:math';
 
 import 'package:intl/intl.dart';
 import 'package:faker/faker.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
-import 'package:nalia_app/models/api.file.model.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
+import 'package:withcenter/withcenter.dart';
 
 const List<Map<String, double>> locations = [
   {'latitude': 14.5827134, 'longitude': 120.9777218},
@@ -52,33 +50,33 @@ class UserTest {
     try {
       for (int i = 0; i < 40; i++) {
         final temp = UserTest().data(i);
-        api.logout();
-        await api.loginOrRegister(email: temp['user_email'], pass: temp['user_pass'], data: temp);
-        await api.appUpdate(BIO_TABLE, 'name', temp['name']);
-        await api.appUpdate(BIO_TABLE, 'gender', temp['gender']);
-        await api.appUpdate(BIO_TABLE, 'birthdate', temp['birthdate']);
-        await api.appUpdate(BIO_TABLE, 'height', temp['height']);
-        await api.appUpdate(BIO_TABLE, 'weight', temp['weight']);
-        await api.appUpdate(BIO_TABLE, 'hobby', temp['hobby']);
-        await api.appUpdate(BIO_TABLE, 'city', temp['city']);
-        await api.appUpdate(BIO_TABLE, 'dateMethod', temp['dateMethod']);
-        await api.appUpdate(BIO_TABLE, 'latitude', temp['latitude']);
-        await api.appUpdate(BIO_TABLE, 'longitude', temp['longitude']);
+        withcenterApi.logout();
+        await withcenterApi.loginOrRegister(email: temp['user_email'], pass: temp['user_pass'], data: temp);
+        await withcenterApi.appUpdate(BIO_TABLE, 'name', temp['name']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'gender', temp['gender']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'birthdate', temp['birthdate']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'height', temp['height']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'weight', temp['weight']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'hobby', temp['hobby']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'city', temp['city']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'dateMethod', temp['dateMethod']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'latitude', temp['latitude']);
+        await withcenterApi.appUpdate(BIO_TABLE, 'longitude', temp['longitude']);
 
         /// Setting primary photo. 대표 사진 추가.
         ApiPost gallery = await app.getGalleryPost();
-        await api.deletePost(gallery);
+        await withcenterApi.deletePost(gallery);
         gallery = await app.getGalleryPost();
         // print('user_ID: ${gallery.postAuthor}');
         File file = await app.downloadImage(url: Config.backendThemeUrl + '/tmp/img/${i + 1}.jpg');
         // print('file:');
         // print(file);
-        ApiFile uploadedFile = await api.uploadFile(file: file, onProgress: (p) => null);
+        ApiFile uploadedFile = await withcenterApi.uploadFile(file: file, onProgress: (p) => null);
         // print(uploadedFile);
-        ApiPost uploadedPost = await api.editPost(id: gallery.id, files: [uploadedFile]);
+        ApiPost uploadedPost = await withcenterApi.editPost(id: gallery.id, files: [uploadedFile]);
         // print(uploadedPost);
-        await api.setFeaturedImage(uploadedPost, uploadedFile);
-        await api.updateBio('profile_photo_url', uploadedFile.url);
+        await withcenterApi.setFeaturedImage(uploadedPost, uploadedFile);
+        await withcenterApi.updateBio('profile_photo_url', uploadedFile.url);
 
         // 0 개에서 9개 사이로 이미지를 랜덤으로 추가한다.
         int n = Random().nextInt(10);
@@ -89,10 +87,10 @@ class UserTest {
           if (j == i) continue;
 
           File file = await app.downloadImage(url: Config.backendThemeUrl + '/tmp/img/${j + 1}.jpg');
-          ApiFile uploadedFile = await api.uploadFile(file: file, onProgress: (p) => null);
+          ApiFile uploadedFile = await withcenterApi.uploadFile(file: file, onProgress: (p) => null);
           uploadedPost.files.add(uploadedFile);
         }
-        await api.editPost(id: gallery.id, files: uploadedPost.files);
+        await withcenterApi.editPost(id: gallery.id, files: uploadedPost.files);
       }
     } catch (e) {
       print(e);

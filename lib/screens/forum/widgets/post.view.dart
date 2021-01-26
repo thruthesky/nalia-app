@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.comment.model.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/comment.form.dart';
 import 'package:nalia_app/screens/forum/widgets/comment.list.dart';
 import 'package:nalia_app/screens/forum/widgets/files.view.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
+import 'package:withcenter/withcenter.dart';
 
 class PostView extends StatefulWidget {
   const PostView({
@@ -75,8 +73,7 @@ class _PostViewState extends State<PostView> {
                   ))),
           Padding(
               padding: EdgeInsets.symmetric(vertical: sm),
-              child: SelectableText('${post.postContent}',
-                  style: TextStyle(fontSize: sm))),
+              child: SelectableText('${post.postContent}', style: TextStyle(fontSize: sm))),
           PostViewFiles(postOrComment: post),
           Divider(),
           Row(
@@ -108,10 +105,9 @@ class _PostViewState extends State<PostView> {
                   child: Text('Delete'),
                   onPressed: () async {
                     try {
-                      final re = await app.confirm(
-                          'Delete', 'Do you want to delete the post?');
+                      final re = await app.confirm('Delete', 'Do you want to delete the post?');
                       if (re == false) return;
-                      final deletedId = await api.deletePost(post, forum);
+                      final deletedId = await withcenterApi.deletePost(post, forum);
                       print('deletedId: $deletedId');
                       forum.render();
                     } catch (e) {

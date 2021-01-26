@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/models/api.bio.search.model.dart';
 import 'package:nalia_app/controllers/api.user_card.controller.dart';
 import 'package:nalia_app/screens/user_search/user_search.options.dart';
@@ -9,6 +8,7 @@ import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
+import 'package:withcenter/withcenter.dart';
 
 class UserSearchScreen extends StatefulWidget {
   @override

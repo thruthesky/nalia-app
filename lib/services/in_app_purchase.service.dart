@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/svg_collections.dart';
 import 'package:nalia_app/widgets/svg.dart';
+import 'package:withcenter/withcenter.dart';
 
 class InAppPurchaseService {
   // Set literals require Dart 2.2. Alternatively, use `Set<String> _kIds = <String>['product1', 'product2'].toSet()`.
@@ -91,8 +91,7 @@ class InAppPurchaseService {
         _verifyPurchase(purchaseDetails);
 
         if (purchaseDetails.pendingCompletePurchase) {
-          BillingResultWrapper brw =
-              await InAppPurchaseConnection.instance.completePurchase(purchaseDetails);
+          BillingResultWrapper brw = await InAppPurchaseConnection.instance.completePurchase(purchaseDetails);
           if (brw.responseCode == BillingResponse.error ||
               brw.responseCode == BillingResponse.serviceUnavailable) {
             // TODO:  on iOS, the reponse may not be properly retrieved. Retry to get BillingResultWrapper
@@ -131,8 +130,7 @@ class InAppPurchaseService {
                 ),
                 onPressed: () {
                   _connection.buyConsumable(
-                    purchaseParam:
-                        PurchaseParam(productDetails: productDetails, sandboxTesting: false),
+                    purchaseParam: PurchaseParam(productDetails: productDetails, sandboxTesting: false),
                   );
                 },
               ));
@@ -146,7 +144,7 @@ class InAppPurchaseService {
   _verifyPurchase(PurchaseDetails purchaseDetails) {
     ProductDetails productDetails = products[purchaseDetails.productID];
     final Map<String, dynamic> data = {
-      'user_ID': api.id,
+      'user_ID': withcenterApi.id,
       'productID': purchaseDetails.productID,
       'purchaseID': purchaseDetails.purchaseID,
       'price': productDetails.price,
@@ -165,8 +163,7 @@ class InAppPurchaseService {
 
     // Android has no skPaymentTransaction
     if (purchaseDetails.skPaymentTransaction != null) {
-      data['applicationUsername'] =
-          purchaseDetails.skPaymentTransaction?.payment?.applicationUsername;
+      data['applicationUsername'] = purchaseDetails.skPaymentTransaction?.payment?.applicationUsername;
       data['productIdentifier'] = purchaseDetails.skPaymentTransaction?.payment?.productIdentifier;
       data['quantity'] = purchaseDetails.skPaymentTransaction?.payment?.quantity;
       data['transactionIdentifier'] = purchaseDetails.skPaymentTransaction?.transactionIdentifier;
@@ -182,7 +179,7 @@ class InAppPurchaseService {
   Future requestVerification(Map<String, dynamic> data) async {
     data['route'] = 'nalia.verifyPurchase';
     try {
-      final re = await api.request(data);
+      final re = await withcenterApi.request(data);
       print(re);
     } catch (e) {
       print('e: $e');

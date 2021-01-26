@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:nalia_app/models/api.file.model.dart';
 import 'package:nalia_app/controllers/api.gallery.controller.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/services/svg_icons.dart';
@@ -14,6 +12,7 @@ import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:nalia_app/widgets/svg_icon.dart';
 import 'package:masonry_grid/masonry_grid.dart';
+import 'package:withcenter/withcenter.dart';
 
 class GalleryScreen extends StatefulWidget {
   @override
@@ -109,10 +108,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     ),
                   spaceSm,
                   MasonryGrid(
-                      column: 3,
-                      mainAxisSpacing: xs,
-                      crossAxisSpacing: xs,
-                      children: buildPhotos(_.post)),
+                      column: 3, mainAxisSpacing: xs, crossAxisSpacing: xs, children: buildPhotos(_.post)),
                 ],
               ),
             ),

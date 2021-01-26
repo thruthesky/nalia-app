@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
+import 'package:withcenter/withcenter.dart';
 
 /// Note that this method is on an isolated space.
 ///
@@ -80,7 +81,7 @@ class PushNotification {
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
     // When ever user logs in, update the token with user Id.
-    api.authChanges.listen((user) {
+    withcenterApi.authChanges.listen((user) {
       if (user == null) return;
       // print('Saving token on user auth chagnes: $token');
       saveTokenToDatabase(token);
@@ -91,7 +92,7 @@ class PushNotification {
   saveTokenToDatabase(String token) async {
     this.token = token;
     try {
-      await api.updateToken(token);
+      await withcenterApi.updateToken(token);
     } catch (e) {
       print('error saveTokenToDatabase: $token');
       app.error(e);

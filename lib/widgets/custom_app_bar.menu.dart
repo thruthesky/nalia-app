@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:icon_animator/icon_animator.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/controllers/api.gallery.controller.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
@@ -13,6 +12,7 @@ import 'package:nalia_app/widgets/user_avatar.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:badges/badges.dart';
+import 'package:withcenter/withcenter.dart';
 
 class CustomAppBarMenu extends StatefulWidget {
   CustomAppBarMenu({@required this.route});
@@ -74,12 +74,8 @@ class _CustomAppBarMenuState extends State<CustomAppBarMenu> {
                       finish: Icon(FontAwesome5Solid.heartbeat, color: color),
                       children: [
                         AnimationFrame(
-                            icon: FontAwesome5Solid.heartbeat,
-                            color: Colors.red,
-                            size: 28,
-                            duration: 500),
-                        AnimationFrame(
-                            icon: FontAwesome5Solid.heartbeat, color: color, duration: 500),
+                            icon: FontAwesome5Solid.heartbeat, color: Colors.red, size: 28, duration: 500),
+                        AnimationFrame(icon: FontAwesome5Solid.heartbeat, color: color, duration: 500),
                       ],
                     );
                   }
@@ -220,7 +216,7 @@ class _EtcIndicatorState extends State<EtcIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<API>(
+    return GetBuilder<WithcenterApi>(
       builder: (_) {
         return _.profileComplete ? GreenIndicator() : WarningIndicator();
       },

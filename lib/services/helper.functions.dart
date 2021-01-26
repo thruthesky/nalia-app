@@ -33,9 +33,9 @@ Future<String> getAbsoluteTemporaryFilePath(String relativePath) async {
 /// @example
 ///   `/root/users/.../abc.jpg` returns `abc.jpg`
 ///
-String getFilenameFromPath(String path) {
-  return path.split('/').last;
-}
+// String getFilenameFromPath(String path) {
+//   return path.split('/').last;
+// }
 
 String dateTime(dynamic dt) {
   /// Server timestamp fires the event twice.

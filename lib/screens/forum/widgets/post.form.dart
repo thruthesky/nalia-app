@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/files.form.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
+import 'package:withcenter/withcenter.dart';
 
 class PostForm extends StatefulWidget {
   PostForm(this.forum);
@@ -112,7 +111,7 @@ class _PostFormState extends State<PostForm> {
                       onPressed: () async {
                         try {
                           /// TODO move it into forum model
-                          final editedPost = await api.editPost(
+                          final editedPost = await withcenterApi.editPost(
                             id: post.id,
                             category: forum.category,
                             title: title.text,

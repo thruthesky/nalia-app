@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/screens/forum/widgets/post.view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:withcenter/withcenter.dart';
 
 class PostList extends StatefulWidget {
   PostList({@required this.forum});
@@ -18,6 +18,7 @@ class _PostListState extends State<PostList> {
       child: Container(
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
+
           /// remove text form focus when scrolled
           onPanDown: (_) {
             FocusScope.of(context).requestFocus(FocusNode());

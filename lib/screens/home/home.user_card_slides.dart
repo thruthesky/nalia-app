@@ -5,13 +5,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icon_animator/icon_animator.dart';
-import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/controllers/api.user_card.controller.dart';
 import 'package:nalia_app/screens/home/home.news_scroller.dart';
 import 'package:nalia_app/screens/home/home.user_card.bottom_menu.dart';
 import 'package:nalia_app/services/svg_icons.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:nalia_app/widgets/svg_icon.dart';
+import 'package:withcenter/withcenter.dart';
 
 class HomeUserCardSlides extends StatefulWidget {
   @override

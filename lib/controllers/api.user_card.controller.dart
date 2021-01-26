@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/models/api.bio.model.dart';
-import 'package:nalia_app/services/global.dart';
+import 'package:withcenter/withcenter.dart';
 
 class UserCardController extends GetxController {
   static UserCardController get to => Get.find<UserCardController>();
@@ -23,7 +22,7 @@ class UserCardController extends GetxController {
     // 해결책으로는 Location 이 확인되지 않으면, 최소한의 정보만 가져오는 것이다. 예를 들면, 회원 정보 100개 가아닌 10개만 먼저 가져오는 것이다.
     // 하지만 이로 인해 화면 blinking 이 발생한다. 따라서, 최선의 방법은 한번만 가져오는 것이다.
     _timer = Timer(Duration(milliseconds: 100), fetchUsers);
-    api.locationChanges.listen((re) async {
+    withcenterApi.locationChanges.listen((re) async {
       if (re == null) return;
       // 여기에 코드가 오면, Location 이 사용 가능한지 아닌지 확인된상태이다.
       _timer.cancel();
@@ -34,7 +33,7 @@ class UserCardController extends GetxController {
   ///
   /// todo: 내 위치 주변 사용자가를 검색했는데, 사용자가 한 명도 없거나, 너무 적을 때, 검색된 사용자를 먼저 보여주고, 추가로 전체 사용자를 보여 줄 필요가 았다.
   fetchUsers() async {
-    print("-----> location ready: ${api.locationReady}");
+    print("-----> location ready: ${withcenterApi.locationReady}");
     final _users = await search();
     print('-----> Got search result: users:');
     // 내 주위 사람이 없다면, location on 상태에서 검색에서
@@ -104,9 +103,9 @@ class UserCardController extends GetxController {
     double longitude;
     double km;
 
-    if (api.locationReady) {
-      latitude = api.myLocation.latitude;
-      longitude = api.myLocation.longitude;
+    if (withcenterApi.locationReady) {
+      latitude = withcenterApi.myLocation.latitude;
+      longitude = withcenterApi.myLocation.longitude;
 
       // TOOD: 옵션처리
       km = 500.0;
@@ -122,7 +121,7 @@ class UserCardController extends GetxController {
       'orderby': 'RAND()',
     };
     // print('req: $req');
-    final re = await api.request(req);
+    final re = await withcenterApi.request(req);
     final List<ApiBio> bios = [];
     for (final b in re) bios.add(ApiBio.fromJson(b));
     return bios;

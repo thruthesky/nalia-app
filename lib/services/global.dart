@@ -1,4 +1,4 @@
-import 'package:nalia_app/controllers/api.controller.dart';
+// import 'package:nalia_app/controllers/api.controller.dart';
 import 'package:nalia_app/services/app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nalia_app/services/in_app_purchase.service.dart';
@@ -13,7 +13,7 @@ GetStorage localStorage;
 BehaviorSubject<bool> localStorageReady = BehaviorSubject.seeded(false);
 
 ///
-final API api = API();
+// final API api = API();
 
 /// [chat] is the chat room instance.
 ///

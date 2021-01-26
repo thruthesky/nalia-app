@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:nalia_app/services/global.dart';
+import 'package:withcenter/withcenter.dart';
 
 /// Default translated texts.
 ///
@@ -65,7 +65,7 @@ updateTranslations(data) {
 class AppTranslations extends Translations {
   AppTranslations() {
     print('AppTranslations()');
-    api.translationList().then(updateTranslations);
+    withcenterApi.translationList().then(updateTranslations);
   }
 
   @override

@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 
 import 'package:line_chart/charts/line-chart.widget.dart';
 import 'package:line_chart/model/line-chart.model.dart';
-import 'package:nalia_app/models/api.bio.model.dart';
 import 'package:nalia_app/screens/home/home.user_card_slide_thumbnails.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:withcenter/withcenter.dart';
 
 class HomeUserCardBottomMenu extends StatefulWidget {
   HomeUserCardBottomMenu(this.user, {@required this.onClickThumbnail, @required this.onReset});

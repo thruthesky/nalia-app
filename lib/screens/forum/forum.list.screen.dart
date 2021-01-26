@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/post.form.dart';
 import 'package:nalia_app/screens/forum/widgets/post.list.dart';
 import 'package:nalia_app/screens/forum/widgets/post.list.no_more_posts.dart';
@@ -11,6 +9,7 @@ import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
+import 'package:withcenter/withcenter.dart';
 
 class ForumListScreen extends StatefulWidget {
   @override
@@ -27,14 +26,13 @@ class _ForumListScreenState extends State<ForumListScreen> {
       category: Get.arguments['category'],
       render: () => setState(() => null),
     );
-    api.attachForum(forum);
+    withcenterApi.attachForum(forum);
 
     fetchPosts();
 
     /// Loading next page
     forum.itemPositionsListener.itemPositions.addListener(() {
-      int lastVisibleIndex =
-          forum.itemPositionsListener.itemPositions.value.last.index;
+      int lastVisibleIndex = forum.itemPositionsListener.itemPositions.value.last.index;
       if (forum.loading) return;
       if (lastVisibleIndex > forum.posts.length - 4) {
         fetchPosts();
@@ -44,7 +42,7 @@ class _ForumListScreenState extends State<ForumListScreen> {
 
   fetchPosts() async {
     try {
-      await api.fetchPosts(forum: forum);
+      await withcenterApi.fetchPosts(forum: forum);
     } catch (e) {
       app.error(e);
     }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nalia_app/models/api.comment.model.dart';
-import 'package:nalia_app/controllers/api.controller.dart';
-import 'package:nalia_app/models/api.post.model.dart';
 import 'package:nalia_app/screens/forum/widgets/files.form.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
+import 'package:withcenter/withcenter.dart';
 
 class CommentForm extends StatefulWidget {
   const CommentForm({
@@ -59,8 +57,8 @@ class _CommentFormState extends State<CommentForm> {
                 icon: Icon(Icons.camera_alt),
                 onPressed: () async {
                   try {
-                    final file = await app.imageUpload(
-                        quality: 95, onProgress: (p) => setState(() => percentage = p));
+                    final file =
+                        await app.imageUpload(quality: 95, onProgress: (p) => setState(() => percentage = p));
                     print('file upload success: $file');
                     percentage = 0;
                     comment.files.add(file);
@@ -94,7 +92,7 @@ class _CommentFormState extends State<CommentForm> {
                   icon: Icon(Icons.send),
                   onPressed: () async {
                     try {
-                      final editedComment = await api.editComment(
+                      final editedComment = await withcenterApi.editComment(
                         content: content.text,
                         parent: widget.parent,
                         comment: comment,
@@ -105,10 +103,8 @@ class _CommentFormState extends State<CommentForm> {
                       widget.post.insertOrUpdateComment(editedComment);
                       content.text = '';
                       comment.files = [];
-                      if (widget.parent != null)
-                        widget.parent.mode = CommentMode.none;
-                      if (widget.comment != null)
-                        comment.mode = CommentMode.none;
+                      if (widget.parent != null) widget.parent.mode = CommentMode.none;
+                      if (widget.comment != null) comment.mode = CommentMode.none;
                       setState(() => null);
                       widget.forum.render();
                       print('editeComment..: $editedComment');
