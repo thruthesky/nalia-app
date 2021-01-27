@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/screens/forum/widgets/post.view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class PostList extends StatefulWidget {
   PostList({@required this.forum});

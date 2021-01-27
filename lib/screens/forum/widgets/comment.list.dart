@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nalia_app/screens/forum/widgets/comment.view.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class CommentList extends StatefulWidget {
   CommentList({

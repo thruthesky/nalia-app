@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 /// Default translated texts.
 ///
@@ -65,7 +65,7 @@ updateTranslations(data) {
 class AppTranslations extends Translations {
   AppTranslations() {
     print('AppTranslations()');
-    withcenterApi.translationList().then(updateTranslations);
+    api.translationList().then(updateTranslations);
   }
 
   @override

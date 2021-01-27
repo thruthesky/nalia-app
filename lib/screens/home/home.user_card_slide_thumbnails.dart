@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:nalia_app/widgets/user_avatar.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class HomeUserCardSlideThumbnails extends StatefulWidget {
   HomeUserCardSlideThumbnails(this.user, {@required this.onClickThumbnail});

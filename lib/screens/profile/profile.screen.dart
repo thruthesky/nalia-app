@@ -11,7 +11,7 @@ import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/login_first.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -35,10 +35,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: CustomAppBar(route: RouteNames.jewelry),
       backgroundColor: kBackgroundColor,
       body: HomeContentWrapper(
-        child: withcenterApi.notLoggedIn
+        child: api.notLoggedIn
             ? LoginFirst()
             : SingleChildScrollView(
-                child: GetBuilder<WithcenterApi>(
+                child: GetBuilder<Api>(
                   builder: (_) {
                     if (_.bioData == null) return Spinner();
                     return Container(
@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           spaceXs,
                           Text(
-                              '이름: ${withcenterApi.fullName}\n전화: ${withcenterApi.user.phoneNo}\n생일: ${withcenterApi.bioData.birthdate}\n성별: ${withcenterApi.bioData.gender.tr} '),
+                              '이름: ${api.fullName}\n전화: ${api.user.phoneNo}\n생일: ${api.bioData.birthdate}\n성별: ${api.bioData.gender.tr} '),
                           spaceXs,
                           Divider(),
                           spaceXs,
@@ -101,7 +101,7 @@ class _DateMethodState extends State<DateMethod> {
     super.initState();
 
     dateMethodSub = dateMethod.debounceTime(Duration(milliseconds: 500)).distinct().listen((v) {
-      withcenterApi.updateBio('dateMethod', v);
+      api.updateBio('dateMethod', v);
     });
   }
 
@@ -120,7 +120,7 @@ class _DateMethodState extends State<DateMethod> {
         Text('date method hint'.tr, style: hintStyle),
         Text('date method example'.tr, style: hintStyle),
         spaceXs,
-        GetBuilder<WithcenterApi>(
+        GetBuilder<Api>(
           builder: (_) {
             return TextFormField(
               initialValue: _.bioData?.dateMethod ?? '',
@@ -146,7 +146,7 @@ class Height extends StatelessWidget {
         children: [
           spaceMd,
           Text('height'.tr, style: hintStyle),
-          GetBuilder<WithcenterApi>(
+          GetBuilder<Api>(
             builder: (_) {
               return DropdownButton<String>(
                 value: _.bioData?.height ?? '',
@@ -194,7 +194,7 @@ class Weight extends StatelessWidget {
         children: [
           spaceMd,
           Text('weight'.tr, style: hintStyle),
-          GetBuilder<WithcenterApi>(
+          GetBuilder<Api>(
             builder: (_) {
               return DropdownButton<String>(
                 value: _.bioData?.weight ?? '',
@@ -241,7 +241,7 @@ class City extends StatelessWidget {
         children: [
           spaceMd,
           Text('city'.tr, style: hintStyle),
-          GetBuilder<WithcenterApi>(
+          GetBuilder<Api>(
             builder: (_) {
               return DropdownButton<String>(
                 value: _.bioData?.city ?? '',
@@ -288,7 +288,7 @@ class Hobby extends StatelessWidget {
         children: [
           spaceMd,
           Text('hobby'.tr, style: hintStyle),
-          GetBuilder<WithcenterApi>(
+          GetBuilder<Api>(
             builder: (_) {
               return DropdownButton<String>(
                 value: _.bioData?.hobby ?? '',
@@ -335,7 +335,7 @@ class Drinking extends StatelessWidget {
         children: [
           spaceMd,
           Text('drink'.tr, style: hintStyle),
-          GetBuilder<WithcenterApi>(
+          GetBuilder<Api>(
             builder: (_) {
               return SwitchListTile(
                 title: Text('drinking_yn'.tr),
@@ -366,7 +366,7 @@ class Smoking extends StatelessWidget {
         children: [
           spaceMd,
           Text('smoke'.tr, style: hintStyle),
-          GetBuilder<WithcenterApi>(
+          GetBuilder<Api>(
             builder: (_) {
               return SwitchListTile(
                 title: Text('smoking_yn'.tr),

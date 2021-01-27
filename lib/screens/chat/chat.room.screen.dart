@@ -16,7 +16,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   @override
@@ -80,7 +80,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
     // Create a `ChatRoom` instance and save it to global variable.
     chat = ChatRoom(
-      loginUserId: withcenterApi.id,
+      loginUserId: api.id,
       render: () {
         setState(() {});
         if (chat.messages.isNotEmpty) {
@@ -128,8 +128,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     try {
       await chat.sendMessage(
         text: text,
-        displayName: withcenterApi.bioData.userId,
-        photoURL: withcenterApi.bioData.profilePhotoUrl,
+        displayName: api.bioData.userId,
+        photoURL: api.bioData.profilePhotoUrl,
       );
       textController.text = '';
       await app.sendChatPushMessage(chat, text);
@@ -210,7 +210,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               otherUsername,
-              GetBuilder<WithcenterApi>(
+              GetBuilder<Api>(
                 builder: (_) {
                   return app.subscribed(chat.id)
                       ? IconButton(
@@ -303,8 +303,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                               /// send url to firebase
                               await chat.sendMessage(
                                 text: file.thumbnailUrl,
-                                displayName: withcenterApi.bioData.userId,
-                                photoURL: withcenterApi.bioData.profilePhotoUrl,
+                                displayName: api.bioData.userId,
+                                photoURL: api.bioData.profilePhotoUrl,
                               );
                               // TODO: for uploading an image, push message text should be 'User *** send you a photo'
                               // TODO: And the photo will be attached as imageUrl of the push message.

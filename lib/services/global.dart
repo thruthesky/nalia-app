@@ -3,11 +3,8 @@ import 'package:nalia_app/services/app.dart';
 import 'package:nalia_app/services/in_app_purchase.service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firechat/firechat.dart';
-import 'package:withcenter/withcenter.dart';
 
 final App app = App();
-
-final WithcenterApi api = withcenterApi;
 
 ///
 // final API api = API();

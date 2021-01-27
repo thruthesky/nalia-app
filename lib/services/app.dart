@@ -20,7 +20,7 @@ import 'package:nalia_app/services/route_names.dart';
 import 'package:rxdart/subjects.dart';
 
 import 'package:path_provider/path_provider.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class App {
   BehaviorSubject<bool> firebaseReady = BehaviorSubject.seeded(false);
@@ -39,7 +39,7 @@ class App {
   }
 
   everyMinutes() async {
-    withcenterApi.authChanges.listen((user) async {
+    api.authChanges.listen((user) async {
       if (user == null) return;
 
       try {
@@ -153,7 +153,7 @@ class App {
   /// ```dart
   /// ApiFile file = await app.imageUpload(onProgress: onProgress);
   /// post.files.add(file);
-  /// final edited = await withcenterApi.editPost(id: post.id, files: post.files);
+  /// final edited = await api.editPost(id: post.id, files: post.files);
   /// ```
   Future<ApiFile> imageUpload({int quality = 90, Function onProgress}) async {
     /// Ask user
@@ -198,7 +198,7 @@ class App {
     );
 
     /// Upload
-    return await withcenterApi.uploadFile(file: file, onProgress: onProgress);
+    return await api.uploadFile(file: file, onProgress: onProgress);
   }
 
   /// 예/아니오를 선택하게 하는 다이얼로그를 표시한다.
@@ -322,14 +322,12 @@ class App {
 
   /// Get the login user's post of gallery. It will create one if none exists.
   Future<ApiPost> getGalleryPost() async {
-    if (withcenterApi.notLoggedIn) return null;
-    List<ApiPost> posts =
-        await withcenterApi.searchPost(category: Config.galleryCategory, limit: 1, author: withcenterApi.id);
+    if (api.notLoggedIn) return null;
+    List<ApiPost> posts = await api.searchPost(category: Config.galleryCategory, limit: 1, author: api.id);
     if (posts.length == 0) {
       print('No gallery post. create one');
-      await withcenterApi.editPost(
-          category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
-      posts = await withcenterApi.searchPost(category: Config.galleryCategory, limit: 1);
+      await api.editPost(category: Config.galleryCategory, title: 'My gallery', content: 'My gallery photos');
+      posts = await api.searchPost(category: Config.galleryCategory, limit: 1);
     }
     return posts.first;
   }
@@ -360,7 +358,7 @@ class App {
   }
 
   openChatRoom({String roomId, String userId}) async {
-    if (withcenterApi.id == userId) {
+    if (api.id == userId) {
       return app.alert('cannot chat to yourself'.tr);
     }
     try {
@@ -375,7 +373,7 @@ class App {
   /// Return true if there is no problem on user's profile or throws an error.
   Future<bool> checkUserProfile() async {
     // print("if ($hasName && $hasGener && $hasBirthday)");
-    if (withcenterApi.notLoggedIn) {
+    if (api.notLoggedIn) {
       throw ERROR_LOGIN_FIRST;
     }
 
@@ -384,15 +382,15 @@ class App {
   }
 
   bool get profileReady =>
-      withcenterApi.bioData.profilePhotoUrl != null &&
-      withcenterApi.bioData.profilePhotoUrl != '' &&
-      withcenterApi.bioData.name != null &&
-      withcenterApi.bioData.name != '';
+      api.bioData.profilePhotoUrl != null &&
+      api.bioData.profilePhotoUrl != '' &&
+      api.bioData.name != null &&
+      api.bioData.name != '';
 
-  bool get profileComplete => withcenterApi.profileComplete;
+  bool get profileComplete => api.profileComplete;
 
   Future<ApiBio> getBio(String userId) async {
-    final rows = await withcenterApi.query("bio", "user_ID=$userId");
+    final rows = await api.query("bio", "user_ID=$userId");
     if (rows.length == 0) {
       return null;
     } else {
@@ -405,12 +403,12 @@ class App {
   }
 
   subscribed(String name) {
-    return withcenterApi.user?.data['subscription_$name'] == 'Y';
+    return api.user?.data['subscription_$name'] == 'Y';
   }
 
   subscribe(String name) async {
     try {
-      final re = await withcenterApi.updateUserMeta('subscription_$name', 'Y');
+      final re = await api.updateUserMeta('subscription_$name', 'Y');
       print(re.data['subscription_$name']);
     } catch (e) {
       error(e);
@@ -419,7 +417,7 @@ class App {
 
   unsubscribe(String name) async {
     try {
-      final re = await withcenterApi.updateUserMeta('subscription_$name', 'N');
+      final re = await api.updateUserMeta('subscription_$name', 'N');
       print(re.data['subscription_$name']);
     } catch (e) {
       error(e);
@@ -428,7 +426,7 @@ class App {
 
   sendChatPushMessage(ChatRoom chat, String body) async {
     try {
-      await withcenterApi.sendMessageToUsers(
+      await api.sendMessageToUsers(
         users: [chat.global.otherUserId],
         subscription: 'subscription_' + chat.id,
         title: 'chat message',

@@ -73,8 +73,8 @@ dependencies:
   firechat:
     path: packages/firechat
 
-  withcenter:
-    path: packages/withcenter
+  firelamp:
+    path: packages/firelamp
 
 dev_dependencies:
   flutter_test:

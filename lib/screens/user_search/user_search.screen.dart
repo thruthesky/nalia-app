@@ -8,7 +8,7 @@ import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class UserSearchScreen extends StatefulWidget {
   @override

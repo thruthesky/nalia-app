@@ -11,7 +11,7 @@ import 'package:nalia_app/tests/post.test.dart';
 import 'package:nalia_app/tests/user.test.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class MenuScreen extends StatefulWidget {
   @override
@@ -31,7 +31,7 @@ class _MenuScreenState extends State<MenuScreen> {
             children: <Widget>[
               Text('app-name'.tr),
               Text('address'.tr),
-              GetBuilder<WithcenterApi>(
+              GetBuilder<Api>(
                 builder: (_) {
                   return Text(
                     'session_id: ${_.user?.sessionId}, name: ${_.user?.name}, ${_.user?.gender}, ${_.user?.birthdate}, ${_.user?.age} ',
@@ -46,7 +46,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: Text('Login'),
                   ),
                   RaisedButton(
-                    onPressed: () => withcenterApi.logout(),
+                    onPressed: () => api.logout(),
                     child: Text('Logout'),
                   ),
                   RaisedButton(
@@ -61,7 +61,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     onPressed: () async {
                       try {
                         final int no = Random().nextInt(10000);
-                        final re = await withcenterApi.register(
+                        final re = await api.register(
                           email: 'abc$no@test.com',
                           pass: 'abc@test.com',
                           data: {
@@ -137,7 +137,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       onPressed: () async {
                         final tu = UserTest().data(i);
                         try {
-                          final u = await withcenterApi.login(email: tu['user_email'], pass: tu['user_pass']);
+                          final u = await api.login(email: tu['user_email'], pass: tu['user_pass']);
                           print('Login success: $u');
                         } catch (e) {
                           app.error(e);
@@ -153,7 +153,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 onPressed: () async {
                   try {
                     final int no = Random().nextInt(10000);
-                    final re = await withcenterApi.updateToken('token:$no');
+                    final re = await api.updateToken('token:$no');
                     print(re);
                   } catch (e) {
                     app.error(e);

@@ -6,7 +6,7 @@ import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
 import 'package:text_scroller/text_scroller.dart';
 import 'package:get/get.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class HomeNewsScroller extends StatefulWidget {
   const HomeNewsScroller({Key key}) : super(key: key);
@@ -23,7 +23,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
     Widget otherUser = SizedBox.shrink();
     String text = '';
     String toUid = data['toUid'];
-    if (toUid == withcenterApi.id) {
+    if (toUid == api.id) {
       otherUser = UserAvatar(
         data['fromPhotoURL'],
         size: 22,
@@ -41,7 +41,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
         color: Colors.white,
         size: 20,
       );
-      if (toUid == withcenterApi.id)
+      if (toUid == api.id)
         text = 'diamond recv'.tr;
       else
         text = 'diamond send'.tr;
@@ -51,7 +51,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
         color: Colors.deepOrange[400],
         size: md - 2,
       );
-      if (toUid == withcenterApi.id)
+      if (toUid == api.id)
         text = 'silver recv'.tr;
       else
         text = 'silver send'.tr;
@@ -61,7 +61,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
         color: Colors.lime[500],
         size: md,
       );
-      if (toUid == withcenterApi.id) {
+      if (toUid == api.id) {
         text = 'watch recv'.tr;
       } else {
         text = 'watch send'.tr;
@@ -72,7 +72,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
         color: Colors.yellow[700],
         size: md + 3,
       );
-      if (toUid == withcenterApi.id)
+      if (toUid == api.id)
         text = 'ring recv'.tr;
       else
         text = 'ring send'.tr;
@@ -82,7 +82,7 @@ class _HomeNewsScrollerState extends State<HomeNewsScroller> {
         color: Colors.yellow[200],
         size: md - 2,
       );
-      if (toUid == withcenterApi.id)
+      if (toUid == api.id)
         text = 'bag recv'.tr;
       else
         text = 'bag send'.tr;

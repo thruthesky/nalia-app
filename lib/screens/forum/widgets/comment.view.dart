@@ -4,7 +4,7 @@ import 'package:nalia_app/screens/forum/widgets/files.view.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class CommentView extends StatefulWidget {
   const CommentView({
@@ -40,7 +40,7 @@ class _CommentViewState extends State<CommentView> {
       if (conf == false) return;
 
       try {
-        final deleted = await withcenterApi.deleteComment(widget.comment, widget.post);
+        final deleted = await api.deleteComment(widget.comment, widget.post);
         print('deleted: $deleted');
         widget.forum.render();
       } catch (e) {

@@ -12,7 +12,7 @@ import 'package:nalia_app/widgets/user_avatar.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:badges/badges.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class CustomAppBarMenu extends StatefulWidget {
   CustomAppBarMenu({@required this.route});
@@ -216,7 +216,7 @@ class _EtcIndicatorState extends State<EtcIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<WithcenterApi>(
+    return GetBuilder<Api>(
       builder: (_) {
         return _.profileComplete ? GreenIndicator() : WarningIndicator();
       },

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:nalia_app/services/svg_collections.dart';
 import 'package:nalia_app/widgets/svg.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class InAppPurchaseService {
   // Set literals require Dart 2.2. Alternatively, use `Set<String> _kIds = <String>['product1', 'product2'].toSet()`.
@@ -144,7 +144,7 @@ class InAppPurchaseService {
   _verifyPurchase(PurchaseDetails purchaseDetails) {
     ProductDetails productDetails = products[purchaseDetails.productID];
     final Map<String, dynamic> data = {
-      'user_ID': withcenterApi.id,
+      'user_ID': api.id,
       'productID': purchaseDetails.productID,
       'purchaseID': purchaseDetails.purchaseID,
       'price': productDetails.price,
@@ -179,7 +179,7 @@ class InAppPurchaseService {
   Future requestVerification(Map<String, dynamic> data) async {
     data['route'] = 'nalia.verifyPurchase';
     try {
-      final re = await withcenterApi.request(data);
+      final re = await api.request(data);
       print(re);
     } catch (e) {
       print('e: $e');

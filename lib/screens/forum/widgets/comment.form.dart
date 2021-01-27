@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nalia_app/screens/forum/widgets/files.form.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class CommentForm extends StatefulWidget {
   const CommentForm({
@@ -92,7 +92,7 @@ class _CommentFormState extends State<CommentForm> {
                   icon: Icon(Icons.send),
                   onPressed: () async {
                     try {
-                      final editedComment = await withcenterApi.editComment(
+                      final editedComment = await api.editComment(
                         content: content.text,
                         parent: widget.parent,
                         comment: comment,

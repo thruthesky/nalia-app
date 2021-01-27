@@ -9,7 +9,7 @@ import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -69,9 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         JavascriptChannel(
                             name: 'messageHandler',
                             onMessageReceived: (JavascriptMessage jm) async {
-                              withcenterApi.user = ApiUser.fromJson(jsonDecode(jm.message));
-                              print("Pass login withcenterApi.user: ${withcenterApi.user}");
-                              int agegroup = int.parse(withcenterApi.user.agegroup);
+                              api.user = ApiUser.fromJson(jsonDecode(jm.message));
+                              print("Pass login api.user: ${api.user}");
+                              int agegroup = int.parse(api.user.agegroup);
                               if (agegroup == 0 || agegroup == 10) {
                                 app.alert('미성년자는 가입 할 수 없습니다.');
                                 return;

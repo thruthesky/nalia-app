@@ -7,7 +7,7 @@ import 'package:nalia_app/widgets/svg.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 // const List<String> _kProductIds = <String>[
 //   _kConsumableId,
@@ -194,7 +194,7 @@ class FireflutterInAppPurchase {
     print('psending data:');
     print(jsonEncode(data));
 
-    await withcenterApi.recordFailurePurchase(data);
+    await api.recordFailurePurchase(data);
   }
 
   _recordFailure(PurchaseDetails purchaseDetails) async {
@@ -205,7 +205,7 @@ class FireflutterInAppPurchase {
       'purchaseDetails_skPaymentTransaction_transactionIdentifier':
           purchaseDetails?.skPaymentTransaction?.transactionIdentifier,
     };
-    await withcenterApi.recordFailurePurchase(data);
+    await api.recordFailurePurchase(data);
   }
 
   _recordSuccess(PurchaseDetails purchaseDetails) async {
@@ -252,7 +252,7 @@ class FireflutterInAppPurchase {
 
     if (purchaseDetails.verificationData.source == IAPSource.AppStore) {}
 
-    await withcenterApi.recordSuccessPurchase(data);
+    await api.recordSuccessPurchase(data);
   }
 
   Future buyConsumable(ProductDetails product) async {
@@ -267,7 +267,7 @@ class FireflutterInAppPurchase {
 
   /// Returns the Collection Query to get the login user's success purchases.
   Future<List<PurchaseHistory>> get getMyPurchases async {
-    final List<dynamic> res = await withcenterApi.getMyPurchases();
+    final List<dynamic> res = await api.getMyPurchases();
     List<PurchaseHistory> purchaseHistory = [];
     for (int i = 0; i < res.length; i++) {
       purchaseHistory.add(PurchaseHistory.fromJson(res[i]));

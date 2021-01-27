@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/widgets/cache_image.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class FilesForm extends StatefulWidget {
   const FilesForm({
@@ -63,7 +63,7 @@ class _FilesFormState extends State<FilesForm> {
                         print('delete: $re');
                         if (re) {
                           try {
-                            final id = await withcenterApi.deleteFile(
+                            final id = await api.deleteFile(
                               file.id,
                               postOrComment: widget.postOrComment,
                             );

@@ -11,7 +11,7 @@ import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/login_first.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:nalia_app/widgets/user_avatar.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class ChatUserRoomListScreen extends StatefulWidget {
   @override
@@ -112,7 +112,7 @@ class _ChatUserRoomListScreenState extends State<ChatUserRoomListScreen> {
           children: [Text('내 친구 목록'), Text('챈구 찾기')],
         ),
         child: Container(
-          child: withcenterApi.notLoggedIn
+          child: api.notLoggedIn
               ? LoginFirst()
               : myRoomList?.fetched != true
                   ? Spinner()

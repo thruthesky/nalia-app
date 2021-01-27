@@ -1,6 +1,6 @@
 // import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class PostTest {
   run() async {
@@ -27,14 +27,14 @@ class PostTest {
 
     /// Create a post with the photos.
     int stamp = DateTime.now().millisecondsSinceEpoch;
-    final post = await withcenterApi.editPost(
+    final post = await api.editPost(
       category: 'reminder',
       title: 'Title $stamp',
       content: 'Content: $stamp',
       files: [file1, file2],
     );
 
-    return await withcenterApi.getPost(post.id);
+    return await api.getPost(post.id);
 
     /// Create a comment of under the post.
   }

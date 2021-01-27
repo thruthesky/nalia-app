@@ -9,7 +9,7 @@ import 'package:nalia_app/services/route_names.dart';
 import 'package:nalia_app/widgets/custom_app_bar.dart';
 import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class ForumListScreen extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _ForumListScreenState extends State<ForumListScreen> {
       category: Get.arguments['category'],
       render: () => setState(() => null),
     );
-    withcenterApi.attachForum(forum);
+    api.attachForum(forum);
 
     fetchPosts();
 
@@ -42,7 +42,7 @@ class _ForumListScreenState extends State<ForumListScreen> {
 
   fetchPosts() async {
     try {
-      await withcenterApi.fetchPosts(forum: forum);
+      await api.fetchPosts(forum: forum);
     } catch (e) {
       app.error(e);
     }

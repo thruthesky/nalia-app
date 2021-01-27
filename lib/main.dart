@@ -23,7 +23,7 @@ import 'package:nalia_app/screens/user_search/user_search.screen.dart';
 import 'package:nalia_app/services/config.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 void main() {
   // Let the plugin know that this app supports pending purchases.
@@ -38,7 +38,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   // final API c = Get.put(api);
-  final WithcenterApi wa = Get.put(withcenterApi);
+  final Api wa = Get.put(api);
   final Gallery g = Get.put(Gallery());
   final UserCardController uc = Get.put(UserCardController());
   final NaliaController nc = Get.put(NaliaController());
@@ -47,9 +47,9 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
-    print('withcenterApi: $withcenterApi');
-    withcenterApi.init(apiUrl: apiUrl);
-    withcenterApi.version().then((res) => print('withcenterApi.version(): $res'));
+    print('api: $api');
+    api.init(apiUrl: apiUrl);
+    api.version().then((res) => print('api.version(): $res'));
 
     iapService.init().then((x) {
       // app.open(RouteNames.purchase);
@@ -74,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
       // print(str.length);
 
       // try {
-      //   await withcenterApi.request({'route': 'app.str', 'str': str});
+      //   await api.request({'route': 'app.str', 'str': str});
       // } catch (e) {
       //   print((e as DioError).message);
       // }
@@ -83,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
     app.firebaseReady.listen((ready) {
       if (ready == false) return;
 
-      withcenterApi.authChanges.listen((user) {
+      api.authChanges.listen((user) {
         // When user is not logged in, or logged out, clear the chat room list.
         if (user == null) {
           if (myRoomList != null) {
@@ -99,7 +99,7 @@ class _MainScreenState extends State<MainScreen> {
         // Reset room list, when user just logs in/out.
         if (myRoomList == null) {
           myRoomList = ChatMyRoomList(
-            loginUserId: withcenterApi.id,
+            loginUserId: api.id,
             render: () {
               // When there are changes(events) on my chat room list,
               // notify to listeners.
@@ -110,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
       });
     });
 
-    withcenterApi.translationChanges.listen((res) {
+    api.translationChanges.listen((res) {
       updateTranslations(res);
       setState(() {});
     });

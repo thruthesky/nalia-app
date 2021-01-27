@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:nalia_app/services/global.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 /// Gallery
 ///
@@ -18,7 +18,7 @@ class Gallery extends GetxController {
   void onInit() {
     super.onInit();
 
-    withcenterApi.authChanges.listen((user) async {
+    api.authChanges.listen((user) async {
       if (user == null) return;
       try {
         post = await app.getGalleryPost();
@@ -37,7 +37,7 @@ class Gallery extends GetxController {
       });
       progress = 0;
       post.files.add(file);
-      post = await withcenterApi.editPost(id: post.id, files: post.files);
+      post = await api.editPost(id: post.id, files: post.files);
       if (post.files.length == 1) {
         pin(post.files.first);
       }
@@ -49,7 +49,7 @@ class Gallery extends GetxController {
 
   Future delete(int id) async {
     try {
-      await withcenterApi.deleteFile(id, postOrComment: post);
+      await api.deleteFile(id, postOrComment: post);
 
       /// Set the first photo to be primary photo after the primary photo has deleted.
       if (post.featuredImageId == id && post.files.length > 0) {
@@ -59,7 +59,7 @@ class Gallery extends GetxController {
         post.featuredImageId = 0;
         post.featuredImageUrl = null;
         post.featuredImageThumbnailUrl = null;
-        await withcenterApi.updateBio('profile_photo_url', '');
+        await api.updateBio('profile_photo_url', '');
       }
       update();
     } catch (e) {
@@ -74,8 +74,8 @@ class Gallery extends GetxController {
       return;
     }
     try {
-      await withcenterApi.setFeaturedImage(post, photo);
-      await withcenterApi.updateBio('profile_photo_url', photo.url);
+      await api.setFeaturedImage(post, photo);
+      await api.updateBio('profile_photo_url', photo.url);
       post.featuredImageId = photo.id;
       post.featuredImageUrl = photo.url;
       post.featuredImageThumbnailUrl = photo.thumbnailUrl;

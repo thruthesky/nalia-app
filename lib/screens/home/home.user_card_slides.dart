@@ -11,7 +11,7 @@ import 'package:nalia_app/screens/home/home.user_card.bottom_menu.dart';
 import 'package:nalia_app/services/svg_icons.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:nalia_app/widgets/svg_icon.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class HomeUserCardSlides extends StatefulWidget {
   @override

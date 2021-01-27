@@ -12,7 +12,7 @@ import 'package:nalia_app/widgets/home.content_wrapper.dart';
 import 'package:nalia_app/widgets/spinner.dart';
 import 'package:nalia_app/widgets/svg_icon.dart';
 import 'package:masonry_grid/masonry_grid.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class GalleryScreen extends StatefulWidget {
   @override

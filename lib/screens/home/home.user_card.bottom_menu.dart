@@ -10,7 +10,7 @@ import 'package:nalia_app/services/defines.dart';
 import 'package:nalia_app/services/global.dart';
 import 'package:nalia_app/services/route_names.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:withcenter/withcenter.dart';
+import 'package:firelamp/firelamp.dart';
 
 class HomeUserCardBottomMenu extends StatefulWidget {
   HomeUserCardBottomMenu(this.user, {@required this.onClickThumbnail, @required this.onReset});
