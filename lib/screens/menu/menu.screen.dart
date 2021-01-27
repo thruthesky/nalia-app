@@ -54,6 +54,10 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: Text('Profile'),
                   ),
                   RaisedButton(
+                    onPressed: () => app.open(RouteNames.gallery),
+                    child: Text('Gallery'),
+                  ),
+                  RaisedButton(
                     onPressed: () async {
                       try {
                         final int no = Random().nextInt(10000);
